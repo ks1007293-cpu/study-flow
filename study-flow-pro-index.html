@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<meta name="description" content="Study Flow — a polished personal study planner for tasks, routines, focus sessions, notes, goals and progress.">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="Study Flow — Personal Study Planner">
+<meta property="og:description" content="Plan your study day, focus deeply, track habits and see your progress.">
+<meta property="og:type" content="website">
+<title>Study Flow — Personal Study Planner</title>
+<style>
+:root{
+ --bg:#f4f6fb;--panel:#fff;--panel2:#f8f9fc;--text:#111827;--muted:#70798b;
+ --line:#e7eaf0;--primary:#5b5ce2;--primary2:#8b5cf6;--green:#16a34a;--orange:#f59e0b;
+ --red:#ef4444;--blue:#2563eb;--dark:#111827;--radius:20px;
+ --shadow:0 10px 30px rgba(17,24,39,.06);--shadow2:0 20px 60px rgba(17,24,39,.12)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #5b5ce233;outline-offset:2px}
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:#111827;color:#fff;padding:18px 14px;display:flex;flex-direction:column;z-index:40}
+.brand{display:flex;align-items:center;gap:11px;padding:7px 10px 22px}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#6366f1,#a855f7);display:grid;place-items:center;font-weight:900;box-shadow:0 10px 25px #0004}
+.brand-title{font-size:18px;font-weight:850}.brand-sub{font-size:10px;color:#9ca3af;margin-top:1px}
+.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:#b9c2d2;padding:11px 12px;border-radius:12px;text-align:left;display:flex;align-items:center;gap:12px;transition:.18s}
+.nav button:hover{background:#ffffff0d;color:#fff}.nav button.active{background:linear-gradient(90deg,#ffffff15,#ffffff08);color:#fff;box-shadow:inset 3px 0 #818cf8}
+.nav-icon{width:22px;text-align:center}.side-spacer{flex:1}.sidebar-footer{display:grid;gap:8px}.side-mini{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #ffffff10;border-radius:14px;background:#ffffff08}.avatar{width:34px;height:34px;border-radius:50%;background:#6366f1;display:grid;place-items:center;font-weight:800}
+.main{min-width:0}.topbar{height:72px;background:#fffffff0;border-bottom:1px solid var(--line);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:30}
+.top-left{display:flex;align-items:center;gap:12px}.page-title{font-size:19px;font-weight:800}.date-label{font-size:12px;color:var(--muted)}
+.top-actions{display:flex;gap:8px;align-items:center}.container{max-width:1550px;margin:auto;padding:28px}
+.view{display:none}.view.active{display:block}
+.btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:9px 13px;border-radius:12px;font-weight:700;transition:.15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px #0000000b}.btn.primary{border-color:var(--primary);background:var(--primary);color:#fff}.btn.dark{background:#1f2937;color:#fff;border-color:#1f2937}.btn.ghost{background:transparent}.btn.danger{color:var(--red)}.btn.small{font-size:12px;padding:6px 9px}.btn.icon{width:38px;height:38px;padding:0;display:grid;place-items:center}
+.mobile-only{display:none}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#4338ca 0%,#5b5ce2 48%,#7c3aed 100%);border-radius:26px;padding:30px;color:#fff;box-shadow:0 18px 50px #5b5ce233;margin-bottom:20px}
+.hero:after{content:"";position:absolute;width:320px;height:320px;border-radius:50%;right:-90px;top:-180px;background:#fff1}
+.hero-content{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:20px}.hero h1{margin:0 0 7px;font-size:31px;letter-spacing:-1px}.hero p{margin:0;color:#e8e7ff}.hero-actions{display:flex;gap:8px;flex-wrap:wrap}.hero .btn{background:#ffffff18;border-color:#ffffff2e;color:#fff}.hero .btn.primary{background:#fff;color:#4f46e5;border-color:#fff}
+.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:18px}.two{grid-template-columns:1.35fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.four{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}.card.soft{background:var(--panel2);box-shadow:none}
+.stat{display:flex;align-items:center;justify-content:space-between}.stat small{color:var(--muted);display:block}.stat strong{font-size:27px;display:block;margin-top:3px}.stat-icon{width:44px;height:44px;border-radius:14px;background:#eef0ff;display:grid;place-items:center;font-size:21px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.section-head h2,.section-head h3{margin:0}.section-head p{margin:3px 0 0;color:var(--muted)}
+.input,.select,.textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;color:var(--text);outline:0}.textarea{resize:vertical;min-height:100px}.input:focus,.select:focus,.textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px #5b5ce21a}
+.form{display:grid;gap:12px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.label{display:block;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:0 0 5px}
+.task{display:flex;align-items:center;gap:11px;padding:13px 2px;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.task-check{width:21px;height:21px;border:2px solid #cfd5e0;border-radius:7px;background:#fff;display:grid;place-items:center;flex:none;color:#fff;padding:0}.task-check.done{background:var(--green);border-color:var(--green)}.task-main{min-width:0;flex:1}.task-title{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.task-title.done{text-decoration:line-through;color:#9aa2b0}.task-meta{font-size:11px;color:var(--muted);margin-top:2px}.pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:5px 8px;border-radius:999px;background:#eef0ff;color:#4f46e5;font-weight:800}.pill.high{background:#fff1f2;color:#e11d48}.pill.low{background:#ecfdf5;color:#15803d}.pill.orange{background:#fff7ed;color:#c2410c}
+.progress{height:9px;border-radius:99px;background:#e9ecf3;overflow:hidden}.progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.35s}
+.muted{color:var(--muted)}.empty{text-align:center;padding:35px 15px;color:var(--muted)}.divider{border:0;border-top:1px solid var(--line);margin:16px 0}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick{padding:13px;border:1px solid var(--line);background:#fff;border-radius:14px;text-align:left;font-weight:750}.quick:hover{background:#f7f7ff;border-color:#d8d9ff}
+.timeline{display:grid;grid-template-columns:65px 1fr;gap:0}.time-slot{min-height:67px;border-top:1px solid var(--line);padding:10px 10px 0 0;color:var(--muted);font-size:11px;text-align:right}.timeline-item{min-height:67px;border-top:1px solid var(--line);padding:8px 0 8px 13px;position:relative}.timeline-item:before{content:"";position:absolute;left:-4px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.cal-head{text-align:center;font-size:11px;font-weight:800;color:var(--muted);padding:5px}.day{min-height:105px;border:1px solid var(--line);background:#fff;border-radius:13px;padding:8px}.day.today{border-color:#818cf8;box-shadow:inset 0 0 0 1px #818cf8}.day.muted-day{background:#fafafa;color:#b8bec9}.daynum{font-weight:800}.mini-task{font-size:10px;background:#eef0ff;color:#4f46e5;border-radius:5px;padding:3px 5px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-task.done{background:#ecfdf5;color:#15803d;text-decoration:line-through}
+.timer-wrap{display:grid;place-items:center;padding:20px}.timer-circle{width:280px;height:280px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--primary) 0deg,#e9ecf3 0deg);position:relative}.timer-circle:after{content:"";position:absolute;inset:12px;background:#fff;border-radius:50%}.timer-inside{position:relative;z-index:2;text-align:center}.timer-number{font-size:52px;font-weight:900;letter-spacing:-2px;font-variant-numeric:tabular-nums}.timer-mode{color:var(--muted);font-size:12px}.timer-controls{display:flex;justify-content:center;gap:8px;margin-top:18px}
+.habit{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}.habit:last-child{border-bottom:0}.habit-name{flex:1;font-weight:750}.day-dots{display:flex;gap:4px}.day-dot{width:23px;height:23px;border-radius:7px;background:#eef0f4;color:#8992a1;display:grid;place-items:center;font-size:9px}.day-dot.on{background:#22c55e;color:#fff}
+.note{padding:16px;border:1px solid var(--line);border-radius:16px;background:#fff;min-height:150px;box-shadow:var(--shadow)}.note h4{margin:0 0 7px}.note p{white-space:pre-wrap;color:#687386;margin:0;font-size:13px}.note-footer{display:flex;justify-content:space-between;margin-top:15px}
+.subject{min-height:160px}.subject-top{display:flex;align-items:center;justify-content:space-between}.subject-icon{width:45px;height:45px;border-radius:14px;background:#eef0ff;display:grid;place-items:center;font-size:22px}
+.chart{height:210px;display:flex;align-items:end;gap:8px;padding:15px 5px 0;border-bottom:1px solid var(--line)}.bar{flex:1;min-width:10px;border-radius:7px 7px 0 0;background:linear-gradient(#6366f1,#8b5cf6);position:relative}.bar span{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted)}
+.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;border-bottom:1px solid var(--line);padding:11px 8px}.table th{font-size:11px;color:var(--muted)}
+.switch{width:43px;height:24px;border-radius:99px;background:#d7dce5;padding:3px;border:0}.switch i{display:block;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}.switch.on{background:var(--primary)}.switch.on i{transform:translateX(19px)}
+.toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;padding:12px 16px;border-radius:13px;box-shadow:var(--shadow2);transform:translateY(100px);opacity:0;transition:.25s;z-index:100}.toast.show{transform:translateY(0);opacity:1}
+.modal{position:fixed;inset:0;background:#11182766;backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:90}.modal.open{display:flex}.modal-box{background:#fff;width:min(650px,100%);max-height:90vh;overflow:auto;border-radius:22px;padding:22px;box-shadow:var(--shadow2)}.modal-head{display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:5px}
+.onboarding{position:fixed;inset:0;background:#0b1020;display:none;place-items:center;padding:20px;z-index:200}.onboarding.show{display:grid}.onboard-box{width:min(720px,100%);background:#fff;border-radius:28px;padding:35px;box-shadow:0 30px 100px #0008}.onboard-logo{width:70px;height:70px;border-radius:22px;background:linear-gradient(135deg,#6366f1,#a855f7);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:900;margin-bottom:20px}.onboard-box h1{font-size:34px;margin:0 0 8px}.onboard-box p{color:var(--muted)}.onboard-progress{display:flex;gap:5px;margin:20px 0}.onboard-progress i{height:4px;flex:1;background:#e7eaf0;border-radius:4px}.onboard-progress i.active{background:var(--primary)}
+.badge{font-size:10px;padding:4px 7px;border-radius:7px;background:#f0fdf4;color:#15803d;font-weight:800}
+@media(max-width:1150px){.stats{grid-template-columns:repeat(3,1fr)}.app{grid-template-columns:225px 1fr}.three{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.app{display:block}.sidebar{position:fixed;left:-280px;width:260px;transition:.25s}.sidebar.open{left:0}.mobile-only{display:grid}.topbar{padding:0 14px}.container{padding:15px}.hero-content{display:block}.hero-actions{margin-top:18px}.stats,.two,.three,.four{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,1fr)}.calendar{gap:3px}.day{min-height:70px;padding:5px}.mini-task{display:none}.timer-circle{width:240px;height:240px}.top-actions .hide-mobile{display:none}.form-row{grid-template-columns:1fr}}
+@media(max-width:450px){.stats{grid-template-columns:1fr 1fr}.stat strong{font-size:22px}.stat-icon{width:37px;height:37px}.hero h1{font-size:25px}.quick-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">✦</div><div><div class="brand-title">Study Flow</div><div class="brand-sub">YOUR DAILY COMMAND CENTER</div></div></div>
+  <nav class="nav">
+    <button class="active" data-view="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+    <button data-view="today"><span class="nav-icon">☀</span>My Day</button>
+    <button data-view="tasks"><span class="nav-icon">✓</span>All Tasks</button>
+    <button data-view="calendar"><span class="nav-icon">▦</span>Calendar</button>
+    <button data-view="focus"><span class="nav-icon">◷</span>Focus Room</button>
+    <button data-view="subjects"><span class="nav-icon">▤</span>Subjects</button>
+    <button data-view="habits"><span class="nav-icon">♨</span>Habits</button>
+    <button data-view="notes"><span class="nav-icon">✎</span>Notes</button>
+    <button data-view="goals"><span class="nav-icon">◇</span>Goals</button>
+    <button data-view="analytics"><span class="nav-icon">▥</span>Analytics</button>
+    <button data-view="settings"><span class="nav-icon">⚙</span>Settings</button>
+  </nav>
+  <div class="side-spacer"></div>
+  <div class="sidebar-footer">
+    <div class="side-mini"><div class="avatar" id="sideAvatar">S</div><div style="min-width:0"><b id="sideName">Student</b><div style="font-size:10px;color:#9ca3af">Keep going!</div></div></div>
+    <button class="btn" id="sideExport">⇩ Backup data</button>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="top-left"><button class="btn icon mobile-only" id="menuBtn">☰</button><div><div class="page-title" id="pageTitle">Dashboard</div><div class="date-label" id="dateLabel"></div></div></div>
+  <div class="top-actions"><span class="badge hide-mobile" id="saveBadge">● Saved locally</span><button class="btn primary" id="quickAdd">＋ Add task</button></div>
+</header>
+
+<div class="container">
+<!-- DASHBOARD -->
+<section class="view active" id="dashboard">
+  <div class="hero"><div class="hero-content"><div><h1 id="heroTitle">Good evening 👋</h1><p id="heroSub">Ready to make today productive?</p></div><div class="hero-actions"><button class="btn primary" id="heroAdd">＋ Add task</button><button class="btn" id="heroFocus">◷ Start focus</button></div></div></div>
+  <div class="grid stats">
+    <div class="card stat"><div><small>Tasks today</small><strong id="dTasks">0</strong></div><div class="stat-icon">✓</div></div>
+    <div class="card stat"><div><small>Completed</small><strong id="dDone">0</strong></div><div class="stat-icon">✓</div></div>
+    <div class="card stat"><div><small>Focus minutes</small><strong id="dFocus">0</strong></div><div class="stat-icon">◷</div></div>
+    <div class="card stat"><div><small>Habits done</small><strong id="dHabits">0</strong></div><div class="stat-icon">♨</div></div>
+    <div class="card stat"><div><small>Streak</small><strong id="dStreak">0</strong></div><div class="stat-icon">🔥</div></div>
+  </div>
+  <div class="grid two">
+    <div class="card"><div class="section-head"><div><h3>Today's schedule</h3><p>Your next actions at a glance.</p></div><button class="btn small" data-go="today">Open My Day</button></div><div id="dashTasks"></div></div>
+    <div class="card"><div class="section-head"><div><h3>Daily progress</h3><p id="progressText">0 tasks completed</p></div><span class="pill" id="progressPct">0%</span></div><div class="progress"><i id="progressFill" style="width:0%"></i></div><hr class="divider"><div class="section-head"><h3>Quick actions</h3></div><div class="quick-grid">
+      <button class="quick" data-action="task">＋ New task</button><button class="quick" data-action="habit">♨ New habit</button><button class="quick" data-action="note">✎ Quick note</button><button class="quick" data-action="focus">◷ Focus timer</button>
+    </div></div>
+  </div>
+  <div class="grid two" style="margin-top:16px">
+    <div class="card"><div class="section-head"><h3>Today's timeline</h3><span class="muted">By time</span></div><div id="timeline"></div></div>
+    <div class="card"><div class="section-head"><h3>Habit streaks</h3><button class="btn small" data-go="habits">Manage</button></div><div id="dashHabits"></div></div>
+  </div>
+</section>
+
+<!-- MY DAY -->
+<section class="view" id="today">
+  <div class="section-head"><div><h2>My Day</h2><p>Everything you need for today.</p></div><button class="btn primary" id="dayAdd">＋ Add task</button></div>
+  <div class="grid two">
+    <div class="card"><div class="section-head"><h3>Plan</h3><select class="select" style="width:auto" id="daySort"><option value="time">By time</option><option value="priority">By priority</option><option value="created">Recently added</option></select></div><div id="dayTasks"></div></div>
+    <div class="card"><h3>Day checklist</h3><div class="form" style="margin-top:14px"><label class="label">Today's intention</label><textarea class="textarea" id="intention" placeholder="What would make today a great study day?"></textarea><button class="btn primary" id="saveIntention">Save intention</button></div><hr class="divider"><div class="section-head"><h3>Focus target</h3><b id="goalLabel">60 min</b></div><div class="progress"><i id="goalFill" style="width:0%"></i></div><p class="muted">Reach your daily focus goal.</p></div>
+  </div>
+</section>
+
+<!-- TASKS -->
+<section class="view" id="tasks">
+  <div class="section-head"><div><h2>All Tasks</h2><p>Capture everything. Finish what matters.</p></div><button class="btn primary" id="tasksAdd">＋ New task</button></div>
+  <div class="card"><div class="form-row"><input class="input" id="searchTasks" placeholder="⌕ Search tasks, subjects or tags..."><select class="select" id="filterTasks"><option value="all">All tasks</option><option value="open">Open</option><option value="done">Completed</option><option value="high">High priority</option><option value="today">Today</option><option value="overdue">Overdue</option></select></div><div id="allTaskList" style="margin-top:10px"></div></div>
+</section>
+
+<!-- CALENDAR -->
+<section class="view" id="calendar">
+  <div class="section-head"><div><h2>Calendar</h2><p>See your workload before it surprises you.</p></div><div><button class="btn small" id="calPrev">←</button> <button class="btn small" id="calToday">Today</button> <button class="btn small" id="calNext">→</button></div></div>
+  <div class="card"><div class="section-head"><h3 id="calMonth"></h3><span class="muted">Click any task to edit it</span></div><div class="calendar" id="calendarGrid"></div></div>
+</section>
+
+<!-- FOCUS -->
+<section class="view" id="focus">
+  <div class="section-head"><div><h2>Focus Room</h2><p>One timer. One task. No noise.</p></div><button class="btn" id="focusResetAll">Reset timer</button></div>
+  <div class="grid two">
+    <div class="card">
+      <div class="timer-wrap"><div class="timer-circle" id="timerCircle"><div class="timer-inside"><div class="timer-number" id="timerText">25:00</div><div class="timer-mode" id="timerMode">Focus session</div></div></div>
+      <div class="timer-controls"><button class="btn" id="timerReset">Reset</button><button class="btn primary" id="timerStart">Start focus</button></div>
+      <div style="display:flex;gap:6px;justify-content:center;margin-top:10px"><button class="btn small preset" data-min="25">25 min</button><button class="btn small preset" data-min="45">45 min</button><button class="btn small preset" data-min="60">60 min</button><button class="btn small preset" data-min="5">5 min break</button></div></div></div>
+    <div class="card"><div class="section-head"><h3>Focus queue</h3><button class="btn small" id="focusAddTask">＋ Add</button></div><div id="focusQueue"></div><hr class="divider"><div class="section-head"><h3>Today's focus</h3><strong id="focusToday">0 min</strong></div><div class="progress"><i id="focusGoalBar" style="width:0%"></i></div><p class="muted">Goal: <span id="focusGoalText">60</span> minutes.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><div class="section-head"><h3>Session history</h3><span class="muted">Saved automatically</span></div><div id="sessionHistory"></div></div>
+</section>
+
+<!-- SUBJECTS -->
+<section class="view" id="subjects">
+  <div class="section-head"><div><h2>Subjects</h2><p>Turn a pile of work into clear areas.</p></div><button class="btn primary" id="subjectAdd">＋ Add subject</button></div>
+  <div class="grid three" id="subjectGrid"></div>
+</section>
+
+<!-- HABITS -->
+<section class="view" id="habits">
+  <div class="section-head"><div><h2>Habits</h2><p>Small actions repeated become your routine.</p></div><button class="btn primary" id="habitAdd">＋ Add habit</button></div>
+  <div class="grid two"><div class="card"><div class="section-head"><h3>Daily routine</h3><span class="pill" id="habitRate">0%</span></div><div id="habitList"></div></div><div class="card"><h3>Consistency</h3><div class="stat" style="margin:25px 0"><strong id="habitStreak">0</strong><span class="muted">day streak</span></div><div class="progress"><i id="habitProgress" style="width:0%"></i></div><p class="muted">Check today's habits. Your history stays on this device.</p></div></div>
+</section>
+
+<!-- NOTES -->
+<section class="view" id="notes">
+  <div class="section-head"><div><h2>Notes</h2><p>Ideas, revision points, reminders — all in one place.</p></div><button class="btn primary" id="noteAdd">＋ New note</button></div>
+  <div class="grid three" id="noteGrid"></div>
+</section>
+
+<!-- GOALS -->
+<section class="view" id="goals">
+  <div class="section-head"><div><h2>Goals</h2><p>Give your semester a direction.</p></div><button class="btn primary" id="goalAdd">＋ Add goal</button></div>
+  <div class="grid three" id="goalGrid"></div>
+</section>
+
+<!-- ANALYTICS -->
+<section class="view" id="analytics">
+  <div class="section-head"><div><h2>Analytics</h2><p>Your private study dashboard.</p></div><button class="btn" id="analyticsExport">Export report</button></div>
+  <div class="grid stats"><div class="card stat"><div><small>Completion</small><strong id="aCompletion">0%</strong></div><div class="stat-icon">✓</div></div><div class="card stat"><div><small>Tasks</small><strong id="aTasks">0</strong></div><div class="stat-icon">☷</div></div><div class="card stat"><div><small>Focus sessions</small><strong id="aSessions">0</strong></div><div class="stat-icon">◷</div></div><div class="card stat"><div><small>Focus minutes</small><strong id="aMinutes">0</strong></div><div class="stat-icon">⌁</div></div><div class="card stat"><div><small>Notes</small><strong id="aNotes">0</strong></div><div class="stat-icon">✎</div></div></div>
+  <div class="grid two"><div class="card"><div class="section-head"><h3>Focus this week</h3><span class="muted">minutes</span></div><div class="chart" id="focusChart"></div></div><div class="card"><h3>Summary</h3><table class="table" id="summaryTable"></table></div></div>
+</section>
+
+<!-- SETTINGS -->
+<section class="view" id="settings">
+  <div class="section-head"><div><h2>Settings</h2><p>Make Study Flow yours.</p></div></div>
+  <div class="grid two">
+    <div class="card form"><h3>Profile & goals</h3><label><span class="label">Name</span><input class="input" id="setName" placeholder="Student"></label><label><span class="label">Daily focus goal</span><input class="input" id="setGoal" type="number" min="5" step="5"></label><label><span class="label">Default task duration</span><input class="input" id="setDuration" type="number" min="5" step="5"></label><button class="btn primary" id="saveSettings">Save changes</button></div>
+    <div class="card"><h3>Preferences</h3><div class="task"><span style="flex:1"><b>Celebration sounds</b><small class="muted" style="display:block">Small sound when a focus session ends.</small></span><button class="switch" id="soundSwitch"><i></i></button></div><div class="task"><span style="flex:1"><b>Compact task list</b><small class="muted" style="display:block">Fit more tasks on screen.</small></span><button class="switch" id="compactSwitch"><i></i></button></div><hr class="divider"><h3>Data</h3><p class="muted">Your planner data is stored locally in this browser. Export a backup before clearing it.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="settingsExport">⇩ Export JSON</button><button class="btn" id="settingsImport">⇧ Import JSON</button><button class="btn danger" id="settingsClear">Delete all data</button></div></div>
+  </div>
+</section>
+</div>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><div class="modal-head"><h3 id="modalTitle">Add</h3><button class="btn icon" id="modalClose">×</button></div><div id="modalBody" style="margin-top:17px"></div></div></div>
+<div class="toast" id="toast"></div>
+<div class="onboarding" id="onboarding"><div class="onboard-box"><div class="onboard-logo">✦</div><div class="onboard-progress"><i class="active" id="op1"></i><i id="op2"></i><i id="op3"></i></div><div id="onboardContent"></div></div></div>
+
+<script>
+"use strict";
+/* STUDY FLOW — single-file local-first planner */
+const STORAGE="study-flow-pro-v2";
+const base={
+ version:2,name:"Student",goal:60,defaultDuration:30,sound:true,compact:false,intention:"",
+ tasks:[],subjects:[],habits:[],notes:[],goals:[],sessions:[],focusTotal:0
+};
+const makeId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,9);
+const iso=()=>new Date().toISOString().slice(0,10);
+const dateObj=s=>new Date(s+"T12:00:00");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let state=load();
+function load(){
+ try{return Object.assign({},base,JSON.parse(localStorage.getItem(STORAGE)||"{}"))}
+ catch{return structuredClone(base)}
+}
+function persist(){localStorage.setItem(STORAGE,JSON.stringify(state));document.getElementById("saveBadge").textContent="● Saved locally";renderAll()}
+function toast(msg){let x=document.getElementById("toast");x.textContent=msg;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2200)}
+function isToday(d){return d===iso()}
+function daysAgo(n){let d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)}
+function fmtLong(d=new Date()){return new Intl.DateTimeFormat(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(d)}
+function openModal(title,body){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").innerHTML=body;document.getElementById("modal").classList.add("open")}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+document.getElementById("modalClose").onclick=closeModal;
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")closeModal()};
+
+function showView(v){
+ document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+ document.getElementById(v).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.view===v));
+ document.getElementById("pageTitle").textContent=v==="today"?"My Day":v.charAt(0).toUpperCase()+v.slice(1);
+ document.getElementById("sidebar").classList.remove("open");
+ renderAll();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>showView(b.dataset.go));
+document.getElementById("menuBtn").onclick=()=>document.getElementById("sidebar").classList.toggle("open");
+document.getElementById("dateLabel").textContent=fmtLong();
+
+function taskModal(task=null){
+ const t=task||{title:"",date:iso(),time:state.defaultDuration,priority:"Normal",subject:"",tags:"",notes:""};
+ openModal(task?"Edit task":"Create a task",`<div class="form">
+ <label><span class="label">Task name</span><input class="input" id="mTitle" autofocus value="${esc(t.title)}" placeholder="e.g. Finish chemistry chapter"></label>
+ <div class="form-row"><label><span class="label">Date</span><input class="input" id="mDate" type="date" value="${esc(t.date)}"></label><label><span class="label">Time estimate</span><input class="input" id="mTime" type="number" min="0" value="${t.time||0}"></label></div>
+ <div class="form-row"><label><span class="label">Priority</span><select class="select" id="mPriority"><option ${t.priority==="Low"?"selected":""}>Low</option><option ${t.priority==="Normal"?"selected":""}>Normal</option><option ${t.priority==="High"?"selected":""}>High</option></select></label><label><span class="label">Subject</span><select class="select" id="mSubject"><option value="">No subject</option>${state.subjects.map(s=>`<option ${s.name===t.subject?"selected":""}>${esc(s.name)}</option>`).join("")}</select></label></div>
+ <label><span class="label">Tags</span><input class="input" id="mTags" value="${esc(t.tags||"")}" placeholder="exam, revision, homework"></label>
+ <label><span class="label">Notes</span><textarea class="textarea" id="mNotes" rows="4" placeholder="Optional details...">${esc(t.notes||"")}</textarea></label>
+ <div class="modal-actions"><button class="btn" id="mCancel">Cancel</button><button class="btn primary" id="mSave">${task?"Save task":"Add task"}</button></div></div>`);
+ document.getElementById("mCancel").onclick=closeModal;
+ document.getElementById("mSave").onclick=()=>{
+   let title=document.getElementById("mTitle").value.trim();if(!title)return toast("Give the task a name.");
+   let data={title,date:document.getElementById("mDate").value||iso(),time:+document.getElementById("mTime").value||0,priority:document.getElementById("mPriority").value,subject:document.getElementById("mSubject").value,tags:document.getElementById("mTags").value.trim(),notes:document.getElementById("mNotes").value.trim()};
+   if(task)Object.assign(task,data);else state.tasks.push({id:makeId(),...data,done:false,created:Date.now()});
+   closeModal();persist();toast(task?"Task updated ✓":"Task added ✓");
+ };
+}
+function addTask(){taskModal()}
+document.getElementById("quickAdd").onclick=addTask;document.getElementById("heroAdd").onclick=addTask;document.getElementById("dayAdd").onclick=addTask;document.getElementById("tasksAdd").onclick=addTask;
+
+function toggleTask(id){let t=state.tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;if(t.done){toast("Task completed ✓");maybeCelebrate()}else toast("Task reopened");persist()}
+function deleteTask(id){if(!confirm("Delete this task?"))return;state.tasks=state.tasks.filter(t=>t.id!==id);persist();toast("Task deleted")}
+function taskHTML(t){
+ return `<div class="task"><button class="task-check ${t.done?"done":""}" data-toggle="${t.id}">${t.done?"✓":""}</button><div class="task-main" data-edit="${t.id}" style="cursor:pointer"><div class="task-title ${t.done?"done":""}">${esc(t.title)}</div><div class="task-meta">${esc(t.date||"No date")} ${t.time?`• ${t.time} min`:""} ${t.subject?`• ${esc(t.subject)}`:""} ${t.tags?`• ${esc(t.tags)}`:""}</div></div><span class="pill ${t.priority==="High"?"high":t.priority==="Low"?"low":""}">${esc(t.priority)}</span><button class="btn small danger" data-delete="${t.id}">Delete</button></div>`
+}
+function bindTasks(root=document){
+ root.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=()=>toggleTask(b.dataset.toggle));
+ root.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>deleteTask(b.dataset.delete));
+ root.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>{let t=state.tasks.find(x=>x.id===b.dataset.edit);if(t)taskModal(t)});
+}
+function renderDashboard(){
+ let ts=state.tasks.filter(t=>isToday(t.date)),done=ts.filter(t=>t.done).length,p=ts.length?Math.round(done/ts.length*100):0;
+ let hDone=state.habits.filter(h=>(h.days||[]).includes(iso())).length;
+ document.getElementById("dTasks").textContent=ts.length;document.getElementById("dDone").textContent=done;document.getElementById("dFocus").textContent=state.focusTotal||0;document.getElementById("dHabits").textContent=hDone;document.getElementById("dStreak").textContent=calcStreak();
+ let hour=new Date().getHours(),g=hour<12?"Good morning":hour<18?"Good afternoon":"Good evening";document.getElementById("heroTitle").textContent=`${g}, ${state.name||"Student"} 👋`;
+ document.getElementById("heroSub").textContent=p===100&&ts.length?"Perfect day — everything is done!":"Ready to make today productive?";
+ document.getElementById("progressPct").textContent=p+"%";document.getElementById("progressFill").style.width=p+"%";document.getElementById("progressText").textContent=`${done} of ${ts.length} tasks completed`;
+ let box=document.getElementById("dashTasks");box.innerHTML=ts.length?ts.slice().sort(sortTime).slice(0,6).map(taskHTML).join(""):`<div class="empty">Your day is clear. Add a task and start building it.</div>`;bindTasks(box);
+ let hb=document.getElementById("dashHabits");hb.innerHTML=state.habits.slice(0,5).map(h=>`<div class="task"><button class="task-check ${h.days?.includes(iso())?"done":""}" data-habit="${h.id}">${h.days?.includes(iso())?"✓":""}</button><div class="task-main"><div class="task-title">${esc(h.name)}</div><div class="task-meta">${habitCount(h)} completions</div></div></div>`).join("")||`<div class="empty">No habits yet.</div>`;
+ hb.querySelectorAll("[data-habit]").forEach(b=>b.onclick=()=>toggleHabit(b.dataset.habit));
+ renderTimeline();
+}
+function sortTime(a,b){return (a.timeAt||"99:99").localeCompare(b.timeAt||"99:99")||a.created-b.created}
+function renderTimeline(){
+ let ts=state.tasks.filter(t=>isToday(t.date)&&t.timeAt).sort(sortTime),root=document.getElementById("timeline");
+ if(!ts.length){root.innerHTML=`<div class="empty">Add times to tasks to create a beautiful timeline.</div>`;return}
+ root.innerHTML=ts.map(t=>`<div class="timeline"><div class="time-slot">${esc(t.timeAt)}</div><div class="timeline-item"><b>${esc(t.title)}</b><div class="task-meta">${t.time||0} min • ${esc(t.subject||"General")}</div></div></div>`).join("")
+}
+function renderToday(){
+ let arr=state.tasks.filter(t=>isToday(t.date)),sort=document.getElementById("daySort").value;
+ if(sort==="priority")arr.sort((a,b)=>({High:0,Normal:1,Low:2}[a.priority]-({High:0,Normal:1,Low:2}[b.priority])));
+ else if(sort==="created")arr.sort((a,b)=>b.created-a.created);else arr.sort(sortTime);
+ let root=document.getElementById("dayTasks");root.innerHTML=arr.length?arr.map(taskHTML).join(""):`<div class="empty">Nothing planned for today. Add your first task.</div>`;bindTasks(root);
+ document.getElementById("intention").value=state.intention||"";
+ let mins=state.sessions.filter(s=>s.date===iso()).reduce((a,s)=>a+s.minutes,0),pct=Math.min(100,Math.round(mins/state.goal*100));document.getElementById("goalLabel").textContent=`${state.goal} min`;document.getElementById("goalFill").style.width=pct+"%";
+}
+document.getElementById("daySort").onchange=renderToday;document.getElementById("saveIntention").onclick=()=>{state.intention=document.getElementById("intention").value;persist();toast("Intention saved")};
+
+function renderAllTasks(){
+ let q=(document.getElementById("searchTasks").value||"").toLowerCase(),f=document.getElementById("filterTasks").value,now=iso();
+ let arr=state.tasks.filter(t=>(t.title+" "+t.subject+" "+(t.tags||"")).toLowerCase().includes(q));
+ if(f==="open")arr=arr.filter(t=>!t.done);if(f==="done")arr=arr.filter(t=>t.done);if(f==="high")arr=arr.filter(t=>t.priority==="High");if(f==="today")arr=arr.filter(t=>t.date===now);if(f==="overdue")arr=arr.filter(t=>!t.done&&t.date<now);
+ arr.sort((a,b)=>a.done-b.done||a.date.localeCompare(b.date));let root=document.getElementById("allTaskList");root.innerHTML=arr.length?arr.map(taskHTML).join(""):`<div class="empty">No matching tasks.</div>`;bindTasks(root)
+}
+document.getElementById("searchTasks").oninput=renderAllTasks;document.getElementById("filterTasks").onchange=renderAllTasks;
+
+let calDate=new Date();
+function renderCalendar(){
+ let y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);document.getElementById("calMonth").textContent=first.toLocaleString(undefined,{month:"long",year:"numeric"});
+ let h=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<div class="cal-head">${x}</div>`).join("");
+ for(let i=0;i<first.getDay();i++)h+="<div></div>";
+ for(let d=1;d<=last.getDate();d++){let date=new Date(y,m,d).toISOString().slice(0,10),ts=state.tasks.filter(t=>t.date===date);h+=`<div class="day ${date===iso()?"today":""}"><div class="daynum">${d}</div>${ts.slice(0,4).map(t=>`<div class="mini-task ${t.done?"done":""}" data-cal-edit="${t.id}" title="${esc(t.title)}">${esc(t.title)}</div>`).join("")}${ts.length>4?`<small class="muted">+${ts.length-4} more</small>`:""}</div>`}
+ document.getElementById("calendarGrid").innerHTML=h;document.querySelectorAll("[data-cal-edit]").forEach(x=>x.onclick=()=>taskModal(state.tasks.find(t=>t.id===x.dataset.calEdit)))
+}
+document.getElementById("calPrev").onclick=()=>{calDate.setMonth(calDate.getMonth()-1);renderCalendar()};document.getElementById("calNext").onclick=()=>{calDate.setMonth(calDate.getMonth()+1);renderCalendar()};document.getElementById("calToday").onclick=()=>{calDate=new Date();renderCalendar()};
+
+let timer=1500,timerTotal=1500,running=false,handle=null,timerStarted=0;
+function drawTimer(){let min=Math.floor(timer/60),sec=timer%60;document.getElementById("timerText").textContent=`${String(min).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;let pct=timerTotal?timer/timerTotal:0;document.getElementById("timerCircle").style.background=`conic-gradient(var(--primary) ${pct*360}deg,#e9ecf3 ${pct*360}deg)`}
+function setTimer(min){clearInterval(handle);running=false;timerTotal=timer=min*60;document.getElementById("timerStart").textContent="Start focus";document.getElementById("timerMode").textContent=min<=10?"Short break":"Focus session";drawTimer()}
+function finishTimer(){
+ let mins=Math.max(1,Math.round(timerTotal/60));state.focusTotal+=mins;state.sessions.push({id:makeId(),date:iso(),minutes:mins,created:Date.now()});persist();toast(`${mins} focus minutes logged 🎉`);setTimer(5);if(state.sound)beep()
+}
+document.getElementById("timerStart").onclick=()=>{if(running){running=false;clearInterval(handle);document.getElementById("timerStart").textContent="Resume";return}running=true;timerStarted=Date.now();document.getElementById("timerStart").textContent="Pause";handle=setInterval(()=>{timer--;drawTimer();if(timer<=0){clearInterval(handle);running=false;finishTimer()}},1000)};
+document.getElementById("timerReset").onclick=()=>setTimer(Math.round(timerTotal/60)||25);document.getElementById("focusResetAll").onclick=()=>setTimer(25);
+document.querySelectorAll(".preset").forEach(b=>b.onclick=()=>setTimer(+b.dataset.min));
+document.getElementById("heroFocus").onclick=()=>showView("focus");document.getElementById("focusAddTask").onclick=addTask;
+function renderFocus(){
+ let todayM=state.sessions.filter(s=>s.date===iso()).reduce((a,s)=>a+s.minutes,0),pct=Math.min(100,Math.round(todayM/state.goal*100));document.getElementById("focusToday").textContent=todayM+" min";document.getElementById("focusGoalText").textContent=state.goal;document.getElementById("focusGoalBar").style.width=pct+"%";
+ let q=state.tasks.filter(t=>isToday(t.date)&&!t.done).slice(0,6),root=document.getElementById("focusQueue");root.innerHTML=q.length?q.map(t=>taskHTML(t)).join(""):`<div class="empty">Your focus queue is empty.</div>`;bindTasks(root);
+ document.getElementById("sessionHistory").innerHTML=state.sessions.length?state.sessions.slice().reverse().slice(0,12).map(s=>`<div class="task"><span>◷</span><div class="task-main"><b>${s.minutes} minute session</b><div class="task-meta">${s.date}</div></div><span class="pill">${s.date===iso()?"Today":"Logged"}</span></div>`).join(""):`<div class="empty">Complete your first focus session to see it here.</div>`
+}
+function beep(){try{let c=new AudioContext(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=660;g.gain.value=.06;o.start();o.stop(c.currentTime+.18)}catch{}}
+
+document.getElementById("subjectAdd").onclick=()=>simpleNameModal("New subject","Biology",n=>{state.subjects.push({id:makeId(),name:n});persist();toast("Subject created")});
+function renderSubjects(){let root=document.getElementById("subjectGrid");root.innerHTML=state.subjects.length?state.subjects.map(s=>{let ts=state.tasks.filter(t=>t.subject===s.name),done=ts.filter(t=>t.done).length,p=ts.length?Math.round(done/ts.length*100):0;return `<div class="card subject"><div class="subject-top"><div class="subject-icon">📚</div><button class="btn small danger" data-subdel="${s.id}">Delete</button></div><h3>${esc(s.name)}</h3><p class="muted">${ts.length} tasks • ${done} completed</p><div class="progress"><i style="width:${p}%"></i></div><small class="muted">${p}% complete</small></div>`}).join(""):`<div class="card empty">Create your first subject.</div>`;root.querySelectorAll("[data-subdel]").forEach(b=>b.onclick=()=>{if(confirm("Delete subject? Tasks will stay but lose this subject.")){state.subjects=state.subjects.filter(s=>s.id!==b.dataset.subdel);persist()}})}
+function simpleNameModal(title,placeholder,callback){openModal(title,`<div class="form"><label><span class="label">Name</span><input class="input" id="simpleName" autofocus placeholder="${placeholder}"></label><div class="modal-actions"><button class="btn" id="simpleCancel">Cancel</button><button class="btn primary" id="simpleSave">Create</button></div></div>`);document.getElementById("simpleCancel").onclick=closeModal;document.getElementById("simpleSave").onclick=()=>{let n=document.getElementById("simpleName").value.trim();if(!n)return toast("Enter a name");closeModal();callback(n)}}
+
+document.getElementById("habitAdd").onclick=()=>simpleNameModal("New habit","Review notes",n=>{state.habits.push({id:makeId(),name:n,days:[]});persist();toast("Habit added")});
+function habitCount(h){return (h.days||[]).length}
+function toggleHabit(id){let h=state.habits.find(x=>x.id===id);if(!h)return;h.days=h.days||[];h.days.includes(iso())?h.days=h.days.filter(x=>x!==iso()):h.days.push(iso());persist();toast(h.days.includes(iso())?"Habit completed ✓":"Habit unchecked")}
+function calcStreak(){let count=0;for(let i=0;i<365;i++){let d=daysAgo(i);if(state.habits.length&&state.habits.every(h=>(h.days||[]).includes(d)))count++;else break}return count}
+function renderHabits(){let root=document.getElementById("habitList");root.innerHTML=state.habits.length?state.habits.map(h=>`<div class="habit"><button class="task-check ${h.days?.includes(iso())?"done":""}" data-habit="${h.id}">${h.days?.includes(iso())?"✓":""}</button><div class="habit-name">${esc(h.name)}<div class="task-meta">${habitCount(h)} total check-ins</div></div><div class="day-dots">${["M","T","W","T","F","S","S"].map((d,i)=>{let dd=new Date();dd.setDate(dd.getDate()-(dd.getDay()+6-i)%7);let ds=dd.toISOString().slice(0,10);return `<span class="day-dot ${h.days?.includes(ds)?"on":""}">${d}</span>`}).join("")}</div><button class="btn small danger" data-hdel="${h.id}">×</button></div>`).join(""):`<div class="empty">No habits yet.</div>`;root.querySelectorAll("[data-habit]").forEach(b=>b.onclick=()=>toggleHabit(b.dataset.habit));root.querySelectorAll("[data-hdel]").forEach(b=>b.onclick=()=>{state.habits=state.habits.filter(h=>h.id!==b.dataset.hdel);persist()});let rate=state.habits.length?Math.round(state.habits.filter(h=>h.days?.includes(iso())).length/state.habits.length*100):0;document.getElementById("habitRate").textContent=rate+"%";document.getElementById("habitProgress").style.width=rate+"%";document.getElementById("habitStreak").textContent=calcStreak()}
+
+document.getElementById("noteAdd").onclick=()=>{openModal("New note",`<div class="form"><label><span class="label">Title</span><input class="input" id="noteTitle" autofocus placeholder="Revision notes"></label><label><span class="label">Content</span><textarea class="textarea" id="noteBody" rows="8" placeholder="Write anything..."></textarea></label><div class="modal-actions"><button class="btn" id="nc">Cancel</button><button class="btn primary" id="ns">Save note</button></div></div>`);document.getElementById("nc").onclick=closeModal;document.getElementById("ns").onclick=()=>{let title=document.getElementById("noteTitle").value.trim()||"Untitled note",body=document.getElementById("noteBody").value.trim();state.notes.push({id:makeId(),title,body,date:iso()});closeModal();persist();toast("Note saved ✓")}};
+function renderNotes(){let root=document.getElementById("noteGrid");root.innerHTML=state.notes.length?state.notes.slice().reverse().map(n=>`<div class="note"><div class="section-head"><h4>${esc(n.title)}</h4><button class="btn small danger" data-ndel="${n.id}">Delete</button></div><p>${esc(n.body)}</p><div class="note-footer"><small class="muted">${n.date}</small><button class="btn small" data-nedit="${n.id}">Edit</button></div></div>`).join(""):`<div class="card empty">No notes yet. Start with a quick revision note.`;root.querySelectorAll("[data-ndel]").forEach(b=>b.onclick=()=>{state.notes=state.notes.filter(n=>n.id!==b.dataset.ndel);persist()});root.querySelectorAll("[data-nedit]").forEach(b=>b.onclick=()=>editNote(state.notes.find(n=>n.id===b.dataset.nedit)))}
+function editNote(n){if(!n)return;openModal("Edit note",`<div class="form"><input class="input" id="enTitle" value="${esc(n.title)}"><textarea class="textarea" id="enBody" rows="9">${esc(n.body)}</textarea><div class="modal-actions"><button class="btn" id="enC">Cancel</button><button class="btn primary" id="enS">Save</button></div></div>`);document.getElementById("enC").onclick=closeModal;document.getElementById("enS").onclick=()=>{n.title=document.getElementById("enTitle").value.trim()||"Untitled";n.body=document.getElementById("enBody").value;closeModal();persist();toast("Note updated")}}
+
+document.getElementById("goalAdd").onclick=()=>{openModal("New goal",`<div class="form"><input class="input" id="goalName" autofocus placeholder="Score 90% in Mathematics"><div class="form-row"><input class="input" id="goalTarget" type="number" min="1" value="100" placeholder="Target"><input class="input" id="goalCurrent" type="number" min="0" value="0" placeholder="Current"></div><div class="modal-actions"><button class="btn" id="gc">Cancel</button><button class="btn primary" id="gs">Create goal</button></div></div>`);document.getElementById("gc").onclick=closeModal;document.getElementById("gs").onclick=()=>{let name=document.getElementById("goalName").value.trim();if(!name)return toast("Name your goal");state.goals.push({id:makeId(),name,target:+document.getElementById("goalTarget").value||100,current:+document.getElementById("goalCurrent").value||0});closeModal();persist();toast("Goal created")}};
+function renderGoals(){let root=document.getElementById("goalGrid");root.innerHTML=state.goals.length?state.goals.map(g=>{let p=Math.min(100,Math.round(g.current/g.target*100));return `<div class="card"><div class="section-head"><h3>◇ ${esc(g.name)}</h3><button class="btn small danger" data-gdel="${g.id}">Delete</button></div><div style="font-size:26px;font-weight:900">${p}%</div><div class="progress"><i style="width:${p}%"></i></div><p class="muted">${g.current} / ${g.target}</p><button class="btn small" data-gadd="${g.id}">＋ Update progress</button></div>`}).join(""):`<div class="card empty">No goals yet. Add one for your next milestone.</div>`;root.querySelectorAll("[data-gdel]").forEach(b=>b.onclick=()=>{state.goals=state.goals.filter(g=>g.id!==b.dataset.gdel);persist()});root.querySelectorAll("[data-gadd]").forEach(b=>b.onclick=()=>{let g=state.goals.find(x=>x.id===b.dataset.gadd);if(g){let n=prompt("New current value:",g.current);if(n!==null){g.current=Math.max(0,+n||0);persist()}}})}
+
+function renderAnalytics(){let total=state.tasks.length,done=state.tasks.filter(t=>t.done).length,rate=total?Math.round(done/total*100):0;document.getElementById("aCompletion").textContent=rate+"%";document.getElementById("aTasks").textContent=total;document.getElementById("aSessions").textContent=state.sessions.length;document.getElementById("aMinutes").textContent=state.focusTotal||0;document.getElementById("aNotes").textContent=state.notes.length;
+ let vals=[];for(let i=6;i>=0;i--){let d=daysAgo(i),v=state.sessions.filter(s=>s.date===d).reduce((a,s)=>a+s.minutes,0);vals.push({d,v})}let max=Math.max(30,...vals.map(x=>x.v));document.getElementById("focusChart").innerHTML=vals.map(x=>`<div class="bar" style="height:${Math.max(5,x.v/max*100)}%" title="${x.v} minutes"><span>${x.d.slice(5)}</span></div>`).join("");
+ document.getElementById("summaryTable").innerHTML=`<tr><th>Metric</th><th>Value</th></tr><tr><td>Completed tasks</td><td>${done}</td></tr><tr><td>Open tasks</td><td>${total-done}</td></tr><tr><td>Overdue</td><td>${state.tasks.filter(t=>!t.done&&t.date<iso()).length}</td></tr><tr><td>Goals</td><td>${state.goals.length}</td></tr><tr><td>Habits</td><td>${state.habits.length}</td></tr><tr><td>Subjects</td><td>${state.subjects.length}</td></tr>`}
+function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`study-flow-backup-${iso()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);toast("Backup downloaded")}
+document.getElementById("sideExport").onclick=exportData;document.getElementById("settingsExport").onclick=exportData;document.getElementById("analyticsExport").onclick=exportData;
+document.getElementById("settingsImport").onclick=()=>{let inp=document.createElement("input");inp.type="file";inp.accept=".json,application/json";inp.onchange=()=>{let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{state=Object.assign({},base,JSON.parse(r.result));persist();toast("Backup imported ✓")}catch{toast("Invalid backup file")}};r.readAsText(f)};inp.click()};
+document.getElementById("settingsClear").onclick=()=>{if(confirm("Delete EVERYTHING saved in Study Flow?")){localStorage.removeItem(STORAGE);location.reload()}};
+function renderSettings(){document.getElementById("setName").value=state.name||"";document.getElementById("setGoal").value=state.goal||60;document.getElementById("setDuration").value=state.defaultDuration||30;document.getElementById("soundSwitch").classList.toggle("on",state.sound);document.getElementById("compactSwitch").classList.toggle("on",state.compact)}
+document.getElementById("saveSettings").onclick=()=>{state.name=document.getElementById("setName").value.trim()||"Student";state.goal=Math.max(5,+document.getElementById("setGoal").value||60);state.defaultDuration=Math.max(5,+document.getElementById("setDuration").value||30);persist();toast("Settings saved ✓")};
+document.getElementById("soundSwitch").onclick=()=>{state.sound=!state.sound;persist()};document.getElementById("compactSwitch").onclick=()=>{state.compact=!state.compact;document.body.classList.toggle("compact",state.compact);persist()};
+
+function renderProfile(){document.getElementById("sideName").textContent=state.name||"Student";document.getElementById("sideAvatar").textContent=(state.name||"S")[0].toUpperCase()}
+function renderAll(){renderDashboard();renderToday();renderAllTasks();renderCalendar();renderFocus();renderSubjects();renderHabits();renderNotes();renderGoals();renderAnalytics();renderSettings();renderProfile()}
+document.querySelectorAll("[data-action]").forEach(b=>b.onclick=()=>{let a=b.dataset.action;if(a==="task")addTask();if(a==="habit")document.getElementById("habitAdd").click();if(a==="note")document.getElementById("noteAdd").click();if(a==="focus")showView("focus")});
+
+function maybeCelebrate(){if(state.sound)beep()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();if(["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName))return;if(e.key.toLowerCase()==="n")addTask();if(e.key==="/"){e.preventDefault();showView("tasks");setTimeout(()=>document.getElementById("searchTasks").focus(),80)}});
+function firstRun(){
+ if(localStorage.getItem(STORAGE))return;
+ document.getElementById("onboarding").classList.add("show");let step=1;
+ function renderStep(){document.getElementById("onboardContent").innerHTML=step===1?`<h1>Welcome to Study Flow.</h1><p>A clean, private command center for your study day. No account. No premium wall. Your data stays in this browser.</p><button class="btn primary" id="onNext">Let's set it up →</button>`:step===2?`<h1>What should we call you?</h1><p>This name appears on your dashboard.</p><input class="input" id="onName" value="Student" placeholder="Your name"><br><br><button class="btn primary" id="onNext">Continue →</button>`:`<h1>Set your focus goal.</h1><p>How many minutes would you like to focus each day?</p><div style="display:flex;gap:8px;align-items:center"><input class="input" id="onGoal" type="number" value="60" min="5" step="5"><b>minutes</b></div><br><button class="btn primary" id="onFinish">Enter Study Flow ✦</button>`;
+ document.querySelectorAll(".onboard-progress i").forEach((x,i)=>x.classList.toggle("active",i<step));if(step===2)document.getElementById("onName").focus();
+ if(document.getElementById("onNext"))document.getElementById("onNext").onclick=()=>{if(step===2)state.name=document.getElementById("onName").value.trim()||"Student";step++;renderStep()};
+ if(document.getElementById("onFinish"))document.getElementById("onFinish").onclick=()=>{state.goal=Math.max(5,+document.getElementById("onGoal").value||60);localStorage.setItem(STORAGE,JSON.stringify(state));document.getElementById("onboarding").classList.remove("show");renderAll();toast("Welcome to Study Flow ✦")};
+ }renderStep()
+}
+setTimer(25);renderAll();firstRun();
+</script>
+</body>
+</html>
