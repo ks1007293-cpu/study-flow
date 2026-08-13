@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Study Planner - Student LMS & Task Manager</title>
+
+    <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
+
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #F4F7FA;
+            --sidebar-bg: #FFFFFF;
+            --card-bg: #FFFFFF;
+            --primary: #0084FF;
+            --primary-dark: #0068D6;
+            --primary-light: #EBF5FF;
+            --primary-gradient: linear-gradient(135deg, #0084FF 0%, #0052D4 100%);
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --success: #10B981;
+        }
+
+        body.dark-mode {
+            --bg-main: #0F172A;
+            --sidebar-bg: #1E293B;
+            --card-bg: #1E293B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+
+        /* LANDING INTRO PAGE STYLES */
+        #landing-page-view {
+            background: #FFFFFF; min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: space-between; padding: 25px 20px; text-align: center;
+        }
+        .landing-header { display: flex; justify-content: space-between; align-items: center; }
+        .landing-logo { color: var(--primary); font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .btn-open-app-outline {
+            border: 2px solid var(--primary); color: var(--primary); background: transparent;
+            padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 14px; cursor: pointer;
+        }
+
+        .landing-hero-body { margin: auto 0; padding: 40px 10px; }
+        .landing-hero-body h1 { font-size: 34px; font-weight: 800; color: #0F172A; line-height: 1.2; margin-bottom: 15px; }
+        .landing-hero-body h1 span { color: var(--primary); }
+        .landing-hero-body p { font-size: 15px; color: var(--text-muted); max-width: 480px; margin: 0 auto 30px; line-height: 1.5; }
+
+        .btn-open-app-solid {
+            background: var(--primary); color: white; border: none; padding: 16px 36px;
+            border-radius: 30px; font-size: 16px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 132, 255, 0.35); display: inline-flex; align-items: center; gap: 10px;
+        }
+
+        /* ANIMATED SPLASH SCREEN */
+        #splash-screen-view {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #FFFFFF; z-index: 9999; justify-content: center; align-items: center;
+        }
+        .splash-title-text {
+            font-size: 28px; font-weight: 800; font-family: monospace; letter-spacing: 4px;
+            color: #0F172A; animation: pulseText 1.2s infinite alternate;
+        }
+        @keyframes pulseText { from { opacity: 0.4; letter-spacing: 2px; } to { opacity: 1; letter-spacing: 6px; } }
+
+        /* MAIN APP LAYOUT */
+        #app-main-view { display: none; min-height: 100vh; flex-direction: column; }
+
+        .app-header {
+            background: var(--sidebar-bg); border-bottom: 1px solid var(--border);
+            padding: 14px 20px; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 90;
+        }
+        .app-brand { display: flex; align-items: center; gap: 10px; color: var(--primary); text-decoration: none; font-weight: 800; font-size: 20px; }
+        .btn-hamburger { background: none; border: none; font-size: 22px; color: var(--text-main); cursor: pointer; }
+
+        /* DRAWER MENU */
+        .drawer-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 200;
+        }
+        .drawer-menu {
+            position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: var(--sidebar-bg);
+            z-index: 201; transition: right 0.3s ease; padding: 20px; display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .drawer-menu.open { right: 0; }
+
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .drawer-nav-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .drawer-nav-item {
+            padding: 12px 16px; border-radius: 12px; font-weight: 700; color: var(--text-main); font-size: 14px;
+            display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s ease;
+        }
+        .drawer-nav-item:hover, .drawer-nav-item.active { background: var(--primary-light); color: var(--primary); }
+        .drawer-submenu { padding-left: 20px; display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+
+        .btn-add-new {
+            background: var(--primary-gradient); color: white; border: none; padding: 14px; border-radius: 14px;
+            font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            gap: 8px; margin: 15px 0; box-shadow: 0 4px 14px rgba(0, 132, 255, 0.3);
+        }
+
+        .main-wrapper { padding: 20px; max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; }
+
+        .hero-banner-card {
+            background: var(--card-bg); border: 2px solid var(--primary-light); color: var(--text-main); border-radius: 24px; padding: 24px;
+            text-align: center; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0, 132, 255, 0.08);
+        }
+        
+        .circle-timer-wrap {
+            width: 160px; height: 160px; border-radius: 50%; border: 8px solid var(--primary-light);
+            background: white; color: var(--primary); margin: 16px auto; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .circle-timer-wrap span { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .circle-timer-wrap h1 { font-size: 36px; font-weight: 800; font-family: monospace; }
+
+        .timer-btn-group { display: flex; gap: 10px; justify-content: center; }
+        .btn-timer { padding: 8px 16px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; font-size: 13px; }
+        .btn-primary-blue { background: var(--primary); color: white; }
+        .btn-light-blue { background: var(--primary-light); color: var(--primary); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: var(--card-bg); border-radius: 18px; padding: 16px; border: 1px solid var(--border); }
+        .stat-card h4 { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+        .stat-card h2 { font-size: 24px; font-weight: 800; color: var(--primary); margin-top: 4px; }
+
+        .card { background: var(--card-bg); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .card-header { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        input, select, textarea { padding: 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 13px; outline: none; background: var(--card-bg); color: var(--text-main); }
+
+        .activity-card-item {
+            background: rgba(0,0,0,0.02); border: 1px solid var(--border); padding: 14px; border-radius: 14px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px;
+        }
+        .activity-card-item.completed { background: #D1FAE5; border-color: #10B981; text-decoration: line-through; opacity: 0.75; }
+        .activity-card-item.overdue { background: #FEE2E2; border-color: #EF4444; }
+
+        .badge-tag { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        .tag-current { background: #E0F2FE; color: #0369A1; }
+        .tag-past { background: #D1FAE5; color: #065F46; }
+        .tag-overdue { background: #FEE2E2; color: #991B1B; }
+
+        .btn-action-small { padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; font-size: 12px; }
+        .btn-done { background: #D1FAE5; color: #065F46; border: 1px solid #10B981; }
+        .btn-del { background: #FEE2E2; color: var(--danger); }
+
+        /* FILTER TABS BAR */
+        .filter-bar { display: flex; gap: 8px; margin-bottom: 15px; }
+        .filter-btn { padding: 8px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); font-size: 12px; font-weight: 700; cursor: pointer; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 999;
+            justify-content: center; align-items: center;
+        }
+        .modal-card { background: var(--card-bg); border-radius: 22px; padding: 24px; width: 440px; text-align: center; border: 1px solid var(--border); max-height: 90vh; overflow-y: auto; }
+
+        #toast-alert {
+            display: none; position: fixed; bottom: 20px; right: 20px; background: #10B981; color: white;
+            padding: 12px 20px; border-radius: 12px; font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast-alert">🎉 Alert</div>
+
+    <!-- 1. LANDING INTRO PAGE -->
+    <div id="landing-page-view">
+        <div class="landing-header">
+            <div class="landing-logo"><i class="fa-solid fa-graduation-cap"></i> MY STUDY PLANNER</div>
+            <button class="btn-open-app-outline" onclick="launchApp()">Open web app</button>
+        </div>
+
+        <div class="landing-hero-body">
+            <h1>The free student planner that keeps school life <span>organised.</span></h1>
+            <p>Classes, homework, exams, activities, and revision — planned in one place with your personal coach.</p>
+            <button class="btn-open-app-solid" onclick="launchApp()"><i class="fa-solid fa-globe"></i> Open the web app</button>
+        </div>
+
+        <div class="landing-cookie-bar">
+            <p>🍪 MY STUDY PLANNER respects your data privacy. Local storage session encrypted.</p>
+        </div>
+    </div>
+
+    <!-- 2. SPLASH TRANSITION -->
+    <div id="splash-screen-view">
+        <div class="splash-title-text">MY STUDY PLANNER</div>
+    </div>
+
+    <!-- 3. MAIN APP INTERFACE -->
+    <div id="app-main-view">
+        
+        <header class="app-header">
+            <a href="#" class="app-brand"><i class="fa-solid fa-graduation-cap"></i> MY STUDY PLANNER</a>
+            <button class="btn-hamburger" onclick="toggleDrawer()"><i class="fa-solid fa-bars"></i></button>
+        </header>
+
+        <!-- DRAWER MENU -->
+        <div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+        <div class="drawer-menu" id="drawer-menu">
+            <div class="drawer-header">
+                <span style="font-weight:800; font-size:14px;" id="menu-user-email">ks1007293@gmail.com</span>
+                <button class="btn-hamburger" onclick="toggleDrawer()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <button class="btn-add-new" onclick="openModal('add-new-modal')"><i class="fa-solid fa-plus"></i> Add New Activity</button>
+
+            <ul class="drawer-nav-list">
+                <li class="drawer-nav-item active" onclick="switchView('dashboard')"><i class="fa-solid fa-house"></i> Dashboard</li>
+                <li class="drawer-nav-item" onclick="switchView('profile')"><i class="fa-solid fa-user"></i> Profile & Marks Calculator</li>
+                <li class="drawer-nav-item" onclick="switchView('calendar')"><i class="fa-solid fa-calendar-days"></i> Calendar</li>
+                
+                <li class="drawer-nav-item" onclick="toggleSubmenu('activities-sub')">
+                    <i class="fa-solid fa-layer-group"></i> Activities <i class="fa-solid fa-chevron-down" style="margin-left:auto; font-size:11px;"></i>
+                </li>
+                <div class="drawer-submenu" id="activities-sub">
+                    <div class="drawer-nav-item" onclick="switchView('tasks')"><i class="fa-solid fa-check-to-slot"></i> Tasks</div>
+                    <div class="drawer-nav-item" onclick="switchView('exams')"><i class="fa-solid fa-file-pen"></i> Exams</div>
+                    <div class="drawer-nav-item" onclick="switchView('classes')"><i class="fa-solid fa-book-open"></i> Classes</div>
+                    <div class="drawer-nav-item" onclick="switchView('vacations')"><i class="fa-solid fa-umbrella-beach"></i> Vacations</div>
+                    <div class="drawer-nav-item" onclick="switchView('xtra')"><i class="fa-solid fa-bolt"></i> Xtra</div>
+                </div>
+
+                <li class="drawer-nav-item" onclick="switchView('focus-timer')"><i class="fa-solid fa-stopwatch"></i> Focus Timer</li>
+                <li class="drawer-nav-item" onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i> Dark Mode</li>
+                <li class="drawer-nav-item" onclick="openModal('admin-modal')" id="drawer-admin-btn" style="display:none; color:var(--primary);"><i class="fa-solid fa-shield-halved"></i> Owner Admin Panel</li>
+            </ul>
+        </div>
+
+        <div class="main-wrapper">
+
+            <!-- 1. DASHBOARD -->
+            <div id="view-dashboard" class="tab-panel active">
+                
+                <!-- DIRECT QUICK ADD TASK FORM ON DASHBOARD -->
+                <div class="card" style="border-color: var(--primary);">
+                    <div class="card-header" style="color: var(--primary);">➕ Quick Add Task / Exam / Class</div>
+                    <form id="dash-quick-form">
+                        <div class="input-group">
+                            <div style="display:flex; gap:10px;">
+                                <select id="dash-type" style="flex:1;" required>
+                                    <option value="task">Task</option>
+                                    <option value="exam">Exam</option>
+                                    <option value="class">Class</option>
+                                    <option value="vacation">Vacation</option>
+                                    <option value="xtra">Xtra Activity</option>
+                                </select>
+                                <input type="text" id="dash-title" placeholder="Title (e.g. Physics Ch-3)" style="flex:2;" required>
+                            </div>
+                            <input type="text" id="dash-details" placeholder="Topic / Description Details" required>
+                            <div style="display:flex; gap:10px;">
+                                <input type="date" id="dash-due-date" style="flex:1;" required>
+                                <input type="time" id="dash-start-time" style="flex:1;">
+                                <input type="time" id="dash-end-time" style="flex:1;">
+                            </div>
+                        </div>
+                        <button class="btn-add-new" style="width:100%; margin:0;">Save To Schedule</button>
+                    </form>
+                </div>
+
+                <div class="hero-banner-card">
+                    <p id="pomo-due-sub">0 items active today.</p>
+                    <h2>Good Day.</h2>
+
+                    <div class="circle-timer-wrap">
+                        <span>Focus</span>
+                        <h1 id="pomo-clock">25:00</h1>
+                    </div>
+
+                    <div class="timer-btn-group">
+                        <button class="btn-timer btn-primary-blue" onclick="startTimer()">Start Session</button>
+                        <button class="btn-timer btn-light-blue" onclick="pauseTimer()">Pause</button>
+                        <button class="btn-timer btn-light-blue" onclick="resetTimer()">Reset</button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4><i class="fa-regular fa-clock" style="color:var(--primary);"></i> Current Active</h4>
+                        <h2 id="dash-current-count">0</h2>
+                    </div>
+                    <div class="stat-card">
+                        <h4><i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);"></i> Overdue Items</h4>
+                        <h2 id="dash-overdue-count">0</h2>
+                    </div>
+                    <div class="stat-card">
+                        <h4><i class="fa-solid fa-check" style="color:var(--success);"></i> Completed</h4>
+                        <h2 id="dash-completed-count">0</h2>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">📋 Active Schedule & Pending List</div>
+                    <div id="dash-active-list"></div>
+                </div>
+            </div>
+
+            <!-- 2. PROFILE & MARKS CALCULATOR -->
+            <div id="view-profile" class="tab-panel">
+                <div class="card" style="text-align:center;">
+                    <div style="width:70px; height:70px; border-radius:50%; background:var(--primary-light); color:var(--primary); font-size:28px; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 10px;" id="profile-initial">K</div>
+                    <h3 id="profile-email-text">ks1007293@gmail.com</h3>
+                    <p style="font-size:12px; color:var(--success); font-weight:bold; margin-top:4px;">✔ Pre-Activated VIP Student Account</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">📊 Board Percentage / Marks Calculator</div>
+                    <div class="input-group">
+                        <input type="number" id="calc-obtained" placeholder="Obtained Marks (e.g. 450)">
+                        <input type="number" id="calc-total" placeholder="Total Marks (e.g. 500)">
+                        <button class="btn-timer btn-primary-blue" onclick="calcPercentage()">Calculate %</button>
+                    </div>
+                    <h3 id="calc-result" style="color:var(--primary); margin-top:10px;">Result: --%</h3>
+                </div>
+            </div>
+
+            <!-- 3. CALENDAR VIEW -->
+            <div id="view-calendar" class="tab-panel">
+                <div class="card">
+                    <div class="card-header">📅 Calendar View</div>
+                    <div id="calendar-grid-box" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; text-align:center; font-size:12px;"></div>
+                </div>
+            </div>
+
+            <!-- 4. TASKS VIEW -->
+            <div id="view-tasks" class="tab-panel">
+                <div class="card">
+                    <div class="card-header">📝 Homework Tasks Manager</div>
+                    <div class="filter-bar">
+                        <button class="filter-btn active" id="f-task-current" onclick="filterView('task', 'current')">Current</button>
+                        <button class="filter-btn" id="f-task-past" onclick="filterView('task', 'past')">Past / Completed</button>
+                        <button class="filter-btn" id="f-task-overdue" onclick="filterView('task', 'overdue')">Overdue</button>
+                    </div>
+                    <div id="render-tasks-container"></div>
+                </div>
+            </div>
+
+            <!-- 5. EXAMS VIEW -->
+            <div id="view-exams" class="tab-panel">
+                <div class="card">
+                    <div class="card-header">📑 Exam & Quiz Schedule</div>
+                    <div class="filter-bar">
+                        <button class="filter-btn active" id="f-exam-current" onclick="filterView('exam', 'current')">Current</button>
+                        <button class="filter-btn" id="f-exam-past" onclick="filterView('exam', 'past')">Past / Completed</button>
+                    </div>
+                    <div id="render-exams-container"></div>
+                </div>
+            </div>
+
+            <!-- 6. CLASSES VIEW -->
+            <div id="view-classes" class="tab-panel">
+                <div class="card">
+                    <div class="card-header">📚 Classes & Lectures</div>
+                    <div class="filter-bar">
+                        <button class="filter-btn active" id="f-class-current" onclick="filterView('class', 'current')">Current</button>
+                        <button class="filter-btn" id="f-class-past" onclick="filterView('class', 'past')">Past / Completed</button>
+                    </div>
+                    <div id="render-classes-container"></div>
+                </div>
+            </div>
+
+            <!-- 7. VACATIONS VIEW -->
+            <div id="view-vacations" class="tab-panel">
+                <div class="card">
+                    <div class="card-header">⚡ Vacations Planner</div>
+                    <div id="render-vacations-container"></div>
+                </div>
+            </div>
+
+            <!-- 8. XTRA VIEW -->
+            <div id="view-xtra" class="tab-panel">
+                <div class="card">
+                    <div class="card-header">⚡ Extra Academic Activities</div>
+                    <div id="render-xtra-container"></div>
+                </div>
+            </div>
+
+            <!-- 9. FOCUS TIMER VIEW -->
+            <div id="view-focus-timer" class="tab-panel">
+                <div class="card" style="text-align:center;">
+                    <div class="card-header">⏱️ Full Screen Pomodoro Focus Timer</div>
+                    <h1 id="full-pomo-clock" style="font-size:56px; font-family:monospace; margin:20px 0;">25:00</h1>
+                    <div style="display:flex; gap:10px; justify-content:center;">
+                        <button class="btn-action-small btn-done" onclick="startTimer()">Start</button>
+                        <button class="btn-action-small" style="background:var(--warning); color:white;" onclick="pauseTimer()">Pause</button>
+                        <button class="btn-action-small btn-del" onclick="resetTimer()">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL POPUP FOR MENU "ADD NEW" -->
+    <div class="modal-overlay" id="add-new-modal">
+        <div class="modal-card">
+            <h3>Add New Activity</h3>
+            <form id="global-add-form" style="margin-top:15px;">
+                <div class="input-group">
+                    <select id="modal-activity-type" required>
+                        <option value="task">Task</option>
+                        <option value="exam">Exam</option>
+                        <option value="class">Class</option>
+                        <option value="vacation">Vacation</option>
+                        <option value="xtra">Xtra Activity</option>
+                    </select>
+
+                    <input type="text" id="modal-title" placeholder="Title (e.g. Physics Ch-3 PYQ)" required>
+                    <input type="text" id="modal-details" placeholder="Details / Description" required>
+                    <input type="date" id="modal-due-date" required>
+                    
+                    <div style="display:flex; gap:10px;">
+                        <input type="time" id="modal-start-time" style="flex:1;">
+                        <input type="time" id="modal-end-time" style="flex:1;">
+                    </div>
+                </div>
+                <button class="btn-add-new" style="width:100%; margin-top:10px;">Save Activity</button>
+            </form>
+            <button style="background:none; border:none; color:var(--text-muted); cursor:pointer; margin-top:8px;" onclick="closeModal('add-new-modal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- OWNER ADMIN PANEL -->
+    <div class="modal-overlay" id="admin-modal">
+        <div class="modal-card">
+            <h3 style="color:var(--primary);">👑 Owner Control Panel</h3>
+            <div style="background:#F8FAFC; padding:15px; border-radius:14px; text-align:left; margin:15px 0; border:1px solid var(--border);">
+                <p style="font-size:12px;"><strong>Authorized Owner Email:</strong> ks1007293@gmail.com</p>
+                <p style="font-size:12px; color:var(--success); font-weight:bold; margin-top:4px;">✔ VIP Pass Unlocked & Permanent Active</p>
+            </div>
+            <button class="btn-add-new" style="width:100%;" onclick="closeModal('admin-modal')">Close Panel</button>
+        </div>
+    </div>
+
+    <script>
+        const OWNER_EMAILS = ["ks1007293@gmail.com", "globalharmonypro9052@gmail.com"];
+
+        function launchApp() {
+            document.getElementById('landing-page-view').style.display = 'none';
+            const splash = document.getElementById('splash-screen-view');
+            splash.style.display = 'flex';
+
+            setTimeout(() => {
+                splash.style.display = 'none';
+                document.getElementById('app-main-view').style.display = 'flex';
+                showToast("Welcome to MY STUDY PLANNER!");
+            }, 1000);
+        }
+
+        function toggleDrawer() {
+            document.getElementById('drawer-menu').classList.toggle('open');
+            const overlay = document.getElementById('drawer-overlay');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleSubmenu(id) {
+            const sub = document.getElementById(id);
+            sub.style.display = sub.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.drawer-nav-item').forEach(i => i.classList.remove('active'));
+            const target = document.getElementById(`view-${viewId}`);
+            if (target) target.classList.add('active');
+            toggleDrawer();
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast-alert');
+            t.innerText = msg; t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 4000);
+        }
+
+        let currentUserEmail = localStorage.getItem('study_user_email') || 'ks1007293@gmail.com';
+        function checkPermissions() {
+            document.getElementById('menu-user-email').innerText = currentUserEmail;
+            document.getElementById('profile-email-text').innerText = currentUserEmail;
+            document.getElementById('profile-initial').innerText = currentUserEmail.charAt(0).toUpperCase();
+
+            const isOwner = OWNER_EMAILS.some(e => e.toLowerCase() === currentUserEmail.trim().toLowerCase());
+            document.getElementById('drawer-admin-btn').style.display = isOwner ? 'flex' : 'none';
+        }
+        checkPermissions();
+
+        /* TIMER LOGIC */
+        let pomoTime = 25 * 60, timerInt = null;
+        function updatePomoDisp() {
+            const m = String(Math.floor(pomoTime / 60)).padStart(2, '0');
+            const s = String(pomoTime % 60).padStart(2, '0');
+            document.getElementById('pomo-clock').innerText = `${m}:${s}`;
+            document.getElementById('full-pomo-clock').innerText = `${m}:${s}`;
+        }
+
+        function startTimer() {
+            if (timerInt) return;
+            timerInt = setInterval(() => {
+                if (pomoTime > 0) { pomoTime--; updatePomoDisp(); }
+                else { clearInterval(timerInt); showToast("⏰ Focus Session Complete!"); resetTimer(); }
+            }, 1000);
+        }
+        function pauseTimer() { clearInterval(timerInt); timerInt = null; }
+        function resetTimer() { pauseTimer(); pomoTime = 25 * 60; updatePomoDisp(); }
+
+        function calcPercentage() {
+            const obt = parseFloat(document.getElementById('calc-obtained').value);
+            const tot = parseFloat(document.getElementById('calc-total').value);
+            if (obt && tot) {
+                const res = ((obt / tot) * 100).toFixed(2);
+                document.getElementById('calc-result').innerText = `Result: ${res}%`;
+            }
+        }
+
+        /* DIRECT QUICK ADD FORM ON DASHBOARD */
+        document.getElementById('dash-quick-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveActivityItem({
+                type: document.getElementById('dash-type').value,
+                title: document.getElementById('dash-title').value,
+                details: document.getElementById('dash-details').value,
+                dueDate: document.getElementById('dash-due-date').value,
+                startTime: document.getElementById('dash-start-time').value,
+                endTime: document.getElementById('dash-end-time').value
+            });
+            e.target.reset();
+        });
+
+        /* MODAL ADD FORM */
+        document.getElementById('global-add-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveActivityItem({
+                type: document.getElementById('modal-activity-type').value,
+                title: document.getElementById('modal-title').value,
+                details: document.getElementById('modal-details').value,
+                dueDate: document.getElementById('modal-due-date').value,
+                startTime: document.getElementById('modal-start-time').value,
+                endTime: document.getElementById('modal-end-time').value
+            });
+            e.target.reset();
+            closeModal('add-new-modal');
+        });
+
+        /* CENTRAL STORAGE SAVE ENGINE */
+        function saveActivityItem(data) {
+            let storage = JSON.parse(localStorage.getItem('all_planner_activities') || '[]');
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            storage.push({
+                id: Date.now(),
+                type: data.type,
+                title: data.title,
+                details: data.details,
+                dueDate: data.dueDate,
+                startTime: data.startTime || '',
+                endTime: data.endTime || '',
+                status: data.dueDate < todayStr ? 'overdue' : 'current'
+            });
+
+            localStorage.setItem('all_planner_activities', JSON.stringify(storage));
+            renderAllData();
+            showToast("Saved Successfully!");
+        }
+
+        /* DYNAMIC FILTER SYSTEM (CURRENT, PAST, OVERDUE) */
+        let activeFilters = { task: 'current', exam: 'current', class: 'current' };
+
+        function filterView(category, filterType) {
+            activeFilters[category] = filterType;
+            document.querySelectorAll(`[id^="f-${category}-"]`).forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById(`f-${category}-${filterType}`);
+            if(activeBtn) activeBtn.classList.add('active');
+            renderAllData();
+        }
+
+        function renderAllData() {
+            let storage = JSON.parse(localStorage.getItem('all_planner_activities') || '[]');
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            const containers = {
+                dash: document.getElementById('dash-active-list'),
+                task: document.getElementById('render-tasks-container'),
+                exam: document.getElementById('render-exams-container'),
+                class: document.getElementById('render-classes-container'),
+                vacation: document.getElementById('render-vacations-container'),
+                xtra: document.getElementById('render-xtra-container')
+            };
+
+            Object.values(containers).forEach(c => { if(c) c.innerHTML = ''; });
+
+            let currentCount = 0, overdueCount = 0, completedCount = 0;
+
+            if(storage.length === 0) {
+                if(containers.dash) containers.dash.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">No activities added yet. Use the form above to add your first task!</p>`;
+            }
+
+            storage.forEach(item => {
+                let state = item.status;
+                if(state !== 'completed') {
+                    if (item.dueDate < todayStr) state = 'overdue';
+                    else state = 'current';
+                }
+
+                if (state === 'current') currentCount++;
+                if (state === 'overdue') overdueCount++;
+                if (state === 'completed') completedCount++;
+
+                const tagClass = state === 'current' ? 'tag-current' : (state === 'overdue' ? 'tag-overdue' : 'tag-past');
+
+                const itemHTML = `
+                    <div class="activity-card-item ${state}">
+                        <div>
+                            <strong style="color:var(--primary); font-size:14px;">${item.title}</strong> 
+                            <span class="badge-tag ${tagClass}">${state}</span>
+                            <span style="font-size:10px; font-weight:bold; color:var(--text-muted); text-transform:uppercase;">[${item.type}]</span><br>
+                            <small style="color:var(--text-muted);">${item.details} | Due: ${item.dueDate} ${item.startTime ? '| ⏰ ' + item.startTime + '-' + item.endTime : ''}</small>
+                        </div>
+                        <div>
+                            ${state !== 'completed' ? `<button class="btn-action-small btn-done" onclick="markDone(${item.id})">✓ Done</button>` : ''}
+                            <button class="btn-action-small btn-del" onclick="deleteItem(${item.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+
+                // Render in Dashboard if current or overdue
+                if ((state === 'current' || state === 'overdue') && containers.dash) {
+                    containers.dash.innerHTML += itemHTML;
+                }
+
+                // Render in category tab
+                if (containers[item.type]) {
+                    const currentFilter = activeFilters[item.type] || 'current';
+                    if(currentFilter === 'current' && state === 'current') containers[item.type].innerHTML += itemHTML;
+                    else if(currentFilter === 'overdue' && state === 'overdue') containers[item.type].innerHTML += itemHTML;
+                    else if(currentFilter === 'past' && (state === 'completed' || item.dueDate < todayStr)) containers[item.type].innerHTML += itemHTML;
+                    else if(item.type === 'vacation' || item.type === 'xtra') containers[item.type].innerHTML += itemHTML;
+                }
+            });
+
+            document.getElementById('dash-current-count').innerText = currentCount;
+            document.getElementById('dash-overdue-count').innerText = overdueCount;
+            document.getElementById('dash-completed-count').innerText = completedCount;
+            document.getElementById('pomo-due-sub').innerText = `${currentCount + overdueCount} items active today.`;
+        }
+
+        function markDone(id) {
+            let storage = JSON.parse(localStorage.getItem('all_planner_activities') || '[]');
+            storage = storage.map(i => {
+                if (i.id === id) i.status = 'completed';
+                return i;
+            });
+            localStorage.setItem('all_planner_activities', JSON.stringify(storage));
+            renderAllData();
+            showToast("Marked Completed!");
+        }
+
+        function deleteItem(id) {
+            let storage = JSON.parse(localStorage.getItem('all_planner_activities') || '[]').filter(i => i.id !== id);
+            localStorage.setItem('all_planner_activities', JSON.stringify(storage));
+            renderAllData();
+            showToast("Deleted!");
+        }
+
+        renderAllData();
+
+        /* CALENDAR */
+        function renderCalendar() {
+            const box = document.getElementById('calendar-grid-box');
+            if(!box) return;
+            box.innerHTML = '';
+            for (let i = 1; i <= 31; i++) {
+                box.innerHTML += `<div style="padding:10px; background:rgba(0,0,0,0.02); border-radius:8px;">${i}</div>`;
+            }
+        }
+        renderCalendar();
+    </script>
+</body>
+</html>

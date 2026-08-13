@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function own(uid) { return signedIn() && request.auth.uid == uid; }
+    match /users/{uid} {
+      allow create: if own(uid);
+      allow read: if own(uid);
+      allow update: if own(uid) &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['displayName','photoURL','timezone','preferences','onboardingComplete','updatedAt']);
+      allow delete: if false;
+    }
+    match /users/{uid}/planner/{docId} {
+      allow read, write: if own(uid);
+    }
+    match /auditLogs/{id} { allow read, write: if false; }
+  }
+}
