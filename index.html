@@ -2,657 +2,798 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Study Flow — Plan. Study. Achieve.</title>
 
-<title>Study Flow – Smart Study Planner</title>
-
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="Study Flow is a smart study planner for tasks, classes, exams, goals, revision and daily schedules.">
+<meta name="description" content="Study Flow is a smart student planner for timetable, tasks, exams, revision, goals and student community.">
 <meta name="robots" content="index,follow">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#7657ff">
+<meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo">
 
-<meta name="google-site-verification"
-content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo">
-
-<meta property="og:title" content="Study Flow – Smart Study Planner">
-<meta property="og:description" content="Plan your studies, tasks, exams, goals and revision with Study Flow.">
-<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
 :root{
-  --bg:#080d19;
-  --panel:#101827;
-  --panel2:#151f32;
-  --border:rgba(255,255,255,.09);
-  --text:#f5f7fb;
-  --muted:#9aa6b8;
-  --primary:#6d5dfc;
-  --primary2:#8b7fff;
-  --green:#20d995;
-  --red:#ff5d73;
-  --yellow:#ffc857;
-  --blue:#42a5ff;
-  --shadow:0 20px 60px rgba(0,0,0,.28);
+ --bg:#070812;
+ --bg2:#0c0e1a;
+ --card:#111423;
+ --card2:#15182a;
+ --line:#24283b;
+ --text:#f8f9ff;
+ --muted:#8991a8;
+ --purple:#7657ff;
+ --purple2:#9c83ff;
+ --blue:#35a9ff;
+ --green:#24d69c;
+ --red:#ff5e78;
+ --yellow:#ffc857;
+ --pink:#ff67b5;
+ --shadow:0 25px 80px #0008;
+ --radius:24px;
 }
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 15% 10%,rgba(109,93,252,.18),transparent 30%),
-    radial-gradient(circle at 90% 20%,rgba(66,165,255,.12),transparent 28%),
-    var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ font-family:Inter,system-ui,sans-serif;
+ background:
+ radial-gradient(circle at 15% 0%,#7657ff18,transparent 28%),
+ radial-gradient(circle at 90% 20%,#35a9ff0d,transparent 30%),
+ var(--bg);
+ color:var(--text);
+ min-height:100vh;
 }
-
-button,input,select,textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:active{transform:scale(.97)}
+.hidden{display:none!important}
 
 /* INTRO */
-
 #intro{
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#050812;
-  overflow:hidden;
+ position:fixed;
+ inset:0;
+ z-index:99999;
+ background:#05060c;
+ display:grid;
+ place-items:center;
+ overflow:hidden;
 }
-
-.intro-box{
-  text-align:center;
-  animation:introIn 1s ease forwards;
+.intro-bg{
+ position:absolute;
+ inset:-30%;
+ background:
+ radial-gradient(circle,#7657ff33 0,transparent 27%),
+ radial-gradient(circle at 70% 40%,#35a9ff22,transparent 25%);
+ filter:blur(30px);
+ animation:floatbg 5s ease-in-out infinite alternate;
 }
-
-.intro-logo{
-  width:100px;
-  height:100px;
-  border-radius:28px;
-  margin:auto;
-  display:grid;
-  place-items:center;
-  font-size:46px;
-  background:linear-gradient(135deg,#6d5dfc,#42a5ff);
-  box-shadow:0 0 70px rgba(109,93,252,.65);
+.intro-content{
+ position:relative;
+ text-align:center;
+ animation:introin 1s cubic-bezier(.2,.8,.2,1);
 }
-
+.logo-big{
+ width:115px;
+ height:115px;
+ border-radius:36px;
+ display:grid;
+ place-items:center;
+ margin:auto;
+ font-size:38px;
+ font-weight:900;
+ background:linear-gradient(135deg,#7657ff,#35a9ff);
+ box-shadow:0 0 90px #7657ff80;
+}
 .intro-title{
-  margin-top:22px;
-  font-size:54px;
-  font-weight:900;
-  letter-spacing:-3px;
-  background:linear-gradient(90deg,#fff,#6d5dfc,#42a5ff,#fff);
-  background-size:300%;
-  -webkit-background-clip:text;
-  color:transparent;
-  animation:colorFlow 2.5s linear infinite;
+ margin-top:24px;
+ font-size:clamp(50px,9vw,90px);
+ line-height:1;
+ font-weight:900;
+ letter-spacing:-5px;
+ background:linear-gradient(90deg,#fff,#9c83ff,#35a9ff,#fff);
+ background-size:300%;
+ color:transparent;
+ -webkit-background-clip:text;
+ animation:flowcolor 2.5s linear infinite;
 }
-
-.intro-sub{
-  color:#aeb9ca;
-  margin-top:10px;
+.intro-tag{
+ color:#929ab2;
+ margin-top:13px;
 }
-
-.intro-flash{
-  position:absolute;
-  inset:0;
-  background:white;
-  opacity:0;
-  pointer-events:none;
-  animation:flash 3.4s ease forwards;
+.intro-btn{
+ margin-top:30px;
+ padding:14px 23px;
+ border:0;
+ border-radius:15px;
+ color:#fff;
+ font-weight:800;
+ background:linear-gradient(135deg,#7657ff,#9b78ff);
+ box-shadow:0 12px 35px #7657ff55;
 }
-
-@keyframes introIn{
-  from{opacity:0;transform:scale(.7)}
-  to{opacity:1;transform:scale(1)}
+.flash{
+ position:absolute;
+ inset:0;
+ background:#fff;
+ opacity:0;
+ pointer-events:none;
 }
-
-@keyframes colorFlow{
-  0%{background-position:0%}
-  100%{background-position:300%}
+#intro.launch .flash{animation:flash .7s ease}
+@keyframes introin{
+ from{opacity:0;transform:scale(.7)}
+ to{opacity:1;transform:scale(1)}
 }
-
+@keyframes flowcolor{to{background-position:300%}}
+@keyframes floatbg{to{transform:translate(4%,3%) scale(1.1)}}
 @keyframes flash{
-  0%,75%{opacity:0}
-  84%{opacity:1}
-  91%{opacity:0}
-  100%{opacity:0}
+ 0%{opacity:0}
+ 40%{opacity:1}
+ 100%{opacity:0}
 }
 
 /* APP */
-
-.app{
-  min-height:100vh;
-}
-
-.topbar{
-  height:74px;
-  border-bottom:1px solid var(--border);
-  background:rgba(8,13,25,.82);
-  backdrop-filter:blur(18px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 25px;
-  position:sticky;
-  top:0;
-  z-index:100;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:900;
-  font-size:21px;
-}
-
-.brand-icon{
-  width:40px;
-  height:40px;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:linear-gradient(135deg,var(--primary),var(--blue));
-}
-
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.user{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:7px 12px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:rgba(255,255,255,.035);
-}
-
-.user img{
-  width:30px;
-  height:30px;
-  border-radius:50%;
-}
-
-.layout{
-  display:grid;
-  grid-template-columns:245px 1fr;
-  min-height:calc(100vh - 74px);
-}
-
+.app{display:flex;min-height:100vh}
 .sidebar{
-  border-right:1px solid var(--border);
-  padding:20px 14px;
-  background:rgba(8,13,25,.6);
+ width:275px;
+ position:fixed;
+ left:0;
+ top:0;
+ bottom:0;
+ z-index:50;
+ padding:22px 15px;
+ background:#090b14eF;
+ backdrop-filter:blur(25px);
+ border-right:1px solid var(--line);
 }
-
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:3px 9px 27px;
+}
+.logo-small{
+ width:43px;
+ height:43px;
+ border-radius:14px;
+ display:grid;
+ place-items:center;
+ font-weight:900;
+ background:linear-gradient(135deg,#7657ff,#35a9ff);
+ box-shadow:0 7px 30px #7657ff40;
+}
+.brand-title{font-weight:900}
+.brand-sub{font-size:10px;color:var(--muted);margin-top:3px}
 .nav-title{
-  font-size:11px;
-  color:#68758a;
-  font-weight:800;
-  margin:20px 10px 8px;
-  text-transform:uppercase;
-  letter-spacing:1px;
+ font-size:10px;
+ color:#656e85;
+ text-transform:uppercase;
+ letter-spacing:1.5px;
+ font-weight:800;
+ padding:13px 10px 7px;
 }
-
-.nav-btn{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#aeb9ca;
-  padding:12px 13px;
-  border-radius:12px;
-  text-align:left;
-  margin-bottom:4px;
+.nav{
+ width:100%;
+ border:1px solid transparent;
+ background:transparent;
+ color:#9da5bb;
+ padding:12px 13px;
+ border-radius:14px;
+ display:flex;
+ align-items:center;
+ gap:12px;
+ margin:2px 0;
+ text-align:left;
+ font-weight:700;
+ transition:.2s;
 }
-
-.nav-btn:hover,
-.nav-btn.active{
-  background:rgba(109,93,252,.15);
-  color:#fff;
+.nav:hover{
+ color:#fff;
+ background:#ffffff07;
 }
-
-main{
-  padding:26px;
-  max-width:1500px;
-  width:100%;
-  margin:auto;
+.nav.active{
+ color:#fff;
+ background:linear-gradient(90deg,#7657ff22,#7657ff08);
+ border-color:#7657ff22;
+ box-shadow:inset 3px 0 #7657ff;
 }
-
-.page{
-  display:none;
+.nav-icon{width:21px;text-align:center}
+.sidebar-bottom{
+ position:absolute;
+ left:15px;
+ right:15px;
+ bottom:17px;
 }
-
-.page.active{
-  display:block;
+.main{
+ margin-left:275px;
+ width:calc(100% - 275px);
+ min-width:0;
 }
-
-.hero{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:20px;
-  margin-bottom:24px;
+.topbar{
+ height:80px;
+ position:sticky;
+ top:0;
+ z-index:30;
+ padding:0 30px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ background:#080a13dd;
+ backdrop-filter:blur(22px);
+ border-bottom:1px solid var(--line);
 }
-
-.hero h1{
-  font-size:32px;
-  letter-spacing:-1px;
+.top-date small{color:var(--muted);font-size:10px}
+.top-date b{display:block;margin-top:4px;font-size:14px}
+.top-right{display:flex;align-items:center;gap:9px}
+.clock{
+ padding:9px 12px;
+ border-radius:12px;
+ background:#ffffff06;
+ border:1px solid var(--line);
+ font-weight:800;
+ font-size:12px;
 }
-
-.hero p{
-  color:var(--muted);
-  margin-top:6px;
-}
-
 .btn{
-  border:1px solid var(--border);
-  color:#fff;
-  background:#172238;
-  padding:11px 16px;
-  border-radius:12px;
-  transition:.2s;
+ border:1px solid var(--line);
+ background:#121625;
+ color:#e9ebf5;
+ padding:10px 14px;
+ border-radius:12px;
+ font-weight:700;
+ transition:.2s;
 }
-
-.btn:hover{
-  transform:translateY(-1px);
-  border-color:rgba(255,255,255,.18);
-}
-
+.btn:hover{border-color:#7657ff66;transform:translateY(-1px)}
 .btn.primary{
-  border:0;
-  background:linear-gradient(135deg,var(--primary),var(--primary2));
+ border:0;
+ background:linear-gradient(135deg,#7657ff,#9a78ff);
+ color:#fff;
+ box-shadow:0 9px 30px #7657ff33;
+}
+.btn.green{color:#32e0a6;border-color:#24d69c33;background:#24d69c0d}
+.btn.red{color:#ff7489;border-color:#ff5e7830}
+.content{
+ max-width:1550px;
+ margin:auto;
+ padding:30px;
+}
+.page{display:none}
+.page.active{display:block;animation:pagein .25s ease}
+@keyframes pagein{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:none}
 }
 
-.btn.green{
-  border:0;
-  background:linear-gradient(135deg,#12b981,#20d995);
+/* HERO */
+.hero{
+ padding:30px;
+ border-radius:28px;
+ border:1px solid #292d43;
+ background:
+ radial-gradient(circle at 90% 0%,#7657ff2d,transparent 35%),
+ linear-gradient(135deg,#15182a,#0f1320);
+ box-shadow:var(--shadow);
+ margin-bottom:20px;
 }
-
-.btn.danger{
-  border:0;
-  background:linear-gradient(135deg,#e94360,#ff5d73);
+.hero-row{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:20px;
 }
-
-.grid{
-  display:grid;
-  gap:16px;
+.eyebrow{
+ color:#a797ff;
+ text-transform:uppercase;
+ letter-spacing:1.5px;
+ font-size:10px;
+ font-weight:900;
 }
-
-.stats{
-  grid-template-columns:repeat(4,1fr);
+.hero h1{
+ font-size:clamp(28px,4vw,45px);
+ letter-spacing:-2.5px;
+ margin-top:5px;
 }
-
+.hero p{color:var(--muted);margin-top:9px}
 .card{
-  background:linear-gradient(145deg,rgba(21,31,50,.95),rgba(12,19,32,.95));
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:19px;
-  box-shadow:var(--shadow);
+ background:linear-gradient(145deg,#111423,#0d111d);
+ border:1px solid var(--line);
+ border-radius:21px;
+ padding:20px;
+ box-shadow:0 12px 45px #0003;
 }
-
-.stat-label{
-  color:var(--muted);
-  font-size:13px;
+.grid2{
+ display:grid;
+ grid-template-columns:1.35fr .75fr;
+ gap:20px;
 }
-
-.stat-value{
-  font-size:30px;
-  font-weight:900;
-  margin-top:6px;
+.stats{
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:13px;
+ margin-bottom:20px;
 }
-
-.stat.red .stat-value{color:var(--red)}
-.stat.green .stat-value{color:var(--green)}
-.stat.blue .stat-value{color:var(--blue)}
-.stat.yellow .stat-value{color:var(--yellow)}
-
-.section{
-  margin-top:20px;
+.stat{
+ min-height:120px;
 }
-
-.section-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:12px;
+.stat small{color:var(--muted);font-weight:700}
+.stat strong{
+ display:block;
+ margin-top:8px;
+ font-size:31px;
 }
-
-.section-head h2{
-  font-size:19px;
+.s-blue{border-top:3px solid var(--blue)}
+.s-green{border-top:3px solid var(--green)}
+.s-red{border-top:3px solid var(--red)}
+.s-yellow{border-top:3px solid var(--yellow)}
+.s-purple{border-top:3px solid var(--purple)}
+.card-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ margin-bottom:14px;
 }
+.card-head h3{font-size:15px}
+.muted{font-size:11px;color:var(--muted)}
 
-/* TASKS */
-
-.task-list{
-  display:grid;
-  gap:10px;
-}
-
+/* TASK */
 .task{
-  display:grid;
-  grid-template-columns:6px 1fr auto;
-  gap:14px;
-  align-items:center;
-  padding:14px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.025);
-  border-radius:14px;
+ display:flex;
+ gap:12px;
+ align-items:center;
+ padding:14px 4px;
+ border-bottom:1px solid #ffffff09;
 }
-
-.task-bar{
-  width:6px;
-  height:50px;
-  border-radius:10px;
-  background:var(--primary);
+.task:last-child{border-bottom:0}
+.task-line{
+ width:4px;
+ min-height:48px;
+ border-radius:10px;
 }
-
-.task.overdue .task-bar{
-  background:var(--red);
-}
-
-.task.live .task-bar{
-  background:var(--green);
-  box-shadow:0 0 15px var(--green);
-}
-
-.task.completed{
-  opacity:.55;
-}
-
+.task-main{flex:1;min-width:0}
 .task-title{
-  font-weight:800;
+ font-weight:800;
+ word-break:break-word;
 }
-
 .task-meta{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:5px;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:5px;
 }
-
+.task-actions{display:flex;gap:5px}
 .badge{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:5px 9px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:800;
-  margin-left:6px;
+ display:inline-flex;
+ padding:4px 7px;
+ border-radius:7px;
+ font-size:8px;
+ font-weight:900;
+ margin-left:5px;
+}
+.live{color:#38e4aa;background:#24d69c14}
+.overdue{color:#ff7489;background:#ff5e7815}
+.done{color:#54b8ff;background:#35a9ff15}
+.upcoming{color:#ad98ff;background:#7657ff15}
+
+/* QUICK */
+.quick-grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:10px;
+}
+.quick{
+ border:1px solid var(--line);
+ border-radius:16px;
+ padding:15px;
+ background:#ffffff03;
+ cursor:pointer;
+}
+.quick:hover{border-color:#7657ff55}
+.quick-icon{font-size:22px}
+.quick b{display:block;margin-top:8px;font-size:12px}
+.quick span{display:block;color:var(--muted);font-size:9px;margin-top:4px}
+
+/* SMART */
+.smart{
+ padding:13px;
+ margin:7px 0;
+ border-radius:13px;
+ background:#7657ff0e;
+ border:1px solid #7657ff22;
+ color:#d2caff;
+ font-size:11px;
 }
 
-.badge.red{
-  color:#ff8a9a;
-  background:rgba(255,93,115,.12);
+/* PROGRESS */
+.ring{
+ width:105px;
+ height:105px;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ background:conic-gradient(#7657ff var(--p),#ffffff0b 0);
+ position:relative;
 }
+.ring:after{
+ content:"";
+ position:absolute;
+ inset:9px;
+ border-radius:50%;
+ background:#111423;
+}
+.ring span{position:relative;z-index:2;font-weight:900}
 
-.badge.green{
-  color:#58efb5;
-  background:rgba(32,217,149,.12);
-}
-
-.badge.blue{
-  color:#7fc5ff;
-  background:rgba(66,165,255,.12);
-}
-
-.task-actions{
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
+/* TABLE */
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{text-align:left;padding:13px;border-bottom:1px solid #ffffff09}
+th{color:#788198;font-size:10px;text-transform:uppercase}
+td{font-size:12px}
 
 /* CALENDAR */
-
-.calendar{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:7px;
+.calendar-wrap{overflow:auto}
+.calendar{min-width:900px}
+.cal-top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-bottom:18px;
 }
-
-.day-name{
-  color:#758196;
-  font-size:12px;
-  padding:8px;
-  text-align:center;
+.cal-title{font-size:22px;font-weight:900}
+.cal-grid{
+ display:grid;
+ grid-template-columns:repeat(7,1fr);
+ gap:5px;
 }
-
+.cal-name{
+ padding:9px;
+ text-align:center;
+ color:#717a90;
+ font-size:10px;
+ font-weight:900;
+}
 .day{
-  min-height:125px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.025);
-  border-radius:12px;
-  padding:8px;
+ min-height:125px;
+ padding:9px;
+ border:1px solid #202638;
+ border-radius:14px;
+ background:#0f1320;
+ cursor:pointer;
+ transition:.15s;
 }
-
-.day.today{
-  border-color:var(--primary);
-  box-shadow:inset 0 0 0 1px rgba(109,93,252,.3);
-}
-
-.day-number{
-  font-size:12px;
-  color:#9aa6b8;
-  margin-bottom:6px;
-}
-
-.calendar-task{
-  padding:5px 7px;
-  border-radius:7px;
-  background:rgba(109,93,252,.18);
-  font-size:11px;
-  margin-bottom:4px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* FORMS */
-
-.form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.field.full{
-  grid-column:1/-1;
-}
-
-.field label{
-  color:#9aa6b8;
-  font-size:12px;
-}
-
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  background:#0b1322;
-  border:1px solid var(--border);
-  color:#fff;
-  border-radius:11px;
-  padding:11px;
-  outline:none;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-  border-color:var(--primary);
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.72);
-  backdrop-filter:blur(8px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
-  padding:20px;
-}
-
-.modal.show{
-  display:flex;
-}
-
-.modal-box{
-  width:min(650px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:#101827;
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:22px;
-}
-
-.modal-head{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:18px;
+.day:hover{border-color:#7657ff66}
+.day.today{box-shadow:inset 0 0 0 2px #7657ff}
+.day.other{opacity:.3}
+.daynum{font-size:11px;font-weight:900}
+.event{
+ margin-top:7px;
+ padding:5px 6px;
+ border-radius:7px;
+ border-left:3px solid #7657ff;
+ background:#7657ff14;
+ font-size:8px;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
 }
 
 /* SUBJECTS */
-
+.subject-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:13px;
+}
 .subject{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:13px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  margin-bottom:9px;
+ padding:20px;
+ border:1px solid var(--line);
+ border-radius:20px;
+ background:#101421;
+ transition:.2s;
+}
+.subject:hover{
+ transform:translateY(-3px);
+ border-color:#7657ff55;
+}
+.subject-dot{
+ display:inline-block;
+ width:11px;
+ height:11px;
+ border-radius:50%;
+ margin-right:7px;
+}
+.progress{
+ height:7px;
+ border-radius:20px;
+ background:#ffffff09;
+ overflow:hidden;
+ margin-top:10px;
+}
+.progress i{
+ display:block;
+ height:100%;
+ border-radius:20px;
+ background:linear-gradient(90deg,#7657ff,#35a9ff);
 }
 
-.subject-name{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-weight:800;
+/* GOALS */
+.goal{
+ padding:23px;
+ border:1px solid #302a55;
+ border-radius:21px;
+ background:linear-gradient(135deg,#17132b,#111423);
+ margin-bottom:12px;
+}
+.goal-number{
+ font-size:45px;
+ font-weight:900;
+ color:#aa94ff;
 }
 
-.dot{
-  width:11px;
-  height:11px;
-  border-radius:50%;
-  display:inline-block;
+/* PROFILE */
+.profile{
+ display:grid;
+ grid-template-columns:180px 1fr;
+ gap:25px;
+}
+.profile-img{
+ width:140px;
+ height:140px;
+ border-radius:35px;
+ object-fit:cover;
+ border:3px solid #7657ff;
+}
+.info-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:11px;
+}
+.info{
+ padding:15px;
+ border:1px solid var(--line);
+ border-radius:14px;
+ background:#0b101a;
+}
+.info small{font-size:9px;color:var(--muted)}
+.info b{display:block;margin-top:5px;font-size:12px}
+
+/* COMMUNITY */
+.community-layout{
+ display:grid;
+ grid-template-columns:1fr 320px;
+ gap:20px;
+}
+.post{
+ border:1px solid var(--line);
+ border-radius:20px;
+ padding:18px;
+ margin-bottom:12px;
+ background:#101421;
+}
+.post-head{
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+.post-avatar{
+ width:35px;
+ height:35px;
+ border-radius:50%;
+}
+.post-name{font-weight:800;font-size:12px}
+.post-time{color:var(--muted);font-size:9px}
+.post-title{font-weight:900;margin-top:13px}
+.post-body{font-size:12px;color:#b6bed0;margin-top:8px;line-height:1.7}
+.post-actions{
+ display:flex;
+ gap:7px;
+ margin-top:13px;
+}
+.chip{
+ border:1px solid var(--line);
+ border-radius:9px;
+ padding:6px 9px;
+ background:#ffffff04;
+ color:#aeb6c9;
+ font-size:9px;
+}
+.leader{
+ display:flex;
+ align-items:center;
+ gap:11px;
+ padding:12px 3px;
+ border-bottom:1px solid #ffffff08;
+}
+.rank{
+ width:27px;
+ height:27px;
+ display:grid;
+ place-items:center;
+ border-radius:9px;
+ background:#7657ff18;
+ font-weight:900;
+ font-size:11px;
+}
+.leader-avatar{
+ width:34px;
+ height:34px;
+ border-radius:50%;
+}
+.leader-main{flex:1}
+.leader-name{font-size:11px;font-weight:800}
+.points{font-size:9px;color:#a796ff}
+
+/* TIMER */
+.timer-box{text-align:center;padding:60px}
+.timer{
+ font-size:clamp(65px,10vw,110px);
+ letter-spacing:-6px;
+ font-weight:900;
+}
+.timer-label{color:var(--muted);font-size:10px;letter-spacing:2px}
+
+/* MODAL */
+.modal{
+ position:fixed;
+ inset:0;
+ z-index:1000;
+ background:#000b;
+ backdrop-filter:blur(9px);
+ display:none;
+ place-items:center;
+ padding:20px;
+}
+.modal.show{display:grid}
+.modal-box{
+ width:min(680px,100%);
+ max-height:92vh;
+ overflow:auto;
+ border:1px solid #30364c;
+ border-radius:25px;
+ padding:25px;
+ background:#111522;
+ box-shadow:var(--shadow);
+}
+.modal-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:20px;
+}
+.form{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{
+ font-size:9px;
+ color:#929bb1;
+ font-weight:900;
+ letter-spacing:.7px;
+}
+.field input,.field textarea,.field select{
+ width:100%;
+ padding:12px;
+ border-radius:11px;
+ border:1px solid #293146;
+ outline:0;
+ background:#0b101a;
+ color:#fff;
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+ border-color:#7657ff;
+}
+.modal-actions{
+ display:flex;
+ justify-content:flex-end;
+ gap:8px;
+ margin-top:20px;
+}
+
+/* ONBOARDING */
+#onboard{
+ position:fixed;
+ inset:0;
+ z-index:5000;
+ background:#05060cF7;
+ backdrop-filter:blur(20px);
+ display:none;
+ place-items:center;
+ padding:20px;
+}
+#onboard.show{display:grid}
+.onboard-box{
+ width:min(850px,100%);
+ padding:35px;
+ border-radius:30px;
+ border:1px solid #30354b;
+ background:
+ radial-gradient(circle at 90% 0%,#7657ff22,transparent 35%),
+ #111423;
+ box-shadow:var(--shadow);
+}
+.stepbar{
+ display:flex;
+ gap:6px;
+ margin-bottom:27px;
+}
+.stepbar i{
+ flex:1;
+ height:4px;
+ border-radius:20px;
+ background:#ffffff0b;
+}
+.stepbar i.on{background:#7657ff}
+.choice-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:11px;
+ margin-top:17px;
+}
+.choice{
+ padding:18px;
+ border:1px solid var(--line);
+ border-radius:17px;
+ background:#ffffff03;
+ color:#c8cedd;
+ text-align:left;
+ transition:.2s;
+}
+.choice:hover,.choice.selected{
+ border-color:#7657ff;
+ background:#7657ff15;
+ color:#fff;
+ box-shadow:0 10px 30px #7657ff18;
+}
+.choice strong{display:block;margin-bottom:5px}
+.choice span{font-size:10px;color:var(--muted)}
+.onboard-footer{
+ display:flex;
+ justify-content:space-between;
+ margin-top:25px;
 }
 
 /* TOAST */
-
 .toast{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  max-width:380px;
-  padding:15px 17px;
-  background:#111c2d;
-  border:1px solid var(--border);
-  border-radius:14px;
-  box-shadow:var(--shadow);
-  transform:translateY(140%);
-  transition:.3s;
-  z-index:5000;
+ position:fixed;
+ right:20px;
+ bottom:20px;
+ z-index:8000;
+ padding:14px 17px;
+ border-radius:14px;
+ background:#171d2c;
+ border:1px solid #333b51;
+ box-shadow:var(--shadow);
+ transform:translateY(140px);
+ transition:.3s;
+ font-size:12px;
+ font-weight:700;
 }
-
-.toast.show{
-  transform:translateY(0);
-}
-
-.toast-title{
-  font-weight:900;
-}
-
-.toast-text{
-  color:#aeb9ca;
-  font-size:13px;
-  margin-top:4px;
-}
+.toast.show{transform:none}
 
 /* MOBILE */
-
-@media(max-width:950px){
-  .layout{
-    grid-template-columns:1fr;
-  }
-
-  .sidebar{
-    display:flex;
-    overflow:auto;
-    border-right:0;
-    border-bottom:1px solid var(--border);
-    gap:5px;
-  }
-
-  .nav-title{
-    display:none;
-  }
-
-  .nav-btn{
-    min-width:max-content;
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
+.mobile-menu{display:none}
+@media(max-width:1100px){
+ .stats{grid-template-columns:repeat(3,1fr)}
+ .grid2,.community-layout{grid-template-columns:1fr}
 }
-
-@media(max-width:650px){
-  main{
-    padding:15px;
-  }
-
-  .hero{
-    flex-direction:column;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .form-grid{
-    grid-template-columns:1fr;
-  }
-
-  .calendar{
-    min-width:800px;
-  }
-
-  .calendar-wrap{
-    overflow:auto;
-  }
-
-  .intro-title{
-    font-size:40px;
-  }
+@media(max-width:820px){
+ .sidebar{
+  transform:translateX(-100%);
+  transition:.25s;
+ }
+ .sidebar.open{transform:none}
+ .main{margin-left:0;width:100%}
+ .mobile-menu{display:block}
+ .content{padding:17px}
+ .topbar{padding:0 17px}
+ .clock{display:none}
+ .subject-grid{grid-template-columns:1fr 1fr}
+ .quick-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+ .stats{grid-template-columns:1fr 1fr}
+ .subject-grid,.choice-grid,.form,.info-grid,.profile{grid-template-columns:1fr}
+ .hero-row{align-items:flex-start;flex-direction:column}
+ .timer{font-size:62px}
+ .onboard-box{padding:22px}
 }
 </style>
 </head>
@@ -661,2847 +802,3583 @@ main{
 
 <!-- INTRO -->
 <div id="intro">
-  <div class="intro-box">
-    <div class="intro-logo">📚</div>
-    <div class="intro-title">Study Flow</div>
-    <div class="intro-sub">Your smart study planner</div>
+ <div class="intro-bg"></div>
+ <div class="intro-content">
+  <div class="logo-big">SF</div>
+  <div class="intro-title">Study Flow</div>
+  <div class="intro-tag">Plan your day. Master your goals. 🚀</div>
+  <button class="intro-btn" onclick="launchApp()">Enter Study Flow →</button>
+ </div>
+ <div class="flash"></div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboard">
+ <div class="onboard-box">
+  <div class="eyebrow">PERSONALIZE YOUR EXPERIENCE</div>
+  <h1 style="font-size:32px;margin-top:7px">Welcome to Study Flow 🚀</h1>
+  <p style="color:var(--muted);margin-top:7px">Let's build your personal study command center.</p>
+
+  <div class="stepbar">
+   <i class="on"></i><i></i><i></i><i></i>
   </div>
-  <div class="intro-flash"></div>
+
+  <div id="onboardContent"></div>
+
+  <div class="onboard-footer">
+   <button class="btn" id="obBack" onclick="obBack()">← Back</button>
+   <button class="btn primary" id="obNext" onclick="obNext()">Continue →</button>
+  </div>
+ </div>
 </div>
 
 <div class="app">
 
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-icon">📚</div>
-    <span>Study Flow</span>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+ <div class="brand">
+  <div class="logo-small">SF</div>
+  <div>
+   <div class="brand-title">Study Flow</div>
+   <div class="brand-sub">Student Command Center</div>
   </div>
+ </div>
 
-  <div class="top-actions">
+ <div class="nav-title">Study</div>
 
-    <button class="btn" onclick="enableNotifications()">
-      🔔 Notifications
-    </button>
+ <button class="nav active" onclick="goPage('dashboard',this)">
+  <span class="nav-icon">⌂</span>Dashboard
+ </button>
 
-    <div id="userArea"></div>
+ <button class="nav" onclick="goPage('timetable',this)">
+  <span class="nav-icon">◷</span>Daily Timetable
+ </button>
 
-  </div>
-</header>
+ <button class="nav" onclick="goPage('tasks',this)">
+  <span class="nav-icon">✓</span>My Tasks
+ </button>
 
-<div class="layout">
+ <button class="nav" onclick="goPage('calendar',this)">
+  <span class="nav-icon">▦</span>Calendar
+ </button>
 
-<aside class="sidebar">
+ <button class="nav" onclick="goPage('subjects',this)">
+  <span class="nav-icon">●</span>Subjects
+ </button>
 
-  <div class="nav-title">Workspace</div>
+ <button class="nav" onclick="goPage('exams',this)">
+  <span class="nav-icon">✎</span>Exams & Tests
+ </button>
 
-  <button class="nav-btn active" data-page="dashboard">
-    🏠 Dashboard
+ <button class="nav" onclick="goPage('revision',this)">
+  <span class="nav-icon">↻</span>Revision Lab
+ </button>
+
+ <button class="nav" onclick="goPage('goals',this)">
+  <span class="nav-icon">◎</span>Goals
+ </button>
+
+ <div class="nav-title">Community</div>
+
+ <button class="nav" onclick="goPage('community',this)">
+  <span class="nav-icon">💬</span>Student Doubts
+ </button>
+
+ <button class="nav" onclick="goPage('leaderboard',this)">
+  <span class="nav-icon">🏆</span>VIP Chart
+ </button>
+
+ <div class="nav-title">Personal</div>
+
+ <button class="nav" onclick="goPage('focus',this)">
+  <span class="nav-icon">◉</span>Focus Room
+ </button>
+
+ <button class="nav" onclick="goPage('profile',this)">
+  <span class="nav-icon">♙</span>My Profile
+ </button>
+
+ <button class="nav" onclick="toggleTheme()">
+  <span class="nav-icon">☾</span>Theme
+ </button>
+
+ <div class="sidebar-bottom">
+  <button class="btn primary" style="width:100%" onclick="openTask()">
+   ＋ Add Study Task
   </button>
-
-  <button class="nav-btn" data-page="tasks">
-    ✅ Tasks
-  </button>
-
-  <button class="nav-btn" data-page="calendar">
-    📅 Calendar
-  </button>
-
-  <button class="nav-btn" data-page="subjects">
-    📚 Subjects
-  </button>
-
-  <button class="nav-btn" data-page="exams">
-    📝 Exams
-  </button>
-
-  <button class="nav-btn" data-page="goals">
-    🎯 Goals
-  </button>
-
-  <button class="nav-btn" data-page="revision">
-    🔁 Revision
-  </button>
-
-  <button class="nav-btn" data-page="focus">
-    ⏱️ Focus
-  </button>
-
-  <div class="nav-title">Account</div>
-
-  <button class="nav-btn" onclick="backupData()">
-    📤 Backup
-  </button>
-
-  <button class="nav-btn" onclick="document.getElementById('restoreFile').click()">
-    📥 Restore
-  </button>
-
-  <input
-    id="restoreFile"
-    type="file"
-    accept=".json"
-    class="hidden"
-    onchange="restoreData(event)"
-  >
-
-  <button class="nav-btn" onclick="logout()">
-    🚪 Logout
-  </button>
+ </div>
 
 </aside>
 
-<main>
+<main class="main">
+
+<header class="topbar">
+
+ <div class="top-date">
+  <small id="topDate"></small>
+  <b id="topGreeting">Welcome 👋</b>
+ </div>
+
+ <div class="top-right">
+  <div class="clock" id="liveClock">00:00:00</div>
+  <button class="btn" onclick="requestNotifications()">🔔</button>
+  <button class="btn primary" onclick="openTask()">＋ Task</button>
+  <button class="mobile-menu btn" onclick="$('sidebar').classList.toggle('open')">☰</button>
+ </div>
+
+</header>
+
+<div class="content">
 
 <!-- DASHBOARD -->
-
 <section id="dashboard" class="page active">
 
-<div class="hero">
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">YOUR STUDY COMMAND CENTER</div>
+    <h1 id="dashGreeting">Good Morning 👋</h1>
+    <p id="dashMessage">Plan your daily timetable and make today count.</p>
+   </div>
+
+   <button class="btn primary" onclick="goPage('timetable')">
+    🗓️ Plan Your Daily Timetable
+   </button>
+
+  </div>
+
+ </div>
+
+ <div class="stats">
+
+  <div class="card stat s-blue">
+   <small>Today's Tasks</small>
+   <strong id="statToday">0</strong>
+  </div>
+
+  <div class="card stat s-green">
+   <small>Completed</small>
+   <strong id="statDone">0</strong>
+  </div>
+
+  <div class="card stat s-red">
+   <small>Overdue</small>
+   <strong id="statOver">0</strong>
+  </div>
+
+  <div class="card stat s-yellow">
+   <small>Exams</small>
+   <strong id="statExam">0</strong>
+  </div>
+
+  <div class="card stat s-purple">
+   <small>Study Streak</small>
+   <strong id="statStreak">0 🔥</strong>
+  </div>
+
+ </div>
+
+ <div class="grid2">
+
+  <div class="card">
+
+   <div class="card-head">
+    <h3>⚡ Today's Timetable</h3>
+    <span class="muted" id="liveStatus"></span>
+   </div>
+
+   <div id="dashboardTasks"></div>
+
+  </div>
+
   <div>
-    <h1>Good study session 👋</h1>
-    <p id="todayText"></p>
+
+   <div class="card" style="margin-bottom:20px">
+
+    <div class="card-head">
+     <h3>📊 Today's Progress</h3>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:20px">
+
+     <div class="ring" id="progressRing" style="--p:0%">
+      <span id="progressText">0%</span>
+     </div>
+
+     <div>
+      <div style="font-weight:800" id="progressTitle">Let's begin</div>
+      <div class="muted" style="margin-top:6px" id="progressSub">
+       Complete your first task.
+      </div>
+     </div>
+
+    </div>
+
+   </div>
+
+   <div class="card">
+
+    <div class="card-head">
+     <h3>🧠 Smart Study</h3>
+    </div>
+
+    <div id="smartAdvice"></div>
+
+   </div>
+
   </div>
 
-  <button class="btn primary" onclick="openTaskModal()">
-    + Add Task
-  </button>
-</div>
+ </div>
 
-<div class="grid stats">
+ <div class="card" style="margin-top:20px">
 
-  <div class="card stat blue">
-    <div class="stat-label">Today's Tasks</div>
-    <div class="stat-value" id="statTasks">0</div>
+  <div class="card-head">
+   <h3>⚡ Quick Actions</h3>
   </div>
 
-  <div class="card stat green">
-    <div class="stat-label">Completed</div>
-    <div class="stat-value" id="statCompleted">0</div>
+  <div class="quick-grid">
+
+   <div class="quick" onclick="openTask()">
+    <div class="quick-icon">✓</div>
+    <b>Add Task</b>
+    <span>Schedule something</span>
+   </div>
+
+   <div class="quick" onclick="openExam()">
+    <div class="quick-icon">📝</div>
+    <b>Add Exam</b>
+    <span>Track your test</span>
+   </div>
+
+   <div class="quick" onclick="openGoal()">
+    <div class="quick-icon">🎯</div>
+    <b>Set Goal</b>
+    <span>Choose a target</span>
+   </div>
+
+   <div class="quick" onclick="openRevision()">
+    <div class="quick-icon">🔁</div>
+    <b>Plan Revision</b>
+    <span>Never forget a chapter</span>
+   </div>
+
   </div>
 
-  <div class="card stat red">
-    <div class="stat-label">Overdue</div>
-    <div class="stat-value" id="statOverdue">0</div>
+ </div>
+
+</section>
+
+
+<!-- TIMETABLE -->
+<section id="timetable" class="page">
+
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">DAILY PLANNER</div>
+    <h1>Plan Your Day 🗓️</h1>
+    <p>Write your complete daily timetable and keep your day under control.</p>
+   </div>
+
+   <button class="btn primary" onclick="openTask()">＋ Add Timetable Slot</button>
+
   </div>
 
-  <div class="card stat yellow">
-    <div class="stat-label">Active Goals</div>
-    <div class="stat-value" id="statGoals">0</div>
+ </div>
+
+ <div class="card">
+
+  <div class="card-head">
+
+   <div>
+    <h3 id="timetableTitle">Today's Schedule</h3>
+    <div class="muted" id="timetableDate"></div>
+   </div>
+
+   <button class="btn" onclick="openTask()">＋ Add</button>
+
   </div>
 
-</div>
+  <div id="timetableList"></div>
 
-<div class="section">
-
-<div class="section-head">
-  <h2>⚡ Live Schedule</h2>
-</div>
-
-<div class="card">
-  <div id="liveTasks" class="task-list"></div>
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="section-head">
-  <h2>🔴 Overdue</h2>
-</div>
-
-<div class="card">
-  <div id="overdueTasks" class="task-list"></div>
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="section-head">
-  <h2>🧠 Smart Study</h2>
-</div>
-
-<div class="card">
-  <div id="smartStudy"></div>
-</div>
-
-</div>
+ </div>
 
 </section>
 
 
 <!-- TASKS -->
-
 <section id="tasks" class="page">
 
-<div class="hero">
-  <div>
-    <h1>Tasks</h1>
-    <p>Plan every study session with start and end times.</p>
-  </div>
+ <div class="hero">
 
-  <button class="btn primary" onclick="openTaskModal()">
-    + Add Task
-  </button>
-</div>
+  <div class="hero-row">
 
-<div class="card">
+   <div>
+    <div class="eyebrow">TASK MANAGEMENT</div>
+    <h1>My Tasks</h1>
+    <p>Every task stays saved even after closing the website.</p>
+   </div>
 
-  <div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap">
-
-    <input
-      id="taskSearch"
-      placeholder="Search tasks..."
-      oninput="renderTasks()"
-      style="flex:1;min-width:200px;background:#0b1322;border:1px solid var(--border);color:#fff;padding:11px;border-radius:10px"
-    >
-
-    <select
-      id="taskFilter"
-      onchange="renderTasks()"
-      style="background:#0b1322;border:1px solid var(--border);color:#fff;padding:11px;border-radius:10px"
-    >
-      <option value="all">All</option>
-      <option value="today">Today</option>
-      <option value="upcoming">Upcoming</option>
-      <option value="completed">Completed</option>
-      <option value="overdue">Overdue</option>
-    </select>
+   <button class="btn primary" onclick="openTask()">＋ New Task</button>
 
   </div>
 
-  <div id="taskList" class="task-list"></div>
+ </div>
 
-</div>
+ <div class="card">
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px">
+
+   <input
+    id="taskSearch"
+    oninput="renderTasks()"
+    placeholder="🔎 Search tasks..."
+    style="flex:1;min-width:180px;padding:12px;border-radius:11px;border:1px solid var(--line);background:#0b101a;color:#fff"
+   >
+
+   <select id="taskFilter" onchange="renderTasks()" class="btn">
+    <option value="all">All Tasks</option>
+    <option value="today">Today</option>
+    <option value="live">Live</option>
+    <option value="overdue">Overdue</option>
+    <option value="done">Completed</option>
+    <option value="upcoming">Upcoming</option>
+   </select>
+
+  </div>
+
+  <div id="taskList"></div>
+
+ </div>
 
 </section>
 
 
 <!-- CALENDAR -->
-
 <section id="calendar" class="page">
 
-<div class="hero">
-  <div>
-    <h1>Calendar</h1>
-    <p>Your tasks stay attached to their scheduled dates.</p>
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">YOUR MONTH</div>
+    <h1>Study Calendar</h1>
+    <p>Tasks automatically appear on their scheduled date.</p>
+   </div>
+
+   <button class="btn primary" onclick="openTask()">＋ Add to Calendar</button>
+
   </div>
 
-  <button class="btn primary" onclick="openTaskModal()">
-    + Add Task
-  </button>
-</div>
+ </div>
 
-<div class="card">
+ <div class="card calendar-wrap">
 
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+  <div class="cal-top">
 
-  <button class="btn" onclick="changeMonth(-1)">←</button>
+   <button class="btn" onclick="changeMonth(-1)">←</button>
 
-  <h2 id="calendarTitle"></h2>
+   <div class="cal-title" id="calendarTitle"></div>
 
-  <button class="btn" onclick="changeMonth(1)">→</button>
+   <div>
+    <button class="btn" onclick="todayMonth()">Today</button>
+    <button class="btn" onclick="changeMonth(1)">→</button>
+   </div>
 
-</div>
+  </div>
 
-<div class="calendar-wrap">
-  <div id="calendarGrid" class="calendar"></div>
-</div>
+  <div class="calendar">
 
-</div>
+   <div class="cal-grid" id="calendarGrid"></div>
+
+  </div>
+
+ </div>
 
 </section>
 
 
 <!-- SUBJECTS -->
-
 <section id="subjects" class="page">
 
-<div class="hero">
-  <div>
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">YOUR ACADEMICS</div>
     <h1>Subjects</h1>
-    <p>Organize your study by real subjects.</p>
+    <p>Build your own subject system with coloured identity.</p>
+   </div>
+
+   <button class="btn primary" onclick="openSubject()">＋ Add Subject</button>
+
   </div>
 
-  <button class="btn primary" onclick="openSubjectModal()">
-    + Add Subject
-  </button>
-</div>
+ </div>
 
-<div class="card">
-  <div id="subjectList"></div>
-</div>
+ <div class="subject-grid" id="subjectGrid"></div>
 
 </section>
 
 
 <!-- EXAMS -->
-
 <section id="exams" class="page">
 
-<div class="hero">
-  <div>
-    <h1>Exams</h1>
-    <p>Track subjective tests, MCQs and complete exam preparation.</p>
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">EXAM COMMAND</div>
+    <h1>Exams & Tests</h1>
+    <p>Subjective, MCQ, mixed and oral tests.</p>
+   </div>
+
+   <button class="btn primary" onclick="openExam()">＋ Add Exam</button>
+
   </div>
 
-  <button class="btn primary" onclick="openExamModal()">
-    + Add Exam
-  </button>
-</div>
+ </div>
 
-<div class="card">
+ <div class="card">
   <div id="examList"></div>
-</div>
-
-</section>
-
-
-<!-- GOALS -->
-
-<section id="goals" class="page">
-
-<div class="hero">
-  <div>
-    <h1>Goals</h1>
-    <p>Turn big targets into daily actions.</p>
-  </div>
-
-  <button class="btn primary" onclick="openGoalModal()">
-    + Set Goal
-  </button>
-</div>
-
-<div class="card">
-  <div id="goalList"></div>
-</div>
+ </div>
 
 </section>
 
 
 <!-- REVISION -->
-
 <section id="revision" class="page">
 
-<div class="hero">
-  <div>
-    <h1>Revision</h1>
-    <p>Keep important chapters in your revision cycle.</p>
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">REVISION LAB</div>
+    <h1>Revision Planner 🔁</h1>
+    <p>Keep chapters in a proper revision cycle.</p>
+   </div>
+
+   <button class="btn primary" onclick="openRevision()">＋ Revision</button>
+
   </div>
 
-  <button class="btn primary" onclick="openRevisionModal()">
-    + Add Revision
-  </button>
-</div>
+ </div>
 
-<div class="card">
+ <div class="card">
   <div id="revisionList"></div>
-</div>
+ </div>
+
+</section>
+
+
+<!-- GOALS -->
+<section id="goals" class="page">
+
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">YOUR TARGET</div>
+    <h1>Goals 🎯</h1>
+    <p>Turn a big target into measurable progress.</p>
+   </div>
+
+   <button class="btn primary" onclick="openGoal()">＋ Set Goal</button>
+
+  </div>
+
+ </div>
+
+ <div id="goalList"></div>
+
+</section>
+
+
+<!-- COMMUNITY -->
+<section id="community" class="page">
+
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">STUDENT COMMUNITY</div>
+    <h1>Student Doubts 💬</h1>
+    <p>Ask questions, explain concepts and help other students.</p>
+   </div>
+
+   <button class="btn primary" onclick="openPost()">＋ Ask a Doubt</button>
+
+  </div>
+
+ </div>
+
+ <div class="community-layout">
+
+  <div>
+
+   <div class="card" style="margin-bottom:15px">
+
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+
+     <button class="btn" onclick="communityFilter='all';loadCommunity()">All</button>
+     <button class="btn" onclick="communityFilter='unanswered';loadCommunity()">Unanswered</button>
+     <button class="btn" onclick="communityFilter='solved';loadCommunity()">Solved</button>
+
+    </div>
+
+   </div>
+
+   <div id="communityPosts"></div>
+
+  </div>
+
+  <div>
+
+   <div class="card" style="margin-bottom:15px">
+
+    <div class="card-head">
+     <h3>📚 Community Rules</h3>
+    </div>
+
+    <div class="smart">Be respectful.</div>
+    <div class="smart">Explain instead of mocking.</div>
+    <div class="smart">Don't share phone numbers/passwords.</div>
+    <div class="smart">Report inappropriate content.</div>
+
+   </div>
+
+   <div class="card">
+
+    <div class="card-head">
+     <h3>🏆 Your Community Score</h3>
+    </div>
+
+    <div style="font-size:38px;font-weight:900;color:#a794ff" id="myPoints">0</div>
+    <div class="muted">Helpful answers + solved doubts</div>
+
+   </div>
+
+  </div>
+
+ </div>
+
+</section>
+
+
+<!-- LEADERBOARD -->
+<section id="leaderboard" class="page">
+
+ <div class="hero">
+
+  <div class="hero-row">
+
+   <div>
+    <div class="eyebrow">STUDYFLOW VIP CHART</div>
+    <h1>🏆 Student Champions</h1>
+    <p>Earn points by completing study goals and helping the community.</p>
+   </div>
+
+  </div>
+
+ </div>
+
+ <div class="card">
+
+  <div class="card-head">
+   <h3>Weekly Leaderboard</h3>
+   <span class="muted">Achievement based</span>
+  </div>
+
+  <div id="leaderboardList"></div>
+
+ </div>
 
 </section>
 
 
 <!-- FOCUS -->
-
 <section id="focus" class="page">
 
-<div class="hero">
-  <div>
-    <h1>Focus Timer</h1>
-    <p>Stay focused during your study session.</p>
-  </div>
-</div>
+ <div class="hero">
+  <div class="eyebrow">FOCUS ROOM</div>
+  <h1>Deep Work Mode 🎧</h1>
+  <p>Choose a session and focus on one thing.</p>
+ </div>
 
-<div class="card" style="text-align:center;padding:45px">
+ <div class="card" style="text-align:center;padding:60px">
 
-<div
-  id="timerDisplay"
-  style="font-size:70px;font-weight:900;letter-spacing:-3px"
->
-25:00
-</div>
+  <div class="timer-label">POMODORO</div>
 
-<div style="display:flex;justify-content:center;gap:10px;margin-top:25px">
+  <div class="timer" id="focusTimer">25:00</div>
 
-<button class="btn primary" onclick="startTimer()">Start</button>
-<button class="btn" onclick="pauseTimer()">Pause</button>
-<button class="btn danger" onclick="resetTimer()">Reset</button>
+  <button class="btn primary" onclick="startFocus()">▶ Start</button>
+  <button class="btn" onclick="pauseFocus()">Ⅱ Pause</button>
+  <button class="btn red" onclick="resetFocus()">↻ Reset</button>
 
-</div>
-
-</div>
+ </div>
 
 </section>
 
-</main>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+
+ <div class="hero">
+  <div class="eyebrow">YOUR IDENTITY</div>
+  <h1>My Profile 👤</h1>
+  <p>Your Study Flow preferences and academic information.</p>
+ </div>
+
+ <div class="card profile">
+
+  <div>
+   <img class="profile-img" id="profileImage">
+
+   <div style="margin-top:12px">
+    <button class="btn primary" onclick="loginGoogle()">🔐 Login with Google</button>
+   </div>
+
+  </div>
+
+  <div>
+
+   <div class="info-grid">
+
+    <div class="info">
+     <small>NAME</small>
+     <b id="profileName">Student</b>
+    </div>
+
+    <div class="info">
+     <small>GMAIL</small>
+     <b id="profileEmail">Not connected</b>
+    </div>
+
+    <div class="info">
+     <small>AGE</small>
+     <b id="profileAge">Not set</b>
+    </div>
+
+    <div class="info">
+     <small>CLASS</small>
+     <b id="profileClass">Not set</b>
+    </div>
+
+    <div class="info">
+     <small>BOARD</small>
+     <b id="profileBoard">Not set</b>
+    </div>
+
+    <div class="info">
+     <small>PREPARATION</small>
+     <b id="profilePrep">Not set</b>
+    </div>
+
+    <div class="info">
+     <small>GOAL</small>
+     <b id="profileGoal">Not set</b>
+    </div>
+
+    <div class="info">
+     <small>STREAK</small>
+     <b id="profileStreak">0 🔥</b>
+    </div>
+
+   </div>
+
+   <div style="margin-top:15px;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn primary" onclick="editProfile()">✏️ Edit Profile</button>
+    <button class="btn red" onclick="logoutGoogle()">Logout</button>
+   </div>
+
+  </div>
+
+ </div>
+
+</section>
+
 </div>
+</main>
 </div>
 
 
 <!-- TASK MODAL -->
-
-<div id="taskModal" class="modal">
-
+<div class="modal" id="taskModal">
 <div class="modal-box">
 
-<div class="modal-head">
-  <h2 id="taskModalTitle">Add Task</h2>
+ <div class="modal-head">
+  <h2>✨ Plan a Study Task</h2>
   <button class="btn" onclick="closeModal('taskModal')">✕</button>
-</div>
+ </div>
 
-<div class="form-grid">
+ <div class="form">
 
-<div class="field full">
-<label>Task name</label>
-<input id="taskName" placeholder="e.g. Complete Quadratic Equations">
-</div>
+  <div class="field full">
+   <label>TASK NAME</label>
+   <input id="taskName" placeholder="Physics — Current Electricity">
+  </div>
 
-<div class="field">
-<label>Subject</label>
-<select id="taskSubject"></select>
-</div>
+  <div class="field">
+   <label>SUBJECT</label>
+   <select id="taskSubject"></select>
+  </div>
 
-<div class="field">
-<label>Date</label>
-<input id="taskDate" type="date">
-</div>
+  <div class="field">
+   <label>TYPE</label>
+   <select id="taskType">
+    <option>Study</option>
+    <option>Class</option>
+    <option>Homework</option>
+    <option>Revision</option>
+    <option>Practice</option>
+   </select>
+  </div>
 
-<div class="field">
-<label>Start time</label>
-<input id="taskStart" type="time">
-</div>
+  <div class="field">
+   <label>DATE</label>
+   <input id="taskDate" type="date">
+  </div>
 
-<div class="field">
-<label>End time</label>
-<input id="taskEnd" type="time">
-</div>
+  <div class="field">
+   <label>START TIME</label>
+   <input id="taskStart" type="time">
+  </div>
 
-<div class="field">
-<label>Priority</label>
-<select id="taskPriority">
-<option>Low</option>
-<option selected>Medium</option>
-<option>High</option>
-</select>
-</div>
+  <div class="field">
+   <label>END TIME</label>
+   <input id="taskEnd" type="time">
+  </div>
 
-<div class="field">
-<label>Type</label>
-<select id="taskType">
-<option>Study</option>
-<option>Class</option>
-<option>Revision</option>
-<option>Homework</option>
-<option>Practice</option>
-</select>
-</div>
+  <div class="field">
+   <label>PRIORITY</label>
+   <select id="taskPriority">
+    <option>Low</option>
+    <option selected>Medium</option>
+    <option>High</option>
+   </select>
+  </div>
 
-<div class="field full">
-<label>Notes</label>
-<textarea id="taskNotes" rows="3"></textarea>
-</div>
+  <div class="field">
+   <label>REPEAT</label>
+   <select id="taskRepeat">
+    <option>None</option>
+    <option>Daily</option>
+    <option>Weekdays</option>
+   </select>
+  </div>
 
-</div>
+  <div class="field full">
+   <label>NOTES</label>
+   <textarea id="taskNotes" rows="3" placeholder="What exactly should you finish?"></textarea>
+  </div>
 
-<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
-<button class="btn" onclick="closeModal('taskModal')">Cancel</button>
-<button class="btn primary" onclick="saveTask()">Save Task</button>
-</div>
+ </div>
+
+ <div class="modal-actions">
+  <button class="btn" onclick="closeModal('taskModal')">Cancel</button>
+  <button class="btn primary" onclick="saveTask()">Save Task 🚀</button>
+ </div>
 
 </div>
 </div>
 
 
 <!-- SUBJECT MODAL -->
-
-<div id="subjectModal" class="modal">
-
+<div class="modal" id="subjectModal">
 <div class="modal-box">
 
-<div class="modal-head">
-<h2>Add Subject</h2>
-<button class="btn" onclick="closeModal('subjectModal')">✕</button>
-</div>
+ <div class="modal-head">
+  <h2>📚 Add Subject</h2>
+  <button class="btn" onclick="closeModal('subjectModal')">✕</button>
+ </div>
 
-<div class="field">
-<label>Subject name</label>
-<input id="subjectName" placeholder="Mathematics">
-</div>
+ <div class="form">
 
-<div class="field" style="margin-top:12px">
-<label>Colour</label>
-<input id="subjectColor" type="color" value="#6d5dfc">
-</div>
+  <div class="field full">
+   <label>SUBJECT NAME</label>
+   <input id="subjectName" placeholder="Physics">
+  </div>
 
-<div style="margin-top:20px;text-align:right">
-<button class="btn primary" onclick="saveSubject()">Add Subject</button>
-</div>
+  <div class="field">
+   <label>COLOUR</label>
+   <input id="subjectColor" type="color" value="#7657ff">
+  </div>
+
+  <div class="field">
+   <label>ICON</label>
+   <input id="subjectIcon" value="📘">
+  </div>
+
+ </div>
+
+ <div class="modal-actions">
+  <button class="btn primary" onclick="saveSubject()">Create Subject</button>
+ </div>
 
 </div>
 </div>
 
 
 <!-- EXAM MODAL -->
-
-<div id="examModal" class="modal">
-
+<div class="modal" id="examModal">
 <div class="modal-box">
 
-<div class="modal-head">
-<h2>Add Exam</h2>
-<button class="btn" onclick="closeModal('examModal')">✕</button>
-</div>
+ <div class="modal-head">
+  <h2>📝 Add Exam</h2>
+  <button class="btn" onclick="closeModal('examModal')">✕</button>
+ </div>
 
-<div class="form-grid">
+ <div class="form">
 
-<div class="field full">
-<label>Exam/Test name</label>
-<input id="examName" placeholder="Science Chapter Test">
-</div>
+  <div class="field full">
+   <label>EXAM NAME</label>
+   <input id="examName" placeholder="Science Chapter Test">
+  </div>
 
-<div class="field">
-<label>Subject</label>
-<select id="examSubject"></select>
-</div>
+  <div class="field">
+   <label>SUBJECT</label>
+   <select id="examSubject"></select>
+  </div>
 
-<div class="field">
-<label>Test type</label>
-<select id="examType">
-<option>Subjective</option>
-<option>MCQ</option>
-<option>Mixed</option>
-<option>Oral/Viva</option>
-</select>
-</div>
+  <div class="field">
+   <label>TEST TYPE</label>
+   <select id="examType">
+    <option>Subjective</option>
+    <option>MCQ</option>
+    <option>Mixed</option>
+    <option>Oral / Viva</option>
+   </select>
+  </div>
 
-<div class="field">
-<label>Exam date</label>
-<input id="examDate" type="date">
-</div>
+  <div class="field">
+   <label>DATE</label>
+   <input id="examDate" type="date">
+  </div>
 
-<div class="field">
-<label>Total marks</label>
-<input id="examMarks" type="number" min="1">
-</div>
+  <div class="field">
+   <label>TOTAL MARKS</label>
+   <input id="examMarks" type="number" value="100">
+  </div>
 
-<div class="field">
-<label>Target marks</label>
-<input id="examTarget" type="number" min="1">
-</div>
+  <div class="field">
+   <label>TARGET MARKS</label>
+   <input id="examTarget" type="number" value="95">
+  </div>
 
-<div class="field full">
-<label>Chapters / syllabus</label>
-<textarea id="examChapters"></textarea>
-</div>
+  <div class="field full">
+   <label>SYLLABUS</label>
+   <textarea id="examSyllabus" rows="3"></textarea>
+  </div>
 
-</div>
+ </div>
 
-<div style="margin-top:20px;text-align:right">
-<button class="btn primary" onclick="saveExam()">Save Exam</button>
-</div>
+ <div class="modal-actions">
+  <button class="btn primary" onclick="saveExam()">Save Exam</button>
+ </div>
 
 </div>
 </div>
 
 
 <!-- GOAL MODAL -->
-
-<div id="goalModal" class="modal">
-
+<div class="modal" id="goalModal">
 <div class="modal-box">
 
-<div class="modal-head">
-<h2>Set Goal</h2>
-<button class="btn" onclick="closeModal('goalModal')">✕</button>
-</div>
+ <div class="modal-head">
+  <h2>🎯 Set Goal</h2>
+  <button class="btn" onclick="closeModal('goalModal')">✕</button>
+ </div>
 
-<div class="form-grid">
+ <div class="form">
 
-<div class="field full">
-<label>Goal</label>
-<input id="goalName" placeholder="Score 95% in UP Board">
-</div>
+  <div class="field full">
+   <label>GOAL</label>
+   <input id="goalName" placeholder="Score 95% in UP Board">
+  </div>
 
-<div class="field">
-<label>Target</label>
-<input id="goalTarget" placeholder="95%">
-</div>
+  <div class="field">
+   <label>TARGET %</label>
+   <input id="goalTarget" type="number" value="95">
+  </div>
 
-<div class="field">
-<label>Deadline</label>
-<input id="goalDate" type="date">
-</div>
+  <div class="field">
+   <label>CURRENT PROGRESS %</label>
+   <input id="goalProgress" type="number" value="0">
+  </div>
 
-<div class="field full">
-<label>Why this goal?</label>
-<textarea id="goalReason"></textarea>
-</div>
+  <div class="field">
+   <label>DEADLINE</label>
+   <input id="goalDate" type="date">
+  </div>
 
-</div>
+  <div class="field full">
+   <label>WHY THIS GOAL?</label>
+   <textarea id="goalReason" rows="3"></textarea>
+  </div>
 
-<div style="margin-top:20px;text-align:right">
-<button class="btn primary" onclick="saveGoal()">Save Goal</button>
-</div>
+ </div>
+
+ <div class="modal-actions">
+  <button class="btn primary" onclick="saveGoal()">Save Goal 🎯</button>
+ </div>
 
 </div>
 </div>
 
 
 <!-- REVISION MODAL -->
-
-<div id="revisionModal" class="modal">
-
+<div class="modal" id="revisionModal">
 <div class="modal-box">
 
-<div class="modal-head">
-<h2>Add Revision</h2>
-<button class="btn" onclick="closeModal('revisionModal')">✕</button>
+ <div class="modal-head">
+  <h2>🔁 Plan Revision</h2>
+  <button class="btn" onclick="closeModal('revisionModal')">✕</button>
+ </div>
+
+ <div class="form">
+
+  <div class="field">
+   <label>SUBJECT</label>
+   <select id="revisionSubject"></select>
+  </div>
+
+  <div class="field">
+   <label>DATE</label>
+   <input id="revisionDate" type="date">
+  </div>
+
+  <div class="field full">
+   <label>CHAPTER / TOPIC</label>
+   <input id="revisionTopic" placeholder="Electricity">
+  </div>
+
+  <div class="field">
+   <label>REVISION ROUND</label>
+   <select id="revisionRound">
+    <option>1st Revision</option>
+    <option>2nd Revision</option>
+    <option>3rd Revision</option>
+    <option>Final Revision</option>
+   </select>
+  </div>
+
+ </div>
+
+ <div class="modal-actions">
+  <button class="btn primary" onclick="saveRevision()">Add Revision</button>
+ </div>
+
+</div>
 </div>
 
-<div class="form-grid">
 
-<div class="field">
-<label>Subject</label>
-<select id="revisionSubject"></select>
+<!-- PROFILE MODAL -->
+<div class="modal" id="profileModal">
+<div class="modal-box">
+
+ <div class="modal-head">
+  <h2>✏️ Edit Profile</h2>
+  <button class="btn" onclick="closeModal('profileModal')">✕</button>
+ </div>
+
+ <div class="form">
+
+  <div class="field full">
+   <label>NAME</label>
+   <input id="editName">
+  </div>
+
+  <div class="field">
+   <label>AGE</label>
+   <input id="editAge" type="number">
+  </div>
+
+  <div class="field">
+   <label>CLASS</label>
+   <input id="editClass" placeholder="10th">
+  </div>
+
+  <div class="field">
+   <label>BOARD</label>
+   <select id="editBoard">
+    <option>UP Board</option>
+    <option>CBSE</option>
+    <option>ICSE</option>
+    <option>Other</option>
+   </select>
+  </div>
+
+  <div class="field">
+   <label>PREPARATION</label>
+   <select id="editPrep">
+    <option>School</option>
+    <option>Board Exams</option>
+    <option>School + Boards</option>
+    <option>Competitive Preparation</option>
+    <option>Personal Learning</option>
+   </select>
+  </div>
+
+  <div class="field full">
+   <label>MAIN GOAL</label>
+   <input id="editGoal" placeholder="95% in Board Exams">
+  </div>
+
+ </div>
+
+ <div class="modal-actions">
+  <button class="btn primary" onclick="saveProfile()">Save Profile</button>
+ </div>
+
+</div>
 </div>
 
-<div class="field">
-<label>Revision date</label>
-<input id="revisionDate" type="date">
+
+<!-- COMMUNITY POST MODAL -->
+<div class="modal" id="postModal">
+<div class="modal-box">
+
+ <div class="modal-head">
+  <h2>💬 Ask a Doubt</h2>
+  <button class="btn" onclick="closeModal('postModal')">✕</button>
+ </div>
+
+ <div class="form">
+
+  <div class="field">
+   <label>SUBJECT</label>
+   <select id="postSubject"></select>
+  </div>
+
+  <div class="field">
+   <label>BOARD</label>
+   <select id="postBoard">
+    <option>UP Board</option>
+    <option>CBSE</option>
+    <option>ICSE</option>
+    <option>Other</option>
+   </select>
+  </div>
+
+  <div class="field full">
+   <label>QUESTION TITLE</label>
+   <input id="postTitle" placeholder="Why does resistance increase here?">
+  </div>
+
+  <div class="field full">
+   <label>EXPLAIN YOUR DOUBT</label>
+   <textarea id="postBody" rows="5" placeholder="Write your question clearly..."></textarea>
+  </div>
+
+ </div>
+
+ <div class="modal-actions">
+  <button class="btn primary" onclick="createPost()">Post Doubt 🚀</button>
+ </div>
+
+</div>
 </div>
 
-<div class="field full">
-<label>Chapter/topic</label>
-<input id="revisionTopic" placeholder="Electricity">
-</div>
 
-<div class="field">
-<label>Revision round</label>
-<select id="revisionRound">
-<option>1st Revision</option>
-<option>2nd Revision</option>
-<option>3rd Revision</option>
-<option>Final Revision</option>
-</select>
-</div>
+<!-- ANSWER MODAL -->
+<div class="modal" id="answerModal">
+<div class="modal-box">
 
-</div>
+ <div class="modal-head">
+  <h2>💡 Help another student</h2>
+  <button class="btn" onclick="closeModal('answerModal')">✕</button>
+ </div>
 
-<div style="margin-top:20px;text-align:right">
-<button class="btn primary" onclick="saveRevision()">Save Revision</button>
-</div>
+ <textarea id="answerText" rows="7" style="width:100%;padding:13px;background:#0b101a;color:#fff;border:1px solid var(--line);border-radius:12px" placeholder="Explain the solution step by step..."></textarea>
+
+ <div class="modal-actions">
+  <button class="btn primary" onclick="submitAnswer()">Post Answer</button>
+ </div>
 
 </div>
 </div>
 
 
-<div id="toast" class="toast">
-<div id="toastTitle" class="toast-title"></div>
-<div id="toastText" class="toast-text"></div>
-</div>
+<div class="toast" id="toast"></div>
 
 
 <script type="module">
 
-/* =========================================================
-   FIREBASE
-========================================================= */
+import{initializeApp}
+from"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut
+import{
+ getAuth,
+ GoogleAuthProvider,
+ signInWithPopup,
+ signOut,
+ onAuthStateChanged
 }
-from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+from"https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  onSnapshot,
-  collection,
-  query,
-  orderBy
+import{
+ getFirestore,
+ collection,
+ addDoc,
+ getDocs,
+ doc,
+ updateDoc,
+ query,
+ orderBy,
+ limit,
+ serverTimestamp,
+ increment
 }
-from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-import {
-  getAnalytics
-}
-from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
+from"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-const firebaseConfig = {
+/* FIREBASE */
 
-  apiKey:"AIzaSyD0b358pzo3lVzShbRbRuonLG9-pxkVeyA",
+const firebaseConfig={
+ apiKey:"AIzaSyD0b358pzo3lVzShbRbRuonLG9-pxkVeyA",
+ authDomain:"study-flow-eaadf.firebaseapp.com",
+ projectId:"study-flow-eaadf",
+ storageBucket:"study-flow-eaadf.firebasestorage.app",
+ messagingSenderId:"499383545478",
+ appId:"1:499383545478:web:4e15ac1f2a50ebbc45ab07",
+ measurementId:"G-GWWE5C0LG6"
+};
 
-  authDomain:"study-flow-eaadf.firebaseapp.com",
+const firebaseApp=initializeApp(firebaseConfig);
+const auth=getAuth(firebaseApp);
+const db=getFirestore(firebaseApp);
+const provider=new GoogleAuthProvider();
 
-  projectId:"study-flow-eaadf",
 
-  storageBucket:"study-flow-eaadf.firebasestorage.app",
+/* GLOBALS */
 
-  messagingSenderId:"499383545478",
+const KEY="study_flow_final_v7";
 
-  appId:"1:499383545478:web:4e15ac1f2a50ebbc45ab07",
+let currentUser=null;
+let calendarDate=new Date();
+let focusSeconds=1500;
+let focusInterval=null;
+let onboardingStep=0;
+let selectedOnboard={};
+let answerPostId=null;
+let communityFilter="all";
 
-  measurementId:"G-GWWE5C0LG6"
+
+const defaultData={
+ profile:{
+  name:"Student",
+  age:"",
+  className:"",
+  board:"",
+  preparation:"",
+  goal:"",
+  onboarded:false,
+  points:0
+ },
+ subjects:[
+  {id:"math",name:"Mathematics",color:"#7657ff",icon:"📐"},
+  {id:"science",name:"Science",color:"#24d69c",icon:"⚛️"},
+  {id:"english",name:"English",color:"#35a9ff",icon:"📖"},
+  {id:"sst",name:"Social Science",color:"#ffc857",icon:"🌍"},
+  {id:"hindi",name:"Hindi",color:"#ff678b",icon:"📚"}
+ ],
+ tasks:[],
+ exams:[],
+ goals:[],
+ revisions:[]
 };
 
 
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-const analytics = getAnalytics(app);
-
-const provider = new GoogleAuthProvider();
+let data=loadData();
 
 
-/* =========================================================
-   STATE
-========================================================= */
+/* HELPERS */
 
-let state = {
+function $(id){return document.getElementById(id)}
 
-  tasks:[],
+function uid(){
+ return crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random());
+}
 
-  subjects:[
-    {
-      id:"math",
-      name:"Mathematics",
-      color:"#6d5dfc"
-    },
-    {
-      id:"science",
-      name:"Science",
-      color:"#20d995"
-    },
-    {
-      id:"english",
-      name:"English",
-      color:"#42a5ff"
-    },
-    {
-      id:"social",
-      name:"Social Science",
-      color:"#ffc857"
-    }
-  ],
+function today(){
+ return new Date().toISOString().slice(0,10);
+}
 
-  exams:[],
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,m=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#039;"
+ }[m]));
+}
 
-  goals:[],
+function toast(message){
+ $("toast").textContent=message;
+ $("toast").classList.add("show");
+ setTimeout(()=>$("toast").classList.remove("show"),2800);
+}
 
-  revisions:[]
+function closeModal(id){
+ $(id).classList.remove("show");
+}
 
-};
-
-let currentUser = null;
-
-let unsubscribeCloud = null;
-
-let calendarDate = new Date();
-
-let timerSeconds = 1500;
-
-let timerInterval = null;
-
-
-/* =========================================================
-   LOCAL STORAGE
-========================================================= */
-
-const LOCAL_KEY = "study_flow_pro_state_v1";
-
-
-function saveLocal(){
-
-  localStorage.setItem(
-    LOCAL_KEY,
-    JSON.stringify(state)
-  );
-
+function openModal(id){
+ $(id).classList.add("show");
 }
 
 
-function loadLocal(){
+/* LOCAL DATA */
 
-  try{
+function loadData(){
 
-    const saved =
-      localStorage.getItem(LOCAL_KEY);
+ try{
 
-    if(saved){
+  const raw=localStorage.getItem(KEY);
 
-      const parsed =
-        JSON.parse(saved);
+  if(!raw)return structuredClone(defaultData);
 
-      state = {
+  const old=JSON.parse(raw);
 
-        ...state,
-
-        ...parsed
-
-      };
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-/* =========================================================
-   FIRESTORE
-========================================================= */
-
-async function saveCloud(){
-
-  if(!currentUser){
-
-    saveLocal();
-
-    return;
-
-  }
-
-  try{
-
-    await setDoc(
-
-      doc(
-        db,
-        "users",
-        currentUser.uid
-      ),
-
-      {
-        ...state,
-        updatedAt:Date.now()
-      },
-
-      {
-        merge:true
-      }
-
-    );
-
-    saveLocal();
-
-  }catch(error){
-
-    console.error(
-      "Cloud save failed:",
-      error
-    );
-
-    saveLocal();
-
-    toast(
-      "Cloud save failed",
-      "Your data was saved locally."
-    );
-
-  }
-
-}
-
-
-async function loadCloud(){
-
-  if(!currentUser)
-    return;
-
-  try{
-
-    const ref =
-      doc(
-        db,
-        "users",
-        currentUser.uid
-      );
-
-    const snap =
-      await getDoc(ref);
-
-    if(snap.exists()){
-
-      const cloud =
-        snap.data();
-
-      state = {
-
-        tasks:cloud.tasks || [],
-
-        subjects:
-          cloud.subjects ||
-          state.subjects,
-
-        exams:cloud.exams || [],
-
-        goals:cloud.goals || [],
-
-        revisions:
-          cloud.revisions || []
-
-      };
-
-      saveLocal();
-
-      renderAll();
-
-    }else{
-
-      await saveCloud();
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-    toast(
-      "Cloud unavailable",
-      "Using local saved data."
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   GOOGLE LOGIN
-========================================================= */
-
-async function login(){
-
-  try{
-
-    await signInWithPopup(
-      auth,
-      provider
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    toast(
-      "Google Login failed",
-      error.message
-    );
-
-  }
-
-}
-
-
-window.logout = async function(){
-
-  try{
-
-    await signOut(auth);
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-};
-
-
-onAuthStateChanged(
-  auth,
-  async user => {
-
-    currentUser = user;
-
-    renderUser();
-
-    if(user){
-
-      await loadCloud();
-
-      toast(
-        "Welcome to Study Flow",
-        `Signed in as ${user.displayName || user.email}`
-      );
-
-    }else{
-
-      loadLocal();
-
-      renderAll();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   USER UI
-========================================================= */
-
-function renderUser(){
-
-  const area =
-    document.getElementById(
-      "userArea"
-    );
-
-  if(!currentUser){
-
-    area.innerHTML = `
-
-      <button
-        class="btn primary"
-        onclick="login()"
-      >
-        🔐 Continue with Google
-      </button>
-
-    `;
-
-    return;
-
-  }
-
-  const photo =
-    currentUser.photoURL ||
-    "https://ui-avatars.com/api/?name=Study+Flow";
-
-  area.innerHTML = `
-
-    <div class="user">
-
-      <img src="${photo}">
-
-      <span>
-        ${escapeHtml(
-          currentUser.displayName ||
-          currentUser.email
-        )}
-      </span>
-
-    </div>
-
-  `;
-
-}
-
-
-window.login = login;
-
-
-/* =========================================================
-   TASKS
-========================================================= */
-
-window.openTaskModal = function(){
-
-  populateSubjectSelects();
-
-  document.getElementById(
-    "taskDate"
-  ).value =
-    todayISO();
-
-  document.getElementById(
-    "taskStart"
-  ).value = "17:00";
-
-  document.getElementById(
-    "taskEnd"
-  ).value = "18:00";
-
-  document.getElementById(
-    "taskModal"
-  ).classList.add("show");
-
-};
-
-
-window.saveTask = async function(){
-
-  const name =
-    document.getElementById(
-      "taskName"
-    ).value.trim();
-
-  const subject =
-    document.getElementById(
-      "taskSubject"
-    ).value;
-
-  const date =
-    document.getElementById(
-      "taskDate"
-    ).value;
-
-  const start =
-    document.getElementById(
-      "taskStart"
-    ).value;
-
-  const end =
-    document.getElementById(
-      "taskEnd"
-    ).value;
-
-  if(!name || !date || !start || !end){
-
-    toast(
-      "Missing information",
-      "Please enter task name, date and times."
-    );
-
-    return;
-
-  }
-
-  const task = {
-
-    id:
-      crypto.randomUUID(),
-
-    name,
-
-    subject,
-
-    date,
-
-    start,
-
-    end,
-
-    priority:
-      document.getElementById(
-        "taskPriority"
-      ).value,
-
-    type:
-      document.getElementById(
-        "taskType"
-      ).value,
-
-    notes:
-      document.getElementById(
-        "taskNotes"
-      ).value,
-
-    completed:false,
-
-    createdAt:Date.now(),
-
-    overdueNotified:false,
-
-    startNotified:false,
-
-    endNotified:false
-
+  return{
+   ...structuredClone(defaultData),
+   ...old,
+   profile:{
+    ...defaultData.profile,
+    ...(old.profile||{})
+   },
+   subjects:old.subjects?.length?old.subjects:defaultData.subjects,
+   tasks:old.tasks||[],
+   exams:old.exams||[],
+   goals:old.goals||[],
+   revisions:old.revisions||[]
   };
 
-  state.tasks.push(task);
+ }catch{
 
-  saveLocal();
+  return structuredClone(defaultData);
 
-  await saveCloud();
-
-  closeModal("taskModal");
-
-  clearTaskForm();
-
-  renderAll();
-
-  toast(
-    "Task saved",
-    `${name} added to ${date}.`
-  );
-
-};
-
-
-window.toggleTask = async function(id){
-
-  const task =
-    state.tasks.find(
-      t => t.id === id
-    );
-
-  if(!task)
-    return;
-
-  task.completed =
-    !task.completed;
-
-  saveLocal();
-
-  await saveCloud();
-
-  renderAll();
-
-};
-
-
-window.deleteTask = async function(id){
-
-  state.tasks =
-    state.tasks.filter(
-      t => t.id !== id
-    );
-
-  saveLocal();
-
-  await saveCloud();
-
-  renderAll();
-
-};
-
-
-function clearTaskForm(){
-
-  [
-    "taskName",
-    "taskNotes"
-  ].forEach(id => {
-
-    document.getElementById(id).value = "";
-
-  });
+ }
 
 }
+
+
+function saveData(){
+ localStorage.setItem(KEY,JSON.stringify(data));
+ renderAll();
+}
+
+
+/* INTRO */
+
+window.launchApp=function(){
+
+ $("intro").classList.add("launch");
+
+ setTimeout(()=>{
+  $("intro").style.display="none";
+ },700);
+
+};
+
+
+/* PAGE NAVIGATION */
+
+window.goPage=function(id,button){
+
+ document.querySelectorAll(".page")
+ .forEach(x=>x.classList.remove("active"));
+
+ $(id).classList.add("active");
+
+ document.querySelectorAll(".nav")
+ .forEach(x=>x.classList.remove("active"));
+
+ if(button)button.classList.add("active");
+
+ const names={
+  dashboard:"Dashboard",
+  timetable:"Daily Timetable",
+  tasks:"My Tasks",
+  calendar:"Calendar",
+  subjects:"Subjects",
+  exams:"Exams & Tests",
+  revision:"Revision Lab",
+  goals:"Goals",
+  community:"Student Doubts",
+  leaderboard:"VIP Chart",
+  focus:"Focus Room",
+  profile:"My Profile"
+ };
+
+ $("topGreeting").textContent=names[id]||"Study Flow";
+
+ $("sidebar").classList.remove("open");
+
+ renderAll();
+
+};
+
+
+/* TIME */
+
+function greeting(){
+
+ const h=new Date().getHours();
+
+ if(h>=5&&h<12)return"Good Morning 🌅";
+ if(h>=12&&h<17)return"Good Afternoon ☀️";
+ if(h>=17&&h<21)return"Good Evening 🌆";
+
+ return"Good Night 🌙";
+
+}
+
+
+function updateClock(){
+
+ const n=new Date();
+
+ $("liveClock").textContent=n.toLocaleTimeString(
+  undefined,
+  {
+   hour:"2-digit",
+   minute:"2-digit",
+   second:"2-digit"
+  }
+ );
+
+ $("topDate").textContent=n.toLocaleDateString(
+  undefined,
+  {
+   weekday:"long",
+   day:"numeric",
+   month:"long",
+   year:"numeric"
+  }
+ );
+
+ $("topGreeting").textContent=greeting();
+
+ $("dashGreeting").textContent=
+  `${greeting()}${data.profile.name&&data.profile.name!=="Student"?", "+data.profile.name:""} 👋`;
+
+}
+
+
+setInterval(updateClock,1000);
+
+
+/* THEME */
+
+window.toggleTheme=function(){
+
+ document.body.classList.toggle("light-mode");
+
+ if(document.body.classList.contains("light-mode")){
+
+  document.documentElement.style.setProperty("--bg","#f4f6fb");
+  document.documentElement.style.setProperty("--text","#111827");
+
+  toast("☀️ Light mode");
+
+ }else{
+
+  document.documentElement.style.setProperty("--bg","#070812");
+  document.documentElement.style.setProperty("--text","#f8f9ff");
+
+  toast("🌙 Dark mode");
+
+ }
+
+};
+
+
+/* NOTIFICATIONS */
+
+window.requestNotifications=function(){
+
+ if(!("Notification"in window)){
+
+  toast("This browser does not support notifications.");
+
+  return;
+
+ }
+
+ Notification.requestPermission().then(permission=>{
+
+  toast(
+   permission==="granted"
+   ?"🔔 Notifications enabled"
+   :"Notifications were not enabled"
+  );
+
+ });
+
+};
+
+
+/* SUBJECT DROPDOWNS */
+
+function fillSubjectSelects(){
+
+ const options=data.subjects.map(s=>
+  `<option value="${s.id}">
+   ${escapeHTML(s.icon)} ${escapeHTML(s.name)}
+  </option>`
+ ).join("");
+
+ ["taskSubject","examSubject","revisionSubject","postSubject"]
+ .forEach(id=>{
+  if($(id))$(id).innerHTML=options;
+ });
+
+}
+
+
+/* TASK */
+
+window.openTask=function(date=today()){
+
+ fillSubjectSelects();
+
+ $("taskDate").value=date;
+ $("taskStart").value="17:00";
+ $("taskEnd").value="18:00";
+
+ $("taskName").value="";
+ $("taskNotes").value="";
+
+ openModal("taskModal");
+
+};
+
+
+window.saveTask=function(){
+
+ const name=$("taskName").value.trim();
+ const date=$("taskDate").value;
+ const start=$("taskStart").value;
+ const end=$("taskEnd").value;
+
+ if(!name||!date||!start||!end){
+
+  toast("⚠️ Fill task name, date and time.");
+
+  return;
+
+ }
+
+ if(end<=start){
+
+  toast("⚠️ End time must be after start time.");
+
+  return;
+
+ }
+
+ const task={
+  id:uid(),
+  name,
+  subject:$("taskSubject").value,
+  type:$("taskType").value,
+  date,
+  start,
+  end,
+  priority:$("taskPriority").value,
+  repeat:$("taskRepeat").value,
+  notes:$("taskNotes").value,
+  done:false,
+  notified:false,
+  created:Date.now()
+ };
+
+ data.tasks.push(task);
+
+ /* repeat */
+ if(task.repeat==="Daily"||task.repeat==="Weekdays"){
+
+  for(let i=1;i<=6;i++){
+
+   const d=new Date(date+"T12:00");
+   d.setDate(d.getDate()+i);
+
+   if(task.repeat==="Weekdays"&&(d.getDay()===0||d.getDay()===6))continue;
+
+   data.tasks.push({
+    ...task,
+    id:uid(),
+    date:d.toISOString().slice(0,10),
+    notified:false
+   });
+
+  }
+
+ }
+
+ saveData();
+
+ closeModal("taskModal");
+
+ toast("✅ Task saved permanently.");
+
+};
+
+
+window.toggleTask=function(id){
+
+ const task=data.tasks.find(x=>x.id===id);
+
+ if(!task)return;
+
+ task.done=!task.done;
+
+ if(task.done){
+
+  data.profile.points=(data.profile.points||0)+5;
+
+  toast("🎉 Task completed! +5 points");
+
+ }else{
+
+  toast("↩️ Task moved back to pending.");
+
+ }
+
+ saveData();
+
+};
+
+
+window.deleteTask=function(id){
+
+ data.tasks=data.tasks.filter(x=>x.id!==id);
+
+ saveData();
+
+ toast("🗑️ Task deleted.");
+
+};
 
 
 function taskStatus(task){
 
-  if(task.completed)
-    return "completed";
+ if(task.done)return"done";
 
-  const now =
-    new Date();
+ const now=new Date();
 
-  const start =
-    new Date(
-      `${task.date}T${task.start}`
-    );
+ const start=new Date(task.date+"T"+task.start);
+ const end=new Date(task.date+"T"+task.end);
 
-  const end =
-    new Date(
-      `${task.date}T${task.end}`
-    );
+ if(now>end)return"overdue";
 
-  if(now < start)
-    return "upcoming";
+ if(now>=start&&now<=end)return"live";
 
-  if(now >= start && now <= end)
-    return "live";
-
-  if(now > end)
-    return "overdue";
-
-  return "upcoming";
+ return"upcoming";
 
 }
-
-
-/* =========================================================
-   LIVE OVERDUE ENGINE
-========================================================= */
-
-async function checkTasksRealtime(){
-
-  let changed = false;
-
-  const now =
-    new Date();
-
-  for(const task of state.tasks){
-
-    if(task.completed)
-      continue;
-
-    const status =
-      taskStatus(task);
-
-    if(
-      status === "overdue" &&
-      !task.overdueNotified
-    ){
-
-      task.overdueNotified =
-        true;
-
-      changed = true;
-
-      notify(
-        "🔴 Task Overdue",
-        `${task.name} was not completed.`
-      );
-
-      toast(
-        "🔴 OVERDUE",
-        `${task.name} is now overdue.`
-      );
-
-    }
-
-    if(
-      status === "live" &&
-      !task.startNotified
-    ){
-
-      const start =
-        new Date(
-          `${task.date}T${task.start}`
-        );
-
-      if(
-        now >= start
-      ){
-
-        task.startNotified =
-          true;
-
-        changed = true;
-
-        notify(
-          "▶️ Task Started",
-          `${task.name} has started.`
-        );
-
-      }
-
-    }
-
-  }
-
-  if(changed){
-
-    saveLocal();
-
-    await saveCloud();
-
-    renderAll();
-
-  }
-
-}
-
-
-/* =========================================================
-   NOTIFICATIONS
-========================================================= */
-
-window.enableNotifications =
-async function(){
-
-  if(!("Notification" in window)){
-
-    toast(
-      "Not supported",
-      "This browser does not support notifications."
-    );
-
-    return;
-
-  }
-
-  const permission =
-    await Notification.requestPermission();
-
-  if(permission === "granted"){
-
-    new Notification(
-      "Study Flow 🔔",
-      {
-        body:"Notifications are enabled successfully."
-      }
-    );
-
-    toast(
-      "Notifications enabled",
-      "Study Flow can now send reminders while the page is open."
-    );
-
-  }else{
-
-    toast(
-      "Notifications blocked",
-      "Allow notifications from your browser site settings."
-    );
-
-  }
-
-};
-
-
-function notify(title,body){
-
-  if(
-    "Notification" in window &&
-    Notification.permission === "granted"
-  ){
-
-    try{
-
-      new Notification(
-        title,
-        {
-          body,
-          icon:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%236d5dfc'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='55'%3E📚%3C/text%3E%3C/svg%3E"
-        }
-      );
-
-    }catch(error){
-
-      console.error(error);
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   TASK RENDER
-========================================================= */
-
-window.renderTasks = function(){
-
-  const container =
-    document.getElementById(
-      "taskList"
-    );
-
-  const search =
-    (
-      document.getElementById(
-        "taskSearch"
-      )?.value || ""
-    ).toLowerCase();
-
-  const filter =
-    document.getElementById(
-      "taskFilter"
-    )?.value || "all";
-
-  let tasks =
-    [...state.tasks];
-
-  tasks =
-    tasks.filter(
-      t =>
-        t.name
-          .toLowerCase()
-          .includes(search)
-    );
-
-  tasks =
-    tasks.filter(
-      t => {
-
-        const status =
-          taskStatus(t);
-
-        if(filter === "all")
-          return true;
-
-        if(filter === "completed")
-          return t.completed;
-
-        if(filter === "overdue")
-          return status === "overdue";
-
-        if(filter === "today")
-          return t.date === todayISO();
-
-        if(filter === "upcoming")
-          return status === "upcoming";
-
-        return true;
-
-      }
-    );
-
-  tasks.sort(
-    (a,b) =>
-      `${a.date}T${a.start}`
-      .localeCompare(
-        `${b.date}T${b.start}`
-      )
-  );
-
-  if(!tasks.length){
-
-    container.innerHTML =
-      `<div style="color:#8d9aad;padding:20px;text-align:center">
-        No tasks found.
-      </div>`;
-
-    return;
-
-  }
-
-  container.innerHTML =
-    tasks
-      .map(taskHTML)
-      .join("");
-
-};
 
 
 function taskHTML(task){
 
-  const status =
-    taskStatus(task);
+ const status=taskStatus(task);
 
-  const subject =
-    state.subjects.find(
-      s => s.id === task.subject
-    );
+ const subject=data.subjects.find(
+  s=>s.id===task.subject
+ );
 
-  const color =
-    subject?.color ||
-    "#6d5dfc";
+ const color=subject?.color||"#7657ff";
 
-  let badge = "";
+ let badge="";
 
-  if(status === "overdue")
-    badge =
-      `<span class="badge red">🔴 OVERDUE</span>`;
+ if(status==="live")
+  badge=`<span class="badge live">● LIVE</span>`;
 
-  else if(status === "live")
-    badge =
-      `<span class="badge green">● LIVE</span>`;
+ if(status==="overdue")
+  badge=`<span class="badge overdue">OVERDUE</span>`;
 
-  else if(task.completed)
-    badge =
-      `<span class="badge green">✓ DONE</span>`;
+ if(status==="done")
+  badge=`<span class="badge done">✓ DONE</span>`;
 
-  else
-    badge =
-      `<span class="badge blue">UPCOMING</span>`;
+ if(status==="upcoming")
+  badge=`<span class="badge upcoming">UPCOMING</span>`;
 
-  return `
+ return`
 
-  <div class="task ${status}">
+ <div class="task">
 
-    <div
-      class="task-bar"
-      style="background:${color}"
-    ></div>
+  <i class="task-line" style="background:${color}"></i>
 
-    <div>
+  <div class="task-main">
 
-      <div class="task-title">
+   <div class="task-title">
+    ${escapeHTML(task.name)}
+    ${badge}
+   </div>
 
-        ${escapeHtml(task.name)}
+   <div class="task-meta">
+    ${escapeHTML(subject?.icon||"📚")}
+    ${escapeHTML(subject?.name||"General")}
+    · ${task.date}
+    · ${task.start}–${task.end}
+    · ${escapeHTML(task.type)}
+    · ${escapeHTML(task.priority)}
+   </div>
 
-        ${badge}
-
-      </div>
-
-      <div class="task-meta">
-
-        ${escapeHtml(
-          subject?.name || "General"
-        )}
-
-        ·
-
-        ${task.date}
-
-        ·
-
-        ${task.start} – ${task.end}
-
-        ·
-
-        ${task.type}
-
-      </div>
-
-    </div>
-
-    <div class="task-actions">
-
-      <button
-        class="btn"
-        onclick="toggleTask('${task.id}')"
-      >
-        ${task.completed ? "↩️" : "✓"}
-      </button>
-
-      <button
-        class="btn danger"
-        onclick="deleteTask('${task.id}')"
-      >
-        🗑️
-      </button>
-
-    </div>
+   ${
+    task.notes
+    ?`<div class="task-meta">📝 ${escapeHTML(task.notes)}</div>`
+    :""
+   }
 
   </div>
 
-  `;
+  <div class="task-actions">
+
+   <button class="btn" onclick="toggleTask('${task.id}')">
+    ${task.done?"↩":"✓"}
+   </button>
+
+   <button class="btn red" onclick="deleteTask('${task.id}')">
+    ×
+   </button>
+
+  </div>
+
+ </div>
+
+ `;
 
 }
 
 
-/* =========================================================
-   DASHBOARD
-========================================================= */
+/* TASK LIST */
 
-function renderDashboard(){
+window.renderTasks=function(){
 
-  const today =
-    todayISO();
+ const query=($("taskSearch")?.value||"").toLowerCase();
 
-  const todays =
-    state.tasks.filter(
-      t => t.date === today
-    );
+ const filter=$("taskFilter")?.value||"all";
 
-  const completed =
-    todays.filter(
-      t => t.completed
-    );
+ let tasks=[...data.tasks];
 
-  const overdue =
-    state.tasks.filter(
-      t =>
-        taskStatus(t) ===
-        "overdue"
-    );
+ tasks=tasks.filter(t=>
+  t.name.toLowerCase().includes(query)
+ );
 
-  document.getElementById(
-    "statTasks"
-  ).textContent =
-    todays.length;
+ tasks=tasks.filter(t=>{
 
-  document.getElementById(
-    "statCompleted"
-  ).textContent =
-    completed.length;
+  const s=taskStatus(t);
 
-  document.getElementById(
-    "statOverdue"
-  ).textContent =
-    overdue.length;
+  if(filter==="all")return true;
+  if(filter==="today")return t.date===today();
+  if(filter==="live")return s==="live";
+  if(filter==="overdue")return s==="overdue";
+  if(filter==="done")return t.done;
+  if(filter==="upcoming")return s==="upcoming";
 
-  document.getElementById(
-    "statGoals"
-  ).textContent =
-    state.goals.length;
+ });
 
-  document.getElementById(
-    "todayText"
-  ).textContent =
-    new Date().toLocaleDateString(
-      undefined,
-      {
-        weekday:"long",
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-      }
-    );
+ tasks.sort((a,b)=>
+  (a.date+a.start).localeCompare(b.date+b.start)
+ );
 
-  document.getElementById(
-    "liveTasks"
-  ).innerHTML =
-    todays.length
-      ? todays.map(taskHTML).join("")
-      : `<div style="color:#8d9aad">
-          No tasks scheduled for today.
-        </div>`;
+ $("taskList").innerHTML=
 
-  document.getElementById(
-    "overdueTasks"
-  ).innerHTML =
-    overdue.length
-      ? overdue.map(taskHTML).join("")
-      : `<div style="color:#58efb5">
-          🎉 No overdue tasks!
-        </div>`;
+  tasks.length
 
-  const smart = [];
+  ?tasks.map(taskHTML).join("")
 
-  if(overdue.length)
-    smart.push(
-      `🔴 You have ${overdue.length} overdue task(s). Clear them first.`
-    );
-
-  const upcomingExam =
-    [...state.exams]
-      .sort(
-        (a,b) =>
-          a.date.localeCompare(b.date)
-      )[0];
-
-  if(upcomingExam)
-    smart.push(
-      `📝 Upcoming ${upcomingExam.type} exam: ${upcomingExam.name}.`
-    );
-
-  if(!overdue.length)
-    smart.push(
-      "🟢 Great! Your schedule is under control."
-    );
-
-  document.getElementById(
-    "smartStudy"
-  ).innerHTML =
-    smart
-      .map(
-        x =>
-          `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
-            ${escapeHtml(x)}
-          </div>`
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   SUBJECTS
-========================================================= */
-
-function populateSubjectSelects(){
-
-  const ids = [
-    "taskSubject",
-    "examSubject",
-    "revisionSubject"
-  ];
-
-  ids.forEach(id => {
-
-    const el =
-      document.getElementById(id);
-
-    if(!el)
-      return;
-
-    el.innerHTML =
-      state.subjects
-        .map(
-          s =>
-            `<option value="${s.id}">
-              ${escapeHtml(s.name)}
-            </option>`
-        )
-        .join("");
-
-  });
-
-}
-
-
-window.openSubjectModal =
-function(){
-
-  document.getElementById(
-    "subjectModal"
-  ).classList.add("show");
+  :`<div class="muted" style="padding:25px;text-align:center">
+    No tasks found.
+   </div>`;
 
 };
 
 
-window.saveSubject =
-async function(){
-
-  const name =
-    document.getElementById(
-      "subjectName"
-    ).value.trim();
-
-  const color =
-    document.getElementById(
-      "subjectColor"
-    ).value;
-
-  if(!name)
-    return;
-
-  state.subjects.push({
-
-    id:crypto.randomUUID(),
-
-    name,
-
-    color
-
-  });
-
-  saveLocal();
-
-  await saveCloud();
-
-  closeModal("subjectModal");
-
-  document.getElementById(
-    "subjectName"
-  ).value = "";
-
-  renderAll();
-
-};
-
-
-function renderSubjects(){
-
-  const el =
-    document.getElementById(
-      "subjectList"
-    );
-
-  el.innerHTML =
-    state.subjects
-      .map(
-        s => {
-
-          const total =
-            state.tasks.filter(
-              t => t.subject === s.id
-            ).length;
-
-          const done =
-            state.tasks.filter(
-              t =>
-                t.subject === s.id &&
-                t.completed
-            ).length;
-
-          const percent =
-            total
-              ? Math.round(
-                  done / total * 100
-                )
-              : 0;
-
-          return `
-
-          <div class="subject">
-
-            <div>
-
-              <div class="subject-name">
-
-                <span
-                  class="dot"
-                  style="background:${s.color}"
-                ></span>
-
-                ${escapeHtml(s.name)}
-
-              </div>
-
-              <div
-                style="color:#8793a7;font-size:12px;margin-top:5px"
-              >
-                ${total} tasks · ${percent}% complete
-              </div>
-
-            </div>
-
-            <div>${percent}%</div>
-
-          </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   EXAMS
-========================================================= */
-
-window.openExamModal =
-function(){
-
-  populateSubjectSelects();
-
-  document.getElementById(
-    "examDate"
-  ).value =
-    todayISO();
-
-  document.getElementById(
-    "examModal"
-  ).classList.add("show");
-
-};
-
-
-window.saveExam =
-async function(){
-
-  const exam = {
-
-    id:crypto.randomUUID(),
-
-    name:
-      document.getElementById(
-        "examName"
-      ).value.trim(),
-
-    subject:
-      document.getElementById(
-        "examSubject"
-      ).value,
-
-    type:
-      document.getElementById(
-        "examType"
-      ).value,
-
-    date:
-      document.getElementById(
-        "examDate"
-      ).value,
-
-    marks:
-      Number(
-        document.getElementById(
-          "examMarks"
-        ).value
-      ),
-
-    target:
-      Number(
-        document.getElementById(
-          "examTarget"
-        ).value
-      ),
-
-    chapters:
-      document.getElementById(
-        "examChapters"
-      ).value
-
-  };
-
-  if(!exam.name || !exam.date){
-
-    toast(
-      "Missing information",
-      "Enter exam name and date."
-    );
-
-    return;
-
-  }
-
-  state.exams.push(exam);
-
-  saveLocal();
-
-  await saveCloud();
-
-  closeModal("examModal");
-
-  renderAll();
-
-  toast(
-    "Exam saved",
-    `${exam.type} exam added.`
+/* TIMETABLE */
+
+function renderTimetable(){
+
+ const tasks=data.tasks
+ .filter(t=>t.date===today())
+ .sort((a,b)=>a.start.localeCompare(b.start));
+
+ $("timetableDate").textContent=
+  new Date().toLocaleDateString(
+   undefined,
+   {
+    weekday:"long",
+    day:"numeric",
+    month:"long"
+   }
   );
 
-};
+ $("timetableList").innerHTML=
 
+ tasks.length
 
-function renderExams(){
+ ?tasks.map(taskHTML).join("")
 
-  const el =
-    document.getElementById(
-      "examList"
-    );
-
-  if(!state.exams.length){
-
-    el.innerHTML =
-      `<div style="color:#8d9aad">
-        No exams added yet.
-      </div>`;
-
-    return;
-
-  }
-
-  el.innerHTML =
-    state.exams
-      .sort(
-        (a,b) =>
-          a.date.localeCompare(b.date)
-      )
-      .map(
-        exam => {
-
-          const days =
-            Math.ceil(
-              (
-                new Date(
-                  exam.date
-                ) -
-                new Date()
-              ) /
-              86400000
-            );
-
-          const subject =
-            state.subjects.find(
-              s => s.id === exam.subject
-            );
-
-          return `
-
-          <div class="task">
-
-            <div
-              class="task-bar"
-              style="background:#42a5ff"
-            ></div>
-
-            <div>
-
-              <div class="task-title">
-
-                ${escapeHtml(exam.name)}
-
-                <span class="badge blue">
-                  ${escapeHtml(exam.type)}
-                </span>
-
-              </div>
-
-              <div class="task-meta">
-
-                ${escapeHtml(subject?.name || "")}
-
-                ·
-
-                ${exam.date}
-
-                ·
-
-                ${Math.max(0,days)} days remaining
-
-                ·
-
-                Target ${exam.target || "-"} / ${exam.marks || "-"}
-
-              </div>
-
-            </div>
-
-            <div>
-
-              <span class="badge green">
-                📝 TEST
-              </span>
-
-            </div>
-
-          </div>
-
-          `;
-
-        }
-      )
-      .join("");
+ :`<div style="padding:35px;text-align:center">
+    <div style="font-size:35px">🗓️</div>
+    <h3 style="margin-top:10px">Your timetable is empty.</h3>
+    <p class="muted" style="margin-top:6px">
+     Add your first study slot.
+    </p>
+    <button class="btn primary" style="margin-top:15px" onclick="openTask()">
+     ＋ Plan First Task
+    </button>
+   </div>`;
 
 }
 
 
-/* =========================================================
-   GOALS
-========================================================= */
-
-window.openGoalModal =
-function(){
-
-  document.getElementById(
-    "goalDate"
-  ).value =
-    todayISO();
-
-  document.getElementById(
-    "goalModal"
-  ).classList.add("show");
-
-};
-
-
-window.saveGoal =
-async function(){
-
-  const goal = {
-
-    id:crypto.randomUUID(),
-
-    name:
-      document.getElementById(
-        "goalName"
-      ).value.trim(),
-
-    target:
-      document.getElementById(
-        "goalTarget"
-      ).value,
-
-    date:
-      document.getElementById(
-        "goalDate"
-      ).value,
-
-    reason:
-      document.getElementById(
-        "goalReason"
-      ).value,
-
-    progress:0
-
-  };
-
-  if(!goal.name)
-    return;
-
-  state.goals.push(goal);
-
-  saveLocal();
-
-  await saveCloud();
-
-  closeModal("goalModal");
-
-  renderAll();
-
-};
-
-
-function renderGoals(){
-
-  const el =
-    document.getElementById(
-      "goalList"
-    );
-
-  if(!state.goals.length){
-
-    el.innerHTML =
-      `<div style="color:#8d9aad">
-        No goals yet. Set your first goal.
-      </div>`;
-
-    return;
-
-  }
-
-  el.innerHTML =
-    state.goals
-      .map(
-        g => `
-
-        <div class="card" style="margin-bottom:10px">
-
-          <div style="display:flex;justify-content:space-between">
-
-            <div>
-
-              <h3>
-                🎯 ${escapeHtml(g.name)}
-              </h3>
-
-              <div class="task-meta">
-                Target: ${escapeHtml(g.target)}
-                · Deadline: ${g.date}
-              </div>
-
-            </div>
-
-            <strong>
-              ${g.progress || 0}%
-            </strong>
-
-          </div>
-
-          <div
-            style="height:9px;background:#202c40;border-radius:20px;margin-top:15px;overflow:hidden"
-          >
-            <div
-              style="width:${g.progress || 0}%;height:100%;background:linear-gradient(90deg,#6d5dfc,#42a5ff)"
-            ></div>
-          </div>
-
-        </div>
-
-        `
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   REVISION
-========================================================= */
-
-window.openRevisionModal =
-function(){
-
-  populateSubjectSelects();
-
-  document.getElementById(
-    "revisionDate"
-  ).value =
-    todayISO();
-
-  document.getElementById(
-    "revisionModal"
-  ).classList.add("show");
-
-};
-
-
-window.saveRevision =
-async function(){
-
-  const revision = {
-
-    id:crypto.randomUUID(),
-
-    subject:
-      document.getElementById(
-        "revisionSubject"
-      ).value,
-
-    date:
-      document.getElementById(
-        "revisionDate"
-      ).value,
-
-    topic:
-      document.getElementById(
-        "revisionTopic"
-      ).value.trim(),
-
-    round:
-      document.getElementById(
-        "revisionRound"
-      ).value,
-
-    completed:false
-
-  };
-
-  if(!revision.topic)
-    return;
-
-  state.revisions.push(revision);
-
-  saveLocal();
-
-  await saveCloud();
-
-  closeModal("revisionModal");
-
-  renderAll();
-
-};
-
-
-function renderRevisions(){
-
-  const el =
-    document.getElementById(
-      "revisionList"
-    );
-
-  if(!state.revisions.length){
-
-    el.innerHTML =
-      `<div style="color:#8d9aad">
-        No revision sessions yet.
-      </div>`;
-
-    return;
-
-  }
-
-  el.innerHTML =
-    state.revisions
-      .map(
-        r => {
-
-          const subject =
-            state.subjects.find(
-              s => s.id === r.subject
-            );
-
-          return `
-
-          <div class="task">
-
-            <div
-              class="task-bar"
-              style="background:#20d995"
-            ></div>
-
-            <div>
-
-              <div class="task-title">
-
-                🔁 ${escapeHtml(r.topic)}
-
-              </div>
-
-              <div class="task-meta">
-
-                ${escapeHtml(subject?.name || "")}
-
-                ·
-
-                ${r.date}
-
-                ·
-
-                ${escapeHtml(r.round)}
-
-              </div>
-
-            </div>
-
-          </div>
-
-          `;
-
-        }
-      )
-      .join("");
-
-}
-
-
-/* =========================================================
-   CALENDAR
-========================================================= */
-
-window.changeMonth =
-function(delta){
-
-  calendarDate.setMonth(
-    calendarDate.getMonth() + delta
+/* CALENDAR */
+
+window.changeMonth=function(value){
+
+ calendarDate=
+  new Date(
+   calendarDate.getFullYear(),
+   calendarDate.getMonth()+value,
+   1
   );
 
-  renderCalendar();
+ renderCalendar();
+
+};
+
+
+window.todayMonth=function(){
+
+ calendarDate=new Date();
+
+ renderCalendar();
 
 };
 
 
 function renderCalendar(){
 
-  const year =
-    calendarDate.getFullYear();
+ const y=calendarDate.getFullYear();
+ const m=calendarDate.getMonth();
 
-  const month =
-    calendarDate.getMonth();
+ const first=new Date(y,m,1);
+ const days=new Date(y,m+1,0).getDate();
 
-  document.getElementById(
-    "calendarTitle"
-  ).textContent =
-    calendarDate.toLocaleDateString(
-      undefined,
-      {
-        month:"long",
-        year:"numeric"
-      }
-    );
-
-  const grid =
-    document.getElementById(
-      "calendarGrid"
-    );
-
-  const first =
-    new Date(
-      year,
-      month,
-      1
-    );
-
-  const last =
-    new Date(
-      year,
-      month + 1,
-      0
-    );
-
-  let html = "";
-
-  [
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
-  ].forEach(
-    day =>
-      html +=
-        `<div class="day-name">${day}</div>`
+ $("calendarTitle").textContent=
+  calendarDate.toLocaleDateString(
+   undefined,
+   {
+    month:"long",
+    year:"numeric"
+   }
   );
 
-  for(
-    let i=0;
-    i<first.getDay();
-    i++
-  ){
+ let html="";
 
-    html +=
-      `<div></div>`;
+ ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+ .forEach(day=>{
+  html+=`<div class="cal-name">${day}</div>`;
+ });
+
+ for(let i=0;i<first.getDay();i++)
+  html+="<div></div>";
+
+ for(let d=1;d<=days;d++){
+
+  const date=
+   `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+
+  const tasks=data.tasks.filter(
+   t=>t.date===date
+  );
+
+  html+=`
+
+   <div class="day ${date===today()?"today":""}"
+        onclick="openTask('${date}')">
+
+    <div class="daynum">${d}</div>
+
+    ${
+     tasks.slice(0,5).map(t=>
+      `<div class="event">${escapeHTML(t.name)}</div>`
+     ).join("")
+    }
+
+    ${
+     tasks.length>5
+     ?`<div class="muted">+${tasks.length-5} more</div>`
+     :""
+    }
+
+   </div>
+
+  `;
+
+ }
+
+ $("calendarGrid").innerHTML=html;
+
+}
+
+
+/* SUBJECTS */
+
+window.openSubject=function(){
+
+ $("subjectName").value="";
+ $("subjectIcon").value="📘";
+
+ openModal("subjectModal");
+
+};
+
+
+window.saveSubject=function(){
+
+ const name=$("subjectName").value.trim();
+
+ if(!name){
+
+  toast("Enter subject name.");
+
+  return;
+
+ }
+
+ if(
+  data.subjects.some(
+   s=>s.name.toLowerCase()===name.toLowerCase()
+  )
+ ){
+
+  toast("That subject already exists.");
+
+  return;
+
+ }
+
+ data.subjects.push({
+
+  id:uid(),
+  name,
+  color:$("subjectColor").value,
+  icon:$("subjectIcon").value||"📘"
+
+ });
+
+ saveData();
+
+ closeModal("subjectModal");
+
+ toast("📚 Subject created.");
+
+};
+
+
+window.deleteSubject=function(id){
+
+ if(data.subjects.length<=1){
+
+  toast("Keep at least one subject.");
+
+  return;
+
+ }
+
+ data.subjects=
+  data.subjects.filter(s=>s.id!==id);
+
+ saveData();
+
+};
+
+
+function renderSubjects(){
+
+ $("subjectGrid").innerHTML=
+
+ data.subjects.map(subject=>{
+
+  const tasks=data.tasks.filter(
+   t=>t.subject===subject.id
+  );
+
+  const completed=tasks.filter(
+   t=>t.done
+  ).length;
+
+  const percent=
+   tasks.length
+   ?Math.round(completed/tasks.length*100)
+   :0;
+
+  return`
+
+  <div class="subject">
+
+   <div>
+    <span
+     class="subject-dot"
+     style="background:${subject.color}">
+    </span>
+
+    <b>
+     ${escapeHTML(subject.icon)}
+     ${escapeHTML(subject.name)}
+    </b>
+   </div>
+
+   <div class="muted" style="margin-top:13px">
+    ${tasks.length} tasks · ${completed} completed
+   </div>
+
+   <div class="progress">
+    <i
+     style="width:${percent}%;background:${subject.color}">
+    </i>
+   </div>
+
+   <div style="display:flex;gap:7px;margin-top:13px">
+
+    <button class="btn"
+     onclick="openTask()">
+     ＋ Task
+    </button>
+
+    <button class="btn red"
+     onclick="deleteSubject('${subject.id}')">
+     Delete
+    </button>
+
+   </div>
+
+  </div>
+
+  `;
+
+ }).join("");
+
+}
+
+
+/* EXAMS */
+
+window.openExam=function(){
+
+ fillSubjectSelects();
+
+ $("examDate").value=today();
+
+ openModal("examModal");
+
+};
+
+
+window.saveExam=function(){
+
+ const name=$("examName").value.trim();
+
+ if(!name){
+
+  toast("Enter exam name.");
+
+  return;
+
+ }
+
+ data.exams.push({
+
+  id:uid(),
+  name,
+  subject:$("examSubject").value,
+  type:$("examType").value,
+  date:$("examDate").value,
+  marks:+$("examMarks").value||100,
+  target:+$("examTarget").value||95,
+  syllabus:$("examSyllabus").value,
+  created:Date.now()
+
+ });
+
+ saveData();
+
+ closeModal("examModal");
+
+ toast("📝 Exam saved.");
+
+};
+
+
+window.deleteExam=function(id){
+
+ data.exams=
+  data.exams.filter(e=>e.id!==id);
+
+ saveData();
+
+};
+
+
+function renderExams(){
+
+ const exams=
+  [...data.exams].sort(
+   (a,b)=>a.date.localeCompare(b.date)
+  );
+
+ $("examList").innerHTML=
+
+ exams.length
+
+ ?exams.map(exam=>{
+
+  const subject=
+   data.subjects.find(
+    s=>s.id===exam.subject
+   );
+
+  return`
+
+   <div class="task">
+
+    <i class="task-line"
+       style="background:${subject?.color||"#7657ff"}">
+    </i>
+
+    <div class="task-main">
+
+     <div class="task-title">
+      📝 ${escapeHTML(exam.name)}
+     </div>
+
+     <div class="task-meta">
+      ${escapeHTML(subject?.name||"General")}
+      · ${escapeHTML(exam.type)}
+      · ${exam.date}
+      · Target ${exam.target}/${exam.marks}
+     </div>
+
+     ${
+      exam.syllabus
+      ?`<div class="task-meta">${escapeHTML(exam.syllabus)}</div>`
+      :""
+     }
+
+    </div>
+
+    <button
+     class="btn red"
+     onclick="deleteExam('${exam.id}')">
+     Delete
+    </button>
+
+   </div>
+
+  `;
+
+ }).join("")
+
+ :`<div class="muted" style="padding:25px">
+   No exams added yet.
+  </div>`;
+
+}
+
+
+/* GOALS */
+
+window.openGoal=function(){
+
+ const g=data.goals[0]||{};
+
+ $("goalName").value=
+  g.name||data.profile.goal||"";
+
+ $("goalTarget").value=
+  g.target||95;
+
+ $("goalProgress").value=
+  g.progress||0;
+
+ $("goalDate").value=
+  g.date||"";
+
+ $("goalReason").value=
+  g.reason||"";
+
+ openModal("goalModal");
+
+};
+
+
+window.saveGoal=function(){
+
+ const name=$("goalName").value.trim();
+
+ if(!name){
+
+  toast("Enter your goal.");
+
+  return;
+
+ }
+
+ const goal={
+
+  id:data.goals[0]?.id||uid(),
+  name,
+  target:+$("goalTarget").value||95,
+  progress:Math.min(
+   100,
+   Math.max(0,+$("goalProgress").value||0)
+  ),
+  date:$("goalDate").value,
+  reason:$("goalReason").value
+
+ };
+
+ data.goals[0]=goal;
+ data.profile.goal=name;
+
+ saveData();
+
+ closeModal("goalModal");
+
+ toast("🎯 Goal saved.");
+
+};
+
+
+function renderGoals(){
+
+ $("goalList").innerHTML=
+
+ data.goals.length
+
+ ?data.goals.map(goal=>`
+
+  <div class="goal">
+
+   <div class="eyebrow">TARGET</div>
+
+   <div class="goal-number">
+    ${goal.target}%
+   </div>
+
+   <h2>${escapeHTML(goal.name)}</h2>
+
+   <div class="progress">
+    <i style="width:${goal.progress}%"></i>
+   </div>
+
+   <div class="muted" style="margin-top:9px">
+    ${goal.progress}% progress
+    · Deadline ${goal.date||"Not set"}
+   </div>
+
+   ${
+    goal.reason
+    ?`<p style="color:#aeb6c9;font-size:11px;margin-top:10px">
+      ${escapeHTML(goal.reason)}
+     </p>`
+    :""
+   }
+
+  </div>
+
+ `).join("")
+
+ :`<div class="card">
+   <div class="muted">
+    No goal yet. Set something meaningful like
+    “95% in UP Board”.
+   </div>
+  </div>`;
+
+}
+
+
+/* REVISION */
+
+window.openRevision=function(){
+
+ fillSubjectSelects();
+
+ $("revisionDate").value=today();
+
+ openModal("revisionModal");
+
+};
+
+
+window.saveRevision=function(){
+
+ const topic=$("revisionTopic").value.trim();
+
+ if(!topic){
+
+  toast("Enter chapter/topic.");
+
+  return;
+
+ }
+
+ data.revisions.push({
+
+  id:uid(),
+  subject:$("revisionSubject").value,
+  date:$("revisionDate").value,
+  topic,
+  round:$("revisionRound").value,
+  done:false
+
+ });
+
+ saveData();
+
+ closeModal("revisionModal");
+
+ toast("🔁 Revision added.");
+
+};
+
+
+window.deleteRevision=function(id){
+
+ data.revisions=
+  data.revisions.filter(r=>r.id!==id);
+
+ saveData();
+
+};
+
+
+function renderRevisions(){
+
+ $("revisionList").innerHTML=
+
+ data.revisions.length
+
+ ?data.revisions.map(revision=>{
+
+  const subject=
+   data.subjects.find(
+    s=>s.id===revision.subject
+   );
+
+  return`
+
+   <div class="task">
+
+    <i class="task-line"
+       style="background:${subject?.color||"#24d69c"}">
+    </i>
+
+    <div class="task-main">
+
+     <div class="task-title">
+      🔁 ${escapeHTML(revision.topic)}
+     </div>
+
+     <div class="task-meta">
+      ${escapeHTML(subject?.name||"")}
+      · ${revision.date}
+      · ${escapeHTML(revision.round)}
+     </div>
+
+    </div>
+
+    <button
+     class="btn"
+     onclick="deleteRevision('${revision.id}')">
+     ✓
+    </button>
+
+   </div>
+
+  `;
+
+ }).join("")
+
+ :`<div class="muted" style="padding:25px">
+   No revision sessions yet.
+  </div>`;
+
+}
+
+
+/* PROFILE */
+
+window.editProfile=function(){
+
+ const p=data.profile;
+
+ $("editName").value=p.name||"";
+ $("editAge").value=p.age||"";
+ $("editClass").value=p.className||"";
+ $("editBoard").value=p.board||"UP Board";
+ $("editPrep").value=p.preparation||"School";
+ $("editGoal").value=p.goal||"";
+
+ openModal("profileModal");
+
+};
+
+
+window.saveProfile=function(){
+
+ data.profile.name=
+  $("editName").value.trim()||"Student";
+
+ data.profile.age=
+  $("editAge").value;
+
+ data.profile.className=
+  $("editClass").value.trim();
+
+ data.profile.board=
+  $("editBoard").value;
+
+ data.profile.preparation=
+  $("editPrep").value;
+
+ data.profile.goal=
+  $("editGoal").value.trim();
+
+ saveData();
+
+ closeModal("profileModal");
+
+ toast("👤 Profile updated.");
+
+};
+
+
+function renderProfile(){
+
+ const p=data.profile;
+
+ $("profileName").textContent=
+  p.name||"Student";
+
+ $("profileAge").textContent=
+  p.age||"Not set";
+
+ $("profileClass").textContent=
+  p.className||"Not set";
+
+ $("profileBoard").textContent=
+  p.board||"Not set";
+
+ $("profilePrep").textContent=
+  p.preparation||"Not set";
+
+ $("profileGoal").textContent=
+  p.goal||"Not set";
+
+ $("profileStreak").textContent=
+  `${getStreak()} 🔥`;
+
+ $("profileEmail").textContent=
+  currentUser?.email||"Not connected";
+
+ const image=
+  currentUser?.photoURL||
+  `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name||"Student")}&background=7657ff&color=fff`;
+
+ $("profileImage").src=image;
+
+}
+
+
+/* GOOGLE AUTH */
+
+window.loginGoogle=async function(){
+
+ try{
+
+  await signInWithPopup(
+   auth,
+   provider
+  );
+
+  toast("🎉 Google login successful.");
+
+ }catch(error){
+
+  console.error(error);
+
+  toast("Google login was cancelled or blocked.");
+
+ }
+
+};
+
+
+window.logoutGoogle=async function(){
+
+ try{
+
+  await signOut(auth);
+
+  toast("Logged out.");
+
+ }catch{
+
+  toast("Logout failed.");
+
+ }
+
+};
+
+
+onAuthStateChanged(auth,user=>{
+
+ currentUser=user;
+
+ renderProfile();
+
+ if(user){
+
+  if(!data.profile.onboarded){
+
+   startOnboarding();
 
   }
 
-  for(
-    let d=1;
-    d<=last.getDate();
-    d++
-  ){
+  if(user.displayName&&
+     data.profile.name==="Student"){
 
-    const date =
-      `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+   data.profile.name=user.displayName;
 
-    const today =
-      date === todayISO()
-        ? "today"
-        : "";
+   localStorage.setItem(
+    KEY,
+    JSON.stringify(data)
+   );
 
-    const tasks =
-      state.tasks.filter(
-        t => t.date === date
-      );
+  }
 
-    html += `
+ }
 
-      <div class="day ${today}">
+});
 
-        <div class="day-number">
-          ${d}
-        </div>
 
-        ${tasks
-          .map(
-            t =>
-              `<div class="calendar-task">
-                ${escapeHtml(t.name)}
-              </div>`
-          )
-          .join("")}
+/* ONBOARDING */
 
+function startOnboarding(){
+
+ onboardingStep=0;
+
+ selectedOnboard={};
+
+ renderOnboarding();
+
+ $("onboard").classList.add("show");
+
+}
+
+
+function renderOnboarding(){
+
+ const bars=
+  document.querySelectorAll(".stepbar i");
+
+ bars.forEach((bar,i)=>
+  bar.classList.toggle(
+   "on",
+   i<=onboardingStep
+  )
+ );
+
+ let html="";
+
+ if(onboardingStep===0){
+
+  html=`
+
+   <h2>Select your Board 🎓</h2>
+
+   <p class="muted" style="margin-top:6px">
+    We'll personalize your Study Flow.
+   </p>
+
+   <div class="choice-grid">
+
+    ${choice("board","UP Board","9th / 10th","🇮🇳")}
+    ${choice("board","CBSE","Class 9 / 10","📘")}
+    ${choice("board","ICSE","Class 9 / 10","📚")}
+
+   </div>
+
+  `;
+
+ }
+
+ if(onboardingStep===1){
+
+  html=`
+
+   <h2>Select your Class 📚</h2>
+
+   <div class="choice-grid">
+
+    ${choice("className","Class 9","Foundation + School","9")}
+    ${choice("className","Class 10","Board Preparation","10")}
+    ${choice("className","Other","College / Other","＋")}
+
+   </div>
+
+  `;
+
+ }
+
+ if(onboardingStep===2){
+
+  html=`
+
+   <h2>What are you preparing for? 🚀</h2>
+
+   <div class="choice-grid">
+
+    ${choice("preparation","School","Daily school studies","🏫")}
+    ${choice("preparation","Board Exams","Focused exam prep","📝")}
+    ${choice("preparation","School + Boards","Both together","🎯")}
+    ${choice("preparation","Competitive Preparation","Entrance / competitive","🏆")}
+    ${choice("preparation","Personal Learning","Learn at your own pace","🧠")}
+
+   </div>
+
+  `;
+
+ }
+
+ if(onboardingStep===3){
+
+  html=`
+
+   <h2>Tell us your target 🎯</h2>
+
+   <div class="form" style="margin-top:18px">
+
+    <div class="field">
+     <label>YOUR NAME</label>
+     <input id="obName"
+      value="${escapeHTML(data.profile.name==="Student"?(currentUser?.displayName||""):data.profile.name)}"
+      placeholder="Your name">
+    </div>
+
+    <div class="field">
+     <label>AGE</label>
+     <input id="obAge" type="number" placeholder="15">
+    </div>
+
+    <div class="field full">
+     <label>MAIN GOAL</label>
+     <input id="obGoal"
+      placeholder="Example: Score 95% in UP Board">
+    </div>
+
+   </div>
+
+  `;
+
+ }
+
+ $("onboardContent").innerHTML=html;
+
+ $("obBack").style.visibility=
+  onboardingStep===0?"hidden":"visible";
+
+ $("obNext").textContent=
+  onboardingStep===3
+  ?"🚀 Start My Study Flow"
+  :"Continue →";
+
+}
+
+
+function choice(type,value,description,icon){
+
+ const selected=
+  selectedOnboard[type]===value
+  ?"selected"
+  :"";
+
+ return`
+
+ <button
+  class="choice ${selected}"
+  onclick="selectOnboard('${type}','${value}')">
+
+  <strong>${icon} ${value}</strong>
+
+  <span>${description}</span>
+
+ </button>
+
+ `;
+
+}
+
+
+window.selectOnboard=function(type,value){
+
+ selectedOnboard[type]=value;
+
+ renderOnboarding();
+
+};
+
+
+window.obBack=function(){
+
+ if(onboardingStep>0){
+
+  onboardingStep--;
+
+  renderOnboarding();
+
+ }
+
+};
+
+
+window.obNext=function(){
+
+ if(onboardingStep<3){
+
+  const required=
+   onboardingStep===0
+   ?"board"
+   :onboardingStep===1
+   ?"className"
+   :"preparation";
+
+  if(!selectedOnboard[required]){
+
+   toast("Please select an option first.");
+
+   return;
+
+  }
+
+  onboardingStep++;
+
+  renderOnboarding();
+
+  return;
+
+ }
+
+ const name=$("obName")?.value.trim();
+
+ if(name)data.profile.name=name;
+
+ data.profile.age=
+  $("obAge")?.value||"";
+
+ data.profile.goal=
+  $("obGoal")?.value.trim()||"";
+
+ data.profile.board=
+  selectedOnboard.board||"";
+
+ data.profile.className=
+  selectedOnboard.className||"";
+
+ data.profile.preparation=
+  selectedOnboard.preparation||"";
+
+ data.profile.onboarded=true;
+
+ saveData();
+
+ $("onboard").classList.remove("show");
+
+ toast("🚀 Your Study Flow is ready!");
+
+};
+
+
+/* COMMUNITY */
+
+window.openPost=function(){
+
+ fillSubjectSelects();
+
+ if(!currentUser){
+
+  toast("🔐 Login with Google to join the community.");
+
+  goPage("profile");
+
+  return;
+
+ }
+
+ $("postTitle").value="";
+ $("postBody").value="";
+
+ openModal("postModal");
+
+};
+
+
+window.createPost=async function(){
+
+ if(!currentUser){
+
+  toast("Login required.");
+
+  return;
+
+ }
+
+ const title=$("postTitle").value.trim();
+ const body=$("postBody").value.trim();
+
+ if(!title||!body){
+
+  toast("Write your question first.");
+
+  return;
+
+ }
+
+ try{
+
+  await addDoc(
+   collection(db,"communityPosts"),
+   {
+    title,
+    body,
+    subject:$("postSubject").value,
+    board:$("postBoard").value,
+    uid:currentUser.uid,
+    name:currentUser.displayName||data.profile.name||"Student",
+    photo:currentUser.photoURL||"",
+    solved:false,
+    likes:0,
+    answers:0,
+    createdAt:serverTimestamp()
+   }
+  );
+
+  data.profile.points=
+   (data.profile.points||0)+2;
+
+  saveData();
+
+  closeModal("postModal");
+
+  toast("💬 Doubt posted!");
+
+  loadCommunity();
+
+ }catch(error){
+
+  console.error(error);
+
+  toast("Could not post. Check Firestore setup.");
+
+ }
+
+};
+
+
+async function loadCommunity(){
+
+ const container=$("communityPosts");
+
+ container.innerHTML=
+  `<div class="card">
+    <div class="muted">Loading community...</div>
+   </div>`;
+
+ try{
+
+  const q=query(
+   collection(db,"communityPosts"),
+   orderBy("createdAt","desc"),
+   limit(30)
+  );
+
+  const snap=await getDocs(q);
+
+  let posts=[];
+
+  snap.forEach(d=>{
+
+   posts.push({
+    id:d.id,
+    ...d.data()
+   });
+
+  });
+
+  if(communityFilter==="solved")
+   posts=posts.filter(p=>p.solved);
+
+  if(communityFilter==="unanswered")
+   posts=posts.filter(p=>!p.solved);
+
+  container.innerHTML=
+   posts.length
+   ?posts.map(postHTML).join("")
+   :`<div class="card">
+      <div class="muted">
+       No doubts found. Be the first to ask!
+      </div>
+     </div>`;
+
+ }catch(error){
+
+  console.error(error);
+
+  container.innerHTML=`
+
+   <div class="card">
+
+    <h3>Community needs one Firebase step ⚡</h3>
+
+    <p class="muted" style="margin-top:8px">
+     Enable Firestore Database in your Firebase project
+     and publish its security rules.
+    </p>
+
+   </div>
+
+  `;
+
+ }
+
+}
+
+
+function postHTML(post){
+
+ const photo=
+  post.photo||
+  `https://ui-avatars.com/api/?name=${encodeURIComponent(post.name||"Student")}&background=7657ff&color=fff`;
+
+ return`
+
+ <div class="post">
+
+  <div class="post-head">
+
+   <img class="post-avatar" src="${photo}">
+
+   <div>
+
+    <div class="post-name">
+     ${escapeHTML(post.name||"Student")}
+    </div>
+
+    <div class="post-time">
+     ${escapeHTML(post.board||"Student")} ·
+     ${escapeHTML(post.subject||"General")}
+    </div>
+
+   </div>
+
+  </div>
+
+  <div class="post-title">
+   ${post.solved?"✅ ":""}${escapeHTML(post.title)}
+  </div>
+
+  <div class="post-body">
+   ${escapeHTML(post.body)}
+  </div>
+
+  <div class="post-actions">
+
+   <button class="chip"
+    onclick="likePost('${post.id}')">
+    👍 ${post.likes||0}
+   </button>
+
+   <button class="chip"
+    onclick="openAnswer('${post.id}')">
+    💡 Answer
+   </button>
+
+   <button class="chip"
+    onclick="markSolved('${post.id}')">
+    ${post.solved?"✓ Solved":"Mark solved"}
+   </button>
+
+  </div>
+
+ </div>
+
+ `;
+
+}
+
+
+window.likePost=async function(id){
+
+ if(!currentUser){
+
+  toast("Login required.");
+
+  return;
+
+ }
+
+ try{
+
+  await updateDoc(
+   doc(db,"communityPosts",id),
+   {likes:increment(1)}
+  );
+
+  loadCommunity();
+
+ }catch{
+
+  toast("Could not like post.");
+
+ }
+
+};
+
+
+window.openAnswer=function(id){
+
+ if(!currentUser){
+
+  toast("Login to answer.");
+
+  return;
+
+ }
+
+ answerPostId=id;
+
+ $("answerText").value="";
+
+ openModal("answerModal");
+
+};
+
+
+window.submitAnswer=async function(){
+
+ const text=$("answerText").value.trim();
+
+ if(!text||!answerPostId){
+
+  toast("Write an answer.");
+
+  return;
+
+ }
+
+ try{
+
+  await addDoc(
+   collection(
+    db,
+    "communityPosts",
+    answerPostId,
+    "answers"
+   ),
+   {
+    body:text,
+    uid:currentUser.uid,
+    name:currentUser.displayName||data.profile.name||"Student",
+    photo:currentUser.photoURL||"",
+    createdAt:serverTimestamp()
+   }
+  );
+
+  await updateDoc(
+   doc(db,"communityPosts",answerPostId),
+   {
+    answers:increment(1)
+   }
+  );
+
+  data.profile.points=
+   (data.profile.points||0)+10;
+
+  saveData();
+
+  closeModal("answerModal");
+
+  toast("💡 Answer posted! +10 points");
+
+  loadCommunity();
+
+ }catch(error){
+
+  console.error(error);
+
+  toast("Could not post answer.");
+
+ }
+
+};
+
+
+window.markSolved=async function(id){
+
+ if(!currentUser){
+
+  toast("Login required.");
+
+  return;
+
+ }
+
+ try{
+
+  await updateDoc(
+   doc(db,"communityPosts",id),
+   {solved:true}
+  );
+
+  toast("✅ Marked as solved.");
+
+  loadCommunity();
+
+ }catch{
+
+  toast("Could not update post.");
+
+ }
+
+};
+
+
+/* LEADERBOARD */
+
+async function loadLeaderboard(){
+
+ const box=$("leaderboardList");
+
+ box.innerHTML=
+  `<div class="muted">Loading champions...</div>`;
+
+ try{
+
+  const q=query(
+   collection(db,"studentProfiles"),
+   orderBy("points","desc"),
+   limit(20)
+  );
+
+  const snap=await getDocs(q);
+
+  const users=[];
+
+  snap.forEach(d=>{
+   users.push({
+    id:d.id,
+    ...d.data()
+   });
+  });
+
+  if(currentUser){
+
+   const own=
+    users.find(x=>x.id===currentUser.uid);
+
+   if(!own){
+
+    try{
+
+     await addDoc(
+      collection(db,"studentProfiles"),
+      {
+       name:currentUser.displayName||"Student",
+       photo:currentUser.photoURL||"",
+       points:data.profile.points||0
+      }
+     );
+
+    }catch{}
+
+   }
+
+  }
+
+  box.innerHTML=
+   users.length
+   ?users.map((u,i)=>`
+
+    <div class="leader">
+
+     <div class="rank">
+      ${i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1}
+     </div>
+
+     <img
+      class="leader-avatar"
+      src="${
+       u.photo||
+       `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name||"Student")}&background=7657ff&color=fff`
+      }">
+
+     <div class="leader-main">
+
+      <div class="leader-name">
+       ${escapeHTML(u.name||"Student")}
       </div>
 
-    `;
+      <div class="points">
+       ${u.points||0} points
+      </div>
+
+     </div>
+
+    </div>
+
+   `).join("")
+
+   :`<div class="muted">
+     No leaderboard data yet.
+    </div>`;
+
+ }catch{
+
+  box.innerHTML=`
+
+   <div class="muted">
+    Enable Firestore to activate the VIP Chart.
+   </div>
+
+  `;
+
+ }
+
+}
+
+
+/* FOCUS TIMER */
+
+function updateFocus(){
+
+ $("focusTimer").textContent=
+  `${String(Math.floor(focusSeconds/60)).padStart(2,"0")}:${String(focusSeconds%60).padStart(2,"0")}`;
+
+}
+
+
+window.startFocus=function(){
+
+ if(focusInterval)return;
+
+ focusInterval=setInterval(()=>{
+
+  if(focusSeconds<=0){
+
+   pauseFocus();
+
+   data.profile.points=
+    (data.profile.points||0)+10;
+
+   saveData();
+
+   toast("🎉 Focus session complete! +10 points");
+
+   if(Notification.permission==="granted"){
+
+    new Notification(
+     "Study Flow",
+     {body:"Focus session complete 🎉"}
+    );
+
+   }
+
+   return;
 
   }
 
-  grid.innerHTML = html;
+  focusSeconds--;
 
-}
+  updateFocus();
 
+ },1000);
 
-/* =========================================================
-   TIMER
-========================================================= */
-
-function updateTimer(){
-
-  const minutes =
-    Math.floor(
-      timerSeconds / 60
-    );
-
-  const seconds =
-    timerSeconds % 60;
-
-  document.getElementById(
-    "timerDisplay"
-  ).textContent =
-    `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
-
-}
-
-
-window.startTimer =
-function(){
-
-  if(timerInterval)
-    return;
-
-  timerInterval =
-    setInterval(
-      () => {
-
-        if(timerSeconds <= 0){
-
-          clearInterval(
-            timerInterval
-          );
-
-          timerInterval = null;
-
-          notify(
-            "🎉 Focus session complete",
-            "Great work! Take a short break."
-          );
-
-          toast(
-            "Focus complete",
-            "Great work!"
-          );
-
-          return;
-
-        }
-
-        timerSeconds--;
-
-        updateTimer();
-
-      },
-      1000
-    );
+ toast("▶ Focus session started.");
 
 };
 
 
-window.pauseTimer =
-function(){
+window.pauseFocus=function(){
 
-  clearInterval(
-    timerInterval
+ clearInterval(focusInterval);
+
+ focusInterval=null;
+
+};
+
+
+window.resetFocus=function(){
+
+ pauseFocus();
+
+ focusSeconds=1500;
+
+ updateFocus();
+
+};
+
+
+/* STREAK */
+
+function getStreak(){
+
+ let streak=0;
+
+ let d=new Date();
+
+ while(true){
+
+  const date=
+   d.toISOString().slice(0,10);
+
+  const completed=
+   data.tasks.some(
+    t=>t.date===date&&t.done
+   );
+
+  if(!completed)break;
+
+  streak++;
+
+  d.setDate(d.getDate()-1);
+
+  if(streak>999)break;
+
+ }
+
+ return streak;
+
+}
+
+
+/* DASHBOARD */
+
+function renderDashboard(){
+
+ const todayTasks=
+  data.tasks.filter(
+   t=>t.date===today()
   );
 
-  timerInterval = null;
+ const completed=
+  todayTasks.filter(
+   t=>t.done
+  ).length;
 
-};
+ const overdue=
+  data.tasks.filter(
+   t=>taskStatus(t)==="overdue"
+  ).length;
 
+ const percent=
+  todayTasks.length
+  ?Math.round(
+   completed/todayTasks.length*100
+  )
+  :0;
 
-window.resetTimer =
-function(){
+ $("statToday").textContent=
+  todayTasks.length;
 
-  pauseTimer();
+ $("statDone").textContent=
+  completed;
 
-  timerSeconds = 1500;
+ $("statOver").textContent=
+  overdue;
 
-  updateTimer();
+ $("statExam").textContent=
+  data.exams.length;
 
-};
+ $("statStreak").textContent=
+  `${getStreak()} 🔥`;
 
+ $("progressRing")
+ .style.setProperty(
+  "--p",
+  `${percent}%`
+ );
 
-/* =========================================================
-   BACKUP / RESTORE
-========================================================= */
+ $("progressText").textContent=
+  `${percent}%`;
 
-window.backupData =
-function(){
+ $("progressTitle").textContent=
+  percent===100
+  ?"Perfect day! 🏆"
+  :percent>50
+  ?"Great momentum!"
+  :"Let's get started.";
 
-  const blob =
-    new Blob(
-      [
-        JSON.stringify(
-          state,
-          null,
-          2
-        )
-      ],
-      {
-        type:"application/json"
-      }
-    );
+ $("progressSub").textContent=
+  todayTasks.length
+  ?`${completed} of ${todayTasks.length} tasks completed`
+  :"Add your first task.";
 
-  const url =
-    URL.createObjectURL(blob);
-
-  const a =
-    document.createElement("a");
-
-  a.href = url;
-
-  a.download =
-    `study-flow-backup-${todayISO()}.json`;
-
-  a.click();
-
-  URL.revokeObjectURL(url);
-
-};
-
-
-window.restoreData =
-function(event){
-
-  const file =
-    event.target.files[0];
-
-  if(!file)
-    return;
-
-  const reader =
-    new FileReader();
-
-  reader.onload =
-    async e => {
-
-      try{
-
-        const imported =
-          JSON.parse(
-            e.target.result
-          );
-
-        state = {
-
-          tasks:imported.tasks || [],
-
-          subjects:
-            imported.subjects ||
-            state.subjects,
-
-          exams:imported.exams || [],
-
-          goals:imported.goals || [],
-
-          revisions:
-            imported.revisions || []
-
-        };
-
-        saveLocal();
-
-        await saveCloud();
-
-        renderAll();
-
-        toast(
-          "Restore complete",
-          "Your Study Flow backup was restored."
-        );
-
-      }catch(error){
-
-        toast(
-          "Restore failed",
-          "The selected file is not a valid Study Flow backup."
-        );
-
-      }
-
-    };
-
-  reader.readAsText(file);
-
-};
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-document
-  .querySelectorAll(".nav-btn[data-page]")
-  .forEach(
-    btn => {
-
-      btn.addEventListener(
-        "click",
-        () => {
-
-          document
-            .querySelectorAll(".nav-btn")
-            .forEach(
-              b =>
-                b.classList.remove(
-                  "active"
-                )
-            );
-
-          btn.classList.add(
-            "active"
-          );
-
-          document
-            .querySelectorAll(".page")
-            .forEach(
-              page =>
-                page.classList.remove(
-                  "active"
-                )
-            );
-
-          document
-            .getElementById(
-              btn.dataset.page
-            )
-            .classList.add(
-              "active"
-            );
-
-          renderAll();
-
-        }
-      );
-
-    }
+ const sorted=
+  [...todayTasks].sort(
+   (a,b)=>a.start.localeCompare(b.start)
   );
 
+ $("dashboardTasks").innerHTML=
 
-/* =========================================================
-   HELPERS
-========================================================= */
+ sorted.length
+ ?sorted.map(taskHTML).join("")
+ :`<div style="padding:25px;text-align:center">
 
-window.closeModal =
-function(id){
+    <div style="font-size:34px">🗓️</div>
 
-  document
-    .getElementById(id)
-    .classList.remove("show");
+    <h3 style="margin-top:8px">
+     Nothing planned yet.
+    </h3>
+
+    <p class="muted" style="margin-top:5px">
+     Build your timetable for today.
+    </p>
+
+   </div>`;
+
+ const live=
+  todayTasks.filter(
+   t=>taskStatus(t)==="live"
+  ).length;
+
+ $("liveStatus").textContent=
+  live
+  ?`${live} task live now`
+  :"Your schedule";
+
+ const advice=[];
+
+ if(overdue)
+  advice.push(
+   `🔴 You have ${overdue} overdue task(s). Clear them first.`
+  );
+ else
+  advice.push(
+   "🟢 No overdue tasks. Your schedule is under control."
+  );
+
+ const next=
+  data.tasks
+  .filter(t=>taskStatus(t)==="upcoming")
+  .sort((a,b)=>
+   (a.date+a.start).localeCompare(b.date+b.start)
+  )[0];
+
+ if(next)
+  advice.push(
+   `⏭️ Next: ${next.name} at ${next.start}.`
+  );
+
+ if(getStreak())
+  advice.push(
+   `🔥 ${getStreak()} day streak. Don't break it!`
+  );
+
+ if(data.exams.length)
+  advice.push(
+   `📝 ${data.exams.length} exam/test(s) are tracked.`
+  );
+
+ $("smartAdvice").innerHTML=
+  advice.map(x=>
+   `<div class="smart">${x}</div>`
+  ).join("");
+
+}
+
+
+/* BACKUP */
+
+window.backupData=function(){
+
+ const blob=new Blob(
+  [JSON.stringify(data,null,2)],
+  {type:"application/json"}
+ );
+
+ const a=document.createElement("a");
+
+ a.href=URL.createObjectURL(blob);
+
+ a.download=
+  `study-flow-backup-${today()}.json`;
+
+ a.click();
+
+ toast("📦 Backup created.");
 
 };
 
 
-function todayISO(){
+/* PERIODIC OVERDUE */
 
-  const d =
-    new Date();
+function overdueWatcher(){
 
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+ data.tasks.forEach(task=>{
 
-}
+  if(
+   !task.done&&
+   taskStatus(task)==="overdue"&&
+   !task.notified
+  ){
 
+   task.notified=true;
 
-function escapeHtml(value){
+   localStorage.setItem(
+    KEY,
+    JSON.stringify(data)
+   );
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+   toast(`🔴 OVERDUE · ${task.name}`);
 
-}
+   if(
+    "Notification"in window&&
+    Notification.permission==="granted"
+   ){
 
-
-function toast(title,text){
-
-  const el =
-    document.getElementById(
-      "toast"
+    new Notification(
+     "Study Flow — Task Overdue",
+     {
+      body:`${task.name} was not completed on time.`
+     }
     );
 
-  document.getElementById(
-    "toastTitle"
-  ).textContent =
-    title;
+   }
 
-  document.getElementById(
-    "toastText"
-  ).textContent =
-    text;
+  }
 
-  el.classList.add("show");
-
-  setTimeout(
-    () =>
-      el.classList.remove(
-        "show"
-      ),
-    4000
-  );
+ });
 
 }
 
 
-/* =========================================================
-   RENDER ALL
-========================================================= */
+/* RENDER ALL */
 
 function renderAll(){
 
-  renderDashboard();
+ updateClock();
 
-  renderTasks();
+ fillSubjectSelects();
 
-  renderCalendar();
+ renderDashboard();
 
-  renderSubjects();
+ renderTimetable();
 
-  renderExams();
+ renderTasks();
 
-  renderGoals();
+ renderCalendar();
 
-  renderRevisions();
+ renderSubjects();
 
-  populateSubjectSelects();
+ renderExams();
 
-  updateTimer();
+ renderRevisions();
+
+ renderGoals();
+
+ renderProfile();
+
+ updateFocus();
 
 }
 
 
-/* =========================================================
-   STARTUP
-========================================================= */
+/* COMMUNITY / LEADERBOARD LAZY LOAD */
 
-loadLocal();
+const originalGoPage=window.goPage;
 
-renderAll();
+window.goPage=function(id,button){
 
-setInterval(
-  checkTasksRealtime,
-  1000
-);
+ originalGoPage(id,button);
 
-setInterval(
-  renderAll,
-  5000
-);
+ if(id==="community")
+  loadCommunity();
 
-setTimeout(
-  () => {
+ if(id==="leaderboard")
+  loadLeaderboard();
 
-    document
-      .getElementById("intro")
-      .style.display = "none";
+};
 
-  },
-  3600
-);
+
+/* START */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+ updateClock();
+
+ renderAll();
+
+ setInterval(()=>{
+
+  updateClock();
+  overdueWatcher();
+  renderDashboard();
+
+ },1000);
+
+ setInterval(()=>{
+
+  renderTimetable();
+  renderTasks();
+
+ },5000);
+
+});
+
+
+/* KEYBOARD */
+
+document.addEventListener("keydown",e=>{
+
+ if(
+  e.key.toLowerCase()==="n"&&
+  e.target.tagName!=="INPUT"&&
+  e.target.tagName!=="TEXTAREA"
+ ){
+
+  openTask();
+
+ }
+
+ if(e.key==="Escape"){
+
+  document
+  .querySelectorAll(".modal.show")
+  .forEach(x=>
+   x.classList.remove("show")
+  );
+
+ }
+
+});
 
 </script>
 
