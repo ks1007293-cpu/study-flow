@@ -1,46 +1,3509 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Study Flow — Smart Study Planner</title><meta name="description" content="Study Flow is a modern student study planner for tasks, subjects, exams, revision, classes, goals and calendar."><meta name="keywords" content="Study Flow, study planner, student planner, Class 10 planner, UP Board, homework, revision, exam planner"><meta name="robots" content="index,follow"><meta name="theme-color" content="#6d5dfc"><style>
-:root{--bg:#f4f6fb;--card:#fff;--text:#171827;--muted:#777d90;--line:#e6e8f1;--p:#6d5dfc;--p2:#a66cff;--green:#16b979;--red:#ed5362;--orange:#f59e0b;--shadow:0 18px 55px rgba(25,25,65,.09)}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
-#intro{position:fixed;inset:0;z-index:9999;background:#080912;color:white;display:grid;place-items:center;overflow:hidden}#intro:before,#intro:after{content:"";position:absolute;border-radius:50%;filter:blur(12px);opacity:.5}#intro:before{width:520px;height:520px;background:#6d5dfc;left:-190px;top:-190px}#intro:after{width:470px;height:470px;background:#bd63ff;right:-190px;bottom:-190px}.introbox{text-align:center;position:relative;z-index:2;width:min(850px,92%)}.logo{width:112px;height:112px;margin:auto;border-radius:34px;display:grid;place-items:center;font-weight:950;font-size:42px;letter-spacing:-4px;background:linear-gradient(135deg,#6d5dfc,#bd6cff);box-shadow:0 25px 90px #6d5dfc99;opacity:0;transform:scale(.4) rotate(-15deg);animation:logo 1s cubic-bezier(.2,.9,.2,1) .15s forwards}.introtitle{font-size:clamp(50px,9vw,96px);font-weight:950;letter-spacing:-6px;margin-top:25px;line-height:.95;background:linear-gradient(90deg,#fff,#fff,#6d5dfc,#d07cff,#fff);background-size:300%;background-clip:text;-webkit-background-clip:text;color:transparent;opacity:0;transform:translateY(25px);animation:title 1.5s ease .7s forwards}.introbox p{max-width:620px;margin:22px auto 30px;color:#b9bbcd;line-height:1.7;opacity:0;animation:fade .8s ease 1.4s forwards}.openbtn{border:0;border-radius:15px;padding:15px 25px;color:white;font-weight:900;background:linear-gradient(135deg,#6d5dfc,#ae6cff);box-shadow:0 15px 45px #6d5dfc66;opacity:0;animation:fade .8s ease 1.6s forwards}.flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:10000}.opening .flash{animation:flash .7s ease}.exit{animation:exit .7s forwards}@keyframes logo{to{opacity:1;transform:none}}@keyframes title{0%{opacity:0}55%{opacity:1}100%{opacity:1;transform:none;background-position:100%}}@keyframes fade{to{opacity:1}}@keyframes flash{0%{opacity:0}35%{opacity:1}100%{opacity:0}}@keyframes exit{to{opacity:0;visibility:hidden}}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;background:#ffffffed;backdrop-filter:blur(15px);border-right:1px solid var(--line);padding:20px 13px;z-index:20}.brand{display:flex;gap:10px;align-items:center;padding:8px 10px 25px}.brandicon{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:950;background:linear-gradient(135deg,var(--p),var(--p2))}.brand strong{display:block}.brand small{color:var(--muted);font-size:9px}.navtitle{font-size:9px;color:#999eaf;text-transform:uppercase;letter-spacing:1.5px;padding:10px 12px 6px;font-weight:900}.nav{width:100%;padding:11px 12px;border:0;border-radius:12px;background:transparent;text-align:left;color:#666c7e;font-weight:800;margin:2px 0}.nav:hover,.nav.active{background:#eeecff;color:var(--p)}.bottom{position:absolute;bottom:15px;left:13px;right:13px}.main{margin-left:250px;min-height:100vh}.top{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:15;background:#f4f6fbdc;backdrop-filter:blur(15px);border-bottom:1px solid var(--line)}.mobile{display:none}.content{padding:25px;max-width:1500px;margin:auto}.page{display:none}.page.active{display:block}.btn{border:0;border-radius:11px;padding:10px 14px;font-size:12px;font-weight:850}.primary{color:#fff;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 8px 22px #6d5dfc35}.light{background:#f5f6fa;border:1px solid var(--line);color:#606677}.danger{background:#fff0f1;color:#d33f4e}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:21px;box-shadow:var(--shadow)}.hero{padding:30px;border-radius:27px;color:#fff;background:radial-gradient(circle at 90% 10%,#ffffff33,transparent 30%),linear-gradient(135deg,#6557f4,#9561ee,#c06bdb);box-shadow:0 20px 55px #6d5dfc40}.herorow{display:flex;justify-content:space-between;gap:20px;align-items:center}.hero h1{font-size:clamp(25px,3vw,39px);margin:5px 0;letter-spacing:-2px}.hero p{color:#e4e1ff;font-size:12px}.count{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:23px;max-width:680px}.cd{background:#ffffff17;border:1px solid #ffffff25;border-radius:14px;text-align:center;padding:12px}.cd b{display:block;font-size:26px}.cd span{font-size:8px;color:#ddd9ff;text-transform:uppercase}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:17px 0}.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:var(--shadow)}.stat small{color:var(--muted)}.stat b{display:block;font-size:26px;margin-top:6px}.twocol{display:grid;grid-template-columns:1.2fr .8fr;gap:17px}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.sectionhead h3{margin:0;font-size:16px}.muted{font-size:10px;color:var(--muted)}.smart{background:linear-gradient(135deg,#15152a,#2a2550);color:#fff}.smart .muted{color:#b7b3ce}.smartscore{display:flex;align-items:center;gap:15px}.ring{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#907eff var(--score),#ffffff18 0);position:relative}.ring:after{content:"";position:absolute;inset:7px;background:#1d1b35;border-radius:50%}.ring b{position:relative;z-index:1}.smartlist{display:grid;gap:8px;margin-top:14px}.smartitem{background:#ffffff0d;border:1px solid #ffffff12;border-radius:12px;padding:10px}.smartitem b{display:block;font-size:11px}.smartitem span{font-size:9px;color:#bdb9d0}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:17px}.quick button{padding:14px 8px;border:1px solid var(--line);border-radius:15px;background:#fff;font-weight:850;box-shadow:var(--shadow)}.quick i{display:block;font-style:normal;font-size:23px;margin-bottom:5px}.tasklist{display:grid;gap:9px}.task{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;padding:13px;background:#fff}.task.completed{opacity:.55}.task.completed .taskname{text-decoration:line-through}.check{width:29px;height:29px;flex:0 0 auto;border:2px solid #d6d9e5;border-radius:9px;background:#fff}.check.done{background:var(--green);border-color:var(--green);color:#fff;font-weight:900}.taskinfo{flex:1;min-width:0}.taskname{font-weight:900;font-size:13px}.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px;font-size:9px;color:var(--muted)}.badge{padding:4px 7px;border-radius:6px;font-size:8px;font-weight:900;background:#f0f1f6}.badge.exam{background:#ffe8ec;color:#d53e51}.badge.class{background:#e8f0ff;color:#3470d2}.badge.revision{background:#eeeaff;color:#6954df}.badge.homework{background:#fff1d9;color:#ad6900}.badge.study{background:#e5f8ef;color:#0e875b}.actions{display:flex;gap:5px}.icon{width:31px;height:31px;border:0;border-radius:9px;background:#f4f5f9}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.search{flex:1;min-width:200px;border:1px solid var(--line);border-radius:11px;padding:11px;outline:0}.calendarhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.dow{text-align:center;color:#9297a8;font-size:9px;font-weight:900;padding:7px;text-transform:uppercase}.day{min-height:145px;border:1px solid var(--line);border-radius:14px;padding:9px;background:#fff;cursor:pointer;overflow:hidden}.day:hover{border-color:#c9c4ff}.day.other{opacity:.4}.day.today{border:2px solid var(--p);background:#fbfaff}.num{font-weight:900;font-size:12px;margin-bottom:7px}.today .num{color:var(--p)}.daytask{border-left:4px solid var(--p);background:#f5f3ff;padding:6px;border-radius:6px;font-size:8px;font-weight:850;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dot{width:6px;height:6px;display:inline-block;border-radius:50%;margin-right:3px}.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.subject{border:1px solid var(--line);border-radius:19px;padding:17px;background:linear-gradient(145deg,#fff,#fafaff)}.subtop{display:flex;align-items:center;gap:10px}.subdot{width:15px;height:15px;border-radius:50%;box-shadow:0 0 0 5px #0000000b}.subject h4{margin:0;font-size:15px}.bar{height:7px;background:#eef0f5;border-radius:20px;margin:15px 0 11px;overflow:hidden}.bar i{display:block;height:100%;border-radius:20px}.subfoot{display:flex;justify-content:space-between;align-items:center}.goal{border-radius:21px;padding:24px;background:linear-gradient(135deg,#111327,#292450);color:#fff}.goalrow{display:flex;justify-content:space-between;align-items:center}.goalscore{font-size:54px;font-weight:950;letter-spacing:-3px}.progress{height:10px;background:#ffffff18;border-radius:20px;overflow:hidden;margin-top:15px}.progress i{display:block;height:100%;background:linear-gradient(90deg,#6d5dfc,#c477ff)}.goalmeta{display:flex;justify-content:space-between;font-size:9px;color:#b9b6cf;margin-top:7px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px}.full{grid-column:1/-1}.field label{font-size:9px;font-weight:900;color:#656a7b}.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:10px;padding:11px;outline:0;background:#fff}.field textarea{min-height:90px;resize:vertical}.modal{position:fixed;inset:0;z-index:500;background:#0b0b1588;backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modalbox{background:#fff;width:min(650px,100%);max-height:90vh;overflow:auto;border-radius:23px;padding:21px}.modalhead{display:flex;justify-content:space-between;margin-bottom:17px}.formactions{display:flex;justify-content:flex-end;gap:7px;margin-top:18px}.empty{text-align:center;padding:35px;color:var(--muted)}.empty b{display:block;color:var(--text);margin:7px}.settings{display:grid;gap:0}.setting{display:flex;justify-content:space-between;gap:15px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.setting:last-child{border:0}.setting strong{font-size:12px}.setting p{font-size:9px;color:var(--muted);margin:3px 0}.status{font-size:9px;padding:7px 9px;border-radius:8px;background:#e8f8f0;color:#10865a;font-weight:900}.timer{text-align:center;padding:30px}.clock{font-size:72px;font-weight:950;letter-spacing:-5px;margin:12px}.reminder{position:fixed;right:20px;top:92px;width:min(360px,calc(100% - 40px));background:#18172b;color:#fff;z-index:1000;padding:15px;border-radius:17px;box-shadow:0 20px 60px #0004;transform:translateX(130%);transition:.3s}.reminder.show{transform:none}.toast{position:fixed;right:20px;bottom:20px;background:#171827;color:#fff;padding:13px 16px;border-radius:12px;z-index:10000;opacity:0;transform:translateY(80px);transition:.3s;font-size:11px;font-weight:800}.toast.show{opacity:1;transform:none}
-@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.twocol{grid-template-columns:1fr}.subjects{grid-template-columns:repeat(2,1fr)}}@media(max-width:800px){.sidebar{transform:translateX(-100%);transition:.3s}.sidebar.open{transform:none;box-shadow:20px 0 50px #0002}.main{margin-left:0}.mobile{display:block;border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px}.top{padding:0 14px}.content{padding:14px}.herorow{display:block}.calendar{gap:3px}.day{min-height:100px;padding:6px}.daytask{font-size:7px}.daytask:nth-of-type(n+4){display:none}}@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.quick{grid-template-columns:1fr 1fr}.count{grid-template-columns:1fr 1fr}.subjects{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.day{min-height:70px}.daytask{display:none}.dow{font-size:7px}.clock{font-size:52px}}
-</style>    <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo">
-</head><body>
-<div id="intro"><div class="flash"></div><div class="introbox"><div class="logo">SF</div><div class="introtitle">Study Flow</div><p>Plan smarter. Study consistently. Turn your daily schedule into real progress.</p><button class="openbtn" onclick="startApp()">Open Study Flow →</button></div></div>
-<aside class="sidebar" id="sidebar"><div class="brand"><div class="brandicon">SF</div><div><strong>Study Flow</strong><small>Smart Student Planner</small></div></div><div class="navtitle">Workspace</div><button class="nav active" onclick="page('dashboard',this)">⌂ &nbsp; Dashboard</button><button class="nav" onclick="page('tasks',this)">✓ &nbsp; My Tasks</button><button class="nav" onclick="page('calendar',this)">▦ &nbsp; Calendar</button><button class="nav" onclick="page('subjects',this)">● &nbsp; Subjects</button><button class="nav" onclick="page('goals',this)">◎ &nbsp; Goals</button><button class="nav" onclick="page('exams',this)">⚑ &nbsp; Exams</button><div class="navtitle">Tools</div><button class="nav" onclick="page('focus',this)">◷ &nbsp; Focus Timer</button><button class="nav" onclick="page('settings',this)">⚙ &nbsp; Settings & Backup</button><div class="bottom"><button class="nav" onclick="openTask()">＋ &nbsp; New Task</button></div></aside>
-<main class="main"><header class="top"><button class="mobile" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button><div><h2 id="pagetitle" style="margin:0;font-size:18px">Dashboard</h2><span id="dateText" style="font-size:10px;color:var(--muted)"></span></div><button class="btn primary" onclick="openTask()">＋ New Task</button></header><div class="content">
-<section id="dashboard" class="page active"><div class="hero"><div class="herorow"><div><p>Welcome back 👋</p><h1 id="greeting">Let's make today count.</h1><p>Small progress every day becomes a big result.</p></div><button class="btn primary" onclick="openTask()">＋ Add today's task</button></div><div class="count"><div class="cd"><b id="days">0</b><span>Days to Board</span></div><div class="cd"><b id="hours">0</b><span>Hours</span></div><div class="cd"><b id="mins">0</b><span>Minutes</span></div><div class="cd"><b id="secs">0</b><span>Seconds</span></div></div></div><div class="stats"><div class="stat"><small>Today's Tasks</small><b id="todayCount">0</b></div><div class="stat"><small>Completed</small><b id="doneCount">0</b></div><div class="stat"><small>Overdue</small><b id="overCount">0</b></div><div class="stat"><small>Overall Progress</small><b id="percent">0%</b></div></div><div class="twocol"><div class="card"><div class="sectionhead"><div><h3>Today's Schedule</h3><span class="muted">Your actual saved tasks</span></div><button class="btn light" onclick="page('tasks')">View all</button></div><div id="todayTasks" class="tasklist"></div></div><div class="card smart"><div class="sectionhead"><div><h3>🧠 Smart Study</h3><span class="muted">Based on your planner</span></div></div><div class="smartscore"><div class="ring" id="ring"><b id="smartScore">0%</b></div><div><b id="smartHead">Ready to plan.</b><div class="muted" id="smartSub">Add tasks and Study Flow will prioritize them.</div></div></div><div id="smartList" class="smartlist"></div></div></div><div class="quick"><button onclick="openTask('Homework')">📚<br>Homework</button><button onclick="openTask('Revision')">🔁<br>Revision</button><button onclick="openTask('Class')">🏫<br>Class</button><button onclick="openTask('Exam')">📝<br>Exam</button></div><div class="card" style="margin-top:17px"><div class="sectionhead"><div><h3>🎯 Main Goal</h3><span class="muted">Keep your target visible</span></div><button class="btn light" onclick="openGoal()">Edit goal</button></div><div class="goal"><div class="goalrow"><div><div class="goalscore" id="goalScore">95%</div><b id="goalTitle">Score 95% in UP Board</b></div><span style="font-size:42px">🏆</span></div><div class="progress"><i id="goalBar" style="width:0"></i></div><div class="goalmeta"><span id="goalProgress">0%</span><span id="goalTarget">Target 95%</span></div></div></div></section>
-<section id="tasks" class="page"><div class="card"><div class="sectionhead"><div><h3>My Tasks</h3><span class="muted">Your complete schedule</span></div><button class="btn primary" onclick="openTask()">＋ Add Task</button></div><div class="toolbar"><input class="search" id="search" placeholder="Search task, subject or notes…" oninput="renderTasks()"><select class="btn light" id="filter" onchange="renderTasks()"><option value="all">All</option><option value="today">Today</option><option value="upcoming">Upcoming</option><option value="overdue">Overdue</option><option value="completed">Completed</option><option value="pending">Pending</option></select><select class="btn light" id="typeFilter" onchange="renderTasks()"><option value="all">All Types</option><option>Study</option><option>Homework</option><option>Revision</option><option>Class</option><option>Exam</option></select></div><div id="allTasks" class="tasklist"></div></div></section>
-<section id="calendar" class="page"><div class="card"><div class="calendarhead"><div><h3 id="calTitle" style="margin:0">Calendar</h3><span class="muted">Big monthly schedule view</span></div><div><button class="btn light" onclick="month(-1)">←</button><button class="btn primary" onclick="todayCal()">Today</button><button class="btn light" onclick="month(1)">→</button></div></div><div class="calendar" id="calendarGrid"></div></div></section>
-<section id="subjects" class="page"><div class="card"><div class="sectionhead"><div><h3>Subjects</h3><span class="muted">Colour-coded progress for every subject</span></div><button class="btn primary" onclick="openSubject()">＋ Add Subject</button></div><div id="subjectsGrid" class="subjects"></div></div></section>
-<section id="goals" class="page"><div class="card"><div class="sectionhead"><div><h3>Goals</h3><span class="muted">Your academic target</span></div><button class="btn primary" onclick="openGoal()">＋ Set Goal</button></div><div class="goal"><div class="goalrow"><div><div class="goalscore" id="goalScore2">95%</div><b id="goalTitle2"></b></div><span style="font-size:45px">🎯</span></div><div class="progress"><i id="goalBar2"></i></div><div class="goalmeta"><span id="goalProgress2"></span><span id="goalTarget2"></span></div></div></div></section>
-<section id="exams" class="page"><div class="card"><div class="sectionhead"><div><h3>Exams</h3><span class="muted">Exam tasks stay saved here</span></div><button class="btn primary" onclick="openTask('Exam')">＋ Add Exam</button></div><div id="examList" class="tasklist"></div></div></section>
-<section id="focus" class="page"><div class="card timer"><div class="muted">FOCUS SESSION</div><h2>Study Sprint</h2><div class="clock" id="timer">25:00</div><p class="muted" id="timerStatus">Focus for 25 minutes, then take a short break.</p><button class="btn primary" onclick="startTimer()">Start</button> <button class="btn light" onclick="pauseTimer()">Pause</button> <button class="btn light" onclick="resetTimer()">Reset</button></div></section>
-<section id="settings" class="page"><div class="card"><div class="sectionhead"><div><h3>Settings & Backup</h3><span class="muted">IndexedDB primary + localStorage backup</span></div><span class="status" id="storage">Checking…</span></div><div class="settings"><div class="setting"><div><strong>UP Board exam date</strong><p>Controls the live dashboard countdown.</p></div><input type="date" id="examDate" onchange="saveExamDate()"></div><div class="setting"><div><strong>Browser reminders</strong><p>Enable reminders for classes/tasks while the planner is open.</p></div><button class="btn primary" onclick="enableNotifications()">Enable</button></div><div class="setting"><div><strong>Download backup</strong><p>Export all planner data as JSON.</p></div><button class="btn light" onclick="exportData()">Download</button></div><div class="setting"><div><strong>Restore backup</strong><p>Import your saved JSON backup.</p></div><label class="btn light">Choose JSON<input type="file" accept="application/json" onchange="importData(event)" style="display:none"></label></div><div class="setting"><div><strong>Clear all data</strong><p>Permanently resets this browser's planner data.</p></div><button class="btn danger" onclick="clearData()">Delete All</button></div></div></div></section>
-</div></main>
-<div class="reminder" id="reminder"><small>STUDY FLOW REMINDER</small><b id="remTitle" style="display:block;margin:5px 0"></b><span id="remText" style="font-size:10px;color:#c7c3d8"></span><div style="margin-top:10px"><button class="btn primary" onclick="closeReminder()">Done</button></div></div><div class="toast" id="toast"></div>
-<div class="modal" id="taskModal"><div class="modalbox"><div class="modalhead"><h3 id="taskModalTitle" style="margin:0">Add Task</h3><button class="icon" onclick="closeModal('taskModal')">✕</button></div><form id="taskForm"><input id="editId" type="hidden"><div class="formgrid"><div class="field full"><label>Task / Study session</label><input id="taskName" required placeholder="e.g. Complete Maths Chapter 4"></div><div class="field"><label>Subject</label><select id="taskSubject"></select></div><div class="field"><label>Type</label><select id="taskType"><option>Study</option><option>Homework</option><option>Revision</option><option>Class</option><option>Exam</option></select></div><div class="field"><label>Date</label><input id="taskDate" type="date" required></div><div class="field"><label>Time</label><input id="taskTime" type="time"></div><div class="field"><label>Priority</label><select id="taskPriority"><option>Normal</option><option>High</option><option>Low</option></select></div><div class="field"><label>Duration</label><select id="taskDuration"><option>15 min</option><option>30 min</option><option>45 min</option><option>60 min</option><option>90 min</option><option>120 min</option></select></div><div class="field full"><label>Notes</label><textarea id="taskNotes" placeholder="Chapter, questions, reminder…"></textarea></div></div><div class="formactions"><button type="button" class="btn light" onclick="closeModal('taskModal')">Cancel</button><button class="btn primary">Save Task</button></div></form></div></div>
-<div class="modal" id="goalModal"><div class="modalbox"><div class="modalhead"><h3 style="margin:0">Set Your Goal</h3><button class="icon" onclick="closeModal('goalModal')">✕</button></div><div class="formgrid"><div class="field full"><label>Goal</label><input id="gTitle" placeholder="Score 95% in UP Board"></div><div class="field"><label>Target %</label><input id="gTarget" type="number" min="1" max="100"></div><div class="field"><label>Current progress %</label><input id="gProgress" type="number" min="0" max="100"></div></div><div class="formactions"><button class="btn light" onclick="closeModal('goalModal')">Cancel</button><button class="btn primary" onclick="saveGoal()">Save Goal</button></div></div></div>
-<div class="modal" id="subjectModal"><div class="modalbox"><div class="modalhead"><h3 style="margin:0">Add Subject</h3><button class="icon" onclick="closeModal('subjectModal')">✕</button></div><div class="formgrid"><div class="field full"><label>Subject name</label><input id="sName" placeholder="e.g. Sanskrit"></div><div class="field"><label>Colour</label><input id="sColor" type="color" value="#6d5dfc" style="height:42px;padding:3px"></div></div><div class="formactions"><button class="btn light" onclick="closeModal('subjectModal')">Cancel</button><button class="btn primary" onclick="saveSubject()">Add Subject</button></div></div></div>
-<script>
-const KEY='study_flow_v3',DB='study_flow_db',STORE='planner';let db,data,cal=new Date(),timerSec=1500,timerInt=null,reminded=new Set();const colors=['#6d5dfc','#3b82f6','#10b981','#f59e0b','#ef5261','#ec4899','#14b8a6','#8b5cf6'];
-const defaults={tasks:[],subjects:[['Mathematics','#6d5dfc'],['Science','#10b981'],['English','#3b82f6'],['Hindi','#ef5261'],['Social Science','#f59e0b'],['Computer','#8b5cf6']].map(x=>({id:uid(),name:x[0],color:x[1]})),goal:{title:'Score 95% in UP Board',target:95,progress:0},settings:{examDate:'2027-02-18',notifications:false}};function uid(){return crypto.randomUUID?crypto.randomUUID():Date.now()+Math.random()}function cp(x){return JSON.parse(JSON.stringify(x))}function pad(n){return String(n).padStart(2,'0')}function today(){let d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}function past(s){return s<today()}function fmt(s){return s?new Date(s+'T00:00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):''}function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function scol(n){return data.subjects.find(s=>s.name===n)?.color||'#6d5dfc'}
-function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB,1);r.onupgradeneeded=e=>e.target.result.createObjectStore(STORE);r.onsuccess=e=>{db=e.target.result;res()};r.onerror=()=>rej(r.error)})}function getDB(){return new Promise((res,rej)=>{let r=db.transaction(STORE,'readonly').objectStore(STORE).get('data');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}function putDB(){return new Promise((res,rej)=>{let r=db.transaction(STORE,'readwrite').objectStore(STORE).put(data,'data');r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}function norm(x){let d={...cp(defaults),...x};d.tasks=Array.isArray(x?.tasks)?x.tasks:[];d.subjects=Array.isArray(x?.subjects)&&x.subjects.length?x.subjects:cp(defaults.subjects);d.subjects=d.subjects.map((s,i)=>({...s,id:s.id||uid(),color:s.color||colors[i%colors.length]}));d.goal={...defaults.goal,...(x?.goal||{})};d.settings={...defaults.settings,...(x?.settings||{})};return d}
-async function load(){try{await openDB();let x=await getDB();if(x){data=norm(x);localStorage.setItem(KEY,JSON.stringify(data));return}}catch(e){}try{data=norm(JSON.parse(localStorage.getItem(KEY)||'null'))}catch(e){data=cp(defaults)}try{await putDB()}catch(e){}}async function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}try{await putDB();document.getElementById('storage').textContent='IndexedDB + local backup active'}catch(e){document.getElementById('storage').textContent='Local backup active'}}
-function startApp(){let x=document.getElementById('intro');x.classList.add('opening');setTimeout(()=>{x.classList.add('exit');setTimeout(()=>x.remove(),700)},260)}function page(id,b){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');document.getElementById('pagetitle').textContent={dashboard:'Dashboard',tasks:'My Tasks',calendar:'Calendar',subjects:'Subjects',goals:'Goals',exams:'Exams',focus:'Focus Timer',settings:'Settings & Backup'}[id];if(innerWidth<801)document.getElementById('sidebar').classList.remove('open');renderAll()}
-function badge(t){return '<span class="badge '+t.toLowerCase()+'">'+esc(t)+'</span>'}function sort(a,b){if(a.completed!==b.completed)return a.completed-b.completed;let p={High:0,Normal:1,Low:2};return (p[a.priority]??1)-(p[b.priority]??1)||(`${a.date}${a.time||'99:99'}`).localeCompare(`${b.date}${b.time||'99:99'}`)}function taskHTML(t){let od=!t.completed&&past(t.date),c=scol(t.subject);return `<div class="task ${t.completed?'completed':''}"><button class="check ${t.completed?'done':''}" onclick="toggleTask('${t.id}')">${t.completed?'✓':''}</button><div class="taskinfo"><div class="taskname">${esc(t.name)}</div><div class="meta">${badge(t.type)}<span style="color:${c};font-weight:900">● ${esc(t.subject)}</span><span>📅 ${od?'Overdue • ':t.date===today()?'Today • ':''}${fmt(t.date)}</span>${t.time?'<span>⏰ '+esc(t.time)+'</span>':''}${t.duration?'<span>⏱ '+esc(t.duration)+'</span>':''}<b style="color:${t.priority==='High'?'#df4352':t.priority==='Low'?'#2877d8':'#777'}">${esc(t.priority)}</b></div>${t.notes?'<div class="meta">📝 '+esc(t.notes)+'</div>':''}</div><div class="actions"><button class="icon" onclick="editTask('${t.id}')">✎</button><button class="icon" onclick="deleteTask('${t.id}')">🗑</button></div></div>`}
-function renderToday(){let x=data.tasks.filter(t=>t.date===today()).sort(sort);document.getElementById('todayTasks').innerHTML=x.length?x.map(taskHTML).join(''):'<div class="empty">📚<b>No tasks today</b>Add a class, revision, homework or study session.</div>'}function renderTasks(){let q=(document.getElementById('search')?.value||'').toLowerCase(),f=document.getElementById('filter')?.value||'all',tf=document.getElementById('typeFilter')?.value||'all';let x=data.tasks.filter(t=>{let m=!q||[t.name,t.subject,t.notes,t.type].join(' ').toLowerCase().includes(q);let z=f==='today'?t.date===today():f==='upcoming'?t.date>today()&&!t.completed:f==='overdue'?past(t.date)&&!t.completed:f==='completed'?t.completed:f==='pending'?!t.completed:true;return m&&z&&(tf==='all'||t.type===tf)}).sort(sort);document.getElementById('allTasks').innerHTML=x.length?x.map(taskHTML).join(''):'<div class="empty">🔎<b>No matching tasks</b>Try another filter or add a new task.</div>'}
-function renderCalendar(){let y=cal.getFullYear(),m=cal.getMonth(),first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),start=first.getDay(),prev=new Date(y,m,0).getDate(),h=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=>'<div class="dow">'+x+'</div>').join('');document.getElementById('calTitle').textContent=cal.toLocaleDateString(undefined,{month:'long',year:'numeric'});for(let i=0;i<42;i++){let n,mm=m,o=false;if(i<start){n=prev-start+i+1;mm--;o=true}else if(i>=start+days){n=i-start-days+1;mm++;o=true}else n=i-start+1;let d=new Date(y,mm,n),s=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),ts=data.tasks.filter(t=>t.date===s).sort(sort);h+=`<div class="day ${o?'other':''} ${s===today()?'today':''}" onclick="openTask('', '${s}')"><div class="num">${n}</div>${ts.slice(0,5).map(t=>`<div class="daytask" style="border-color:${scol(t.subject)}"><span class="dot" style="background:${scol(t.subject)}"></span>${esc(t.name)}</div>`).join('')}${ts.length>5?'<div class="muted">+'+(ts.length-5)+' more</div>':''}</div>`}document.getElementById('calendarGrid').innerHTML=h}function month(n){cal=new Date(cal.getFullYear(),cal.getMonth()+n,1);renderCalendar()}function todayCal(){cal=new Date();renderCalendar()}
-function renderSubjects(){document.getElementById('subjectsGrid').innerHTML=data.subjects.map(s=>{let x=data.tasks.filter(t=>t.subject===s.name),d=x.filter(t=>t.completed).length,p=x.length?Math.round(d/x.length*100):0;return `<div class="subject"><div class="subtop"><span class="subdot" style="background:${s.color}"></span><div><h4>${esc(s.name)}</h4><span class="muted">${x.length} scheduled • ${d} completed</span></div></div><div class="bar"><i style="width:${p}%;background:${s.color}"></i></div><div class="subfoot"><span class="muted">${p}% complete</span><button class="btn light" onclick="openTask('', '', '${esc(s.name)}')">＋ Add</button></div></div>`}).join('')}
-function renderExams(){let x=data.tasks.filter(t=>t.type==='Exam').sort(sort);document.getElementById('examList').innerHTML=x.length?x.map(taskHTML).join(''):'<div class="empty">📝<b>No exams added</b>Add an exam to keep it saved here.</div>'}function renderGoal(){let g=data.goal;['goalScore','goalScore2'].forEach(id=>document.getElementById(id).textContent=g.target+'%');['goalTitle','goalTitle2'].forEach(id=>document.getElementById(id).textContent=g.title);['goalBar','goalBar2'].forEach(id=>document.getElementById(id).style.width=g.progress+'%');document.getElementById('goalProgress').textContent=g.progress+'% progress';document.getElementById('goalProgress2').textContent=g.progress+'% progress';document.getElementById('goalTarget').textContent='Target '+g.target+'%';document.getElementById('goalTarget2').textContent='Target '+g.target+'%'}
-function smart(){let all=data.tasks,td=all.filter(t=>t.date===today()),pending=td.filter(t=>!t.completed),done=all.filter(t=>t.completed).length,p=all.length?Math.round(done/all.length*100):0;document.getElementById('smartScore').textContent=p+'%';document.getElementById('ring').style.setProperty('--score',p+'%');document.getElementById('smartHead').textContent=pending.length?pending.length+' task'+(pending.length>1?'s':'')+' waiting today':'Your day is clear';document.getElementById('smartSub').textContent='Overdue tasks are prioritized first.';let x=[];let od=all.filter(t=>!t.completed&&past(t.date)).sort(sort)[0],hi=pending.filter(t=>t.priority==='High').sort(sort)[0],nx=all.filter(t=>!t.completed&&t.date>=today()).sort(sort)[0];if(od)x.push(`<div class="smartitem"><b>🔴 Clear overdue: ${esc(od.name)}</b><span>${esc(od.subject)} • ${fmt(od.date)}</span></div>`);if(hi)x.push(`<div class="smartitem"><b>🔥 High priority: ${esc(hi.name)}</b><span>${esc(hi.subject)} • ${hi.time||'time not set'}</span></div>`);if(nx&&!x.join('').includes(esc(nx.name)))x.push(`<div class="smartitem"><b>➡️ Next up: ${esc(nx.name)}</b><span>${nx.date===today()?'Today':fmt(nx.date)} • ${esc(nx.subject)}</span></div>`);document.getElementById('smartList').innerHTML=x.slice(0,3).join('')||'<div class="smartitem"><b>✨ Ready for your next session.</b><span>Add a task to build your study flow.</span></div>'}
-function stats(){let t=data.tasks.filter(x=>x.date===today()).length,d=data.tasks.filter(x=>x.completed).length,o=data.tasks.filter(x=>!x.completed&&past(x.date)).length,p=data.tasks.length?Math.round(d/data.tasks.length*100):0;todayCount.textContent=t;doneCount.textContent=d;overCount.textContent=o;percent.textContent=p+'%'}function renderAll(){renderToday();renderTasks();renderCalendar();renderSubjects();renderExams();renderGoal();stats();smart()}
-function fillSubjects(sel){taskSubject.innerHTML=data.subjects.map(s=>`<option>${esc(s.name)}</option>`).join('');if(sel)taskSubject.value=sel}function openTask(type='',date='',subject=''){document.getElementById('taskForm').reset();editId.value='';taskModalTitle.textContent='Add Task';fillSubjects(subject);taskDate.value=date||today();if(type)taskType.value=type;taskModal.classList.add('open')}function closeModal(id){document.getElementById(id).classList.remove('open')}
-document.getElementById('taskForm').addEventListener('submit',async e=>{e.preventDefault();let id=editId.value,old=data.tasks.find(t=>t.id===id),t={id:id||uid(),name:taskName.value.trim(),subject:taskSubject.value,type:taskType.value,date:taskDate.value,time:taskTime.value,priority:taskPriority.value,duration:taskDuration.value,notes:taskNotes.value.trim(),completed:old?.completed||false,createdAt:old?.createdAt||new Date().toISOString()};if(!t.name)return;if(old)data.tasks=data.tasks.map(x=>x.id===id?t:x);else data.tasks.push(t);await save();closeModal('taskModal');renderAll();toast(old?'Task updated ✓':'Task saved ✓')});function editTask(id){let t=data.tasks.find(x=>x.id===id);if(!t)return;fillSubjects(t.subject);editId.value=t.id;taskModalTitle.textContent='Edit Task';taskName.value=t.name;taskSubject.value=t.subject;taskType.value=t.type;taskDate.value=t.date;taskTime.value=t.time||'';taskPriority.value=t.priority||'Normal';taskDuration.value=t.duration||'30 min';taskNotes.value=t.notes||'';taskModal.classList.add('open')}async function toggleTask(id){let t=data.tasks.find(x=>x.id===id);if(!t)return;t.completed=!t.completed;await save();renderAll();toast(t.completed?'Task completed 🎉':'Task reopened')}async function deleteTask(id){let t=data.tasks.find(x=>x.id===id);if(t&&confirm('Delete "'+t.name+'"?')){data.tasks=data.tasks.filter(x=>x.id!==id);await save();renderAll();toast('Task deleted')}}
-function openGoal(){gTitle.value=data.goal.title;gTarget.value=data.goal.target;gProgress.value=data.goal.progress;goalModal.classList.add('open')}async function saveGoal(){data.goal={title:gTitle.value.trim()||'My Main Goal',target:Math.max(1,Math.min(100,+gTarget.value||95)),progress:Math.max(0,Math.min(100,+gProgress.value||0))};await save();closeModal('goalModal');renderAll();toast('Goal saved ✓')}function openSubject(){sName.value='';sColor.value=colors[data.subjects.length%colors.length];subjectModal.classList.add('open')}async function saveSubject(){let n=sName.value.trim();if(!n)return toast('Enter a subject name');if(data.subjects.some(s=>s.name.toLowerCase()===n.toLowerCase()))return toast('Subject already exists');data.subjects.push({id:uid(),name:n,color:sColor.value});await save();closeModal('subjectModal');renderAll();toast('Subject added ✓')}
-function saveExamDate(){data.settings.examDate=examDate.value||'2027-02-18';save();toast('Exam date saved ✓')}function countdown(){let diff=Math.max(0,new Date(data.settings.examDate+'T00:00:00')-new Date());days.textContent=Math.floor(diff/86400000);hours.textContent=Math.floor(diff/3600000)%24;mins.textContent=Math.floor(diff/60000)%60;secs.textContent=Math.floor(diff/1000)%60;let n=new Date(),h=n.getHours();greeting.textContent=h<12?'Good morning. Let’s get started.':h<18?'Good afternoon. Keep the momentum.':'Good evening. Finish strong.';dateText.textContent=n.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
-async function enableNotifications(){if(!('Notification'in window))return toast('Notifications are not supported here');let p=await Notification.requestPermission();data.settings.notifications=p==='granted';await save();toast(p==='granted'?'Notifications enabled ✓':'Notifications not allowed')}function notify(title,text){if(data.settings.notifications&&Notification.permission==='granted')try{new Notification(title,{body:text})}catch(e){}remTitle.textContent=title;remText.textContent=text;reminder.classList.add('show');setTimeout(closeReminder,10000)}function closeReminder(){reminder.classList.remove('show')}function checkReminders(){let n=new Date();data.tasks.forEach(t=>{if(t.completed||t.date!==today()||!t.time)return;let [h,m]=t.time.split(':').map(Number),d=new Date();d.setHours(h,m,0,0);let diff=d-n,k=t.id+'-'+t.date+'-'+t.time;if(diff>=0&&diff<60000&&!reminded.has(k)){reminded.add(k);notify('⏰ '+t.name,t.subject+' starts now.')}let k10=k+'10';if(diff>0&&diff<=600000&&!reminded.has(k10)){reminded.add(k10);notify('Upcoming in 10 minutes',t.name+' • '+t.subject)}})}
-function exportData(){let b=new Blob([JSON.stringify({app:'Study Flow',version:4,exportedAt:new Date().toISOString(),data},null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='study-flow-backup-'+today()+'.json';a.click();URL.revokeObjectURL(u);toast('Backup downloaded ✓')}function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=async()=>{try{let b=JSON.parse(r.result);if(!b.data||!Array.isArray(b.data.tasks))throw 0;if(confirm('Replace current planner data with this backup?')){data=norm(b.data);await save();renderAll();toast('Backup restored ✓')}}catch(x){alert('Backup file is not valid.')}e.target.value=''};r.readAsText(f)}async function clearData(){if(prompt('Type DELETE to clear all planner data:')!=='DELETE')return;data=cp(defaults);localStorage.removeItem(KEY);await save();renderAll();toast('Planner reset')}function toast(m){let x=document.getElementById('toast');x.textContent=m;x.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>x.classList.remove('show'),2300)}
-function updateTimer(){timer.textContent=String(Math.floor(timerSec/60)).padStart(2,'0')+':'+String(timerSec%60).padStart(2,'0')}function startTimer(){if(timerInt)return;timerStatus.textContent='Focus mode running…';timerInt=setInterval(()=>{if(timerSec<=0){pauseTimer();notify('🎉 Focus session complete','Great work. Take a short break.');return}timerSec--;updateTimer()},1000)}function pauseTimer(){clearInterval(timerInt);timerInt=null}function resetTimer(){pauseTimer();timerSec=1500;updateTimer();timerStatus.textContent='Focus for 25 minutes, then take a short break.'}
-window.addEventListener('beforeunload',()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}});document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
-(async function init(){await load();examDate.value=data.settings.examDate;renderAll();updateTimer();countdown();setInterval(()=>{countdown();checkReminders()},1000);setInterval(save,15000)})();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>Study Flow – Smart Study Planner</title>
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Study Flow is a smart study planner for tasks, classes, exams, goals, revision and daily schedules.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0b1020">
+
+<meta name="google-site-verification"
+content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo">
+
+<meta property="og:title" content="Study Flow – Smart Study Planner">
+<meta property="og:description" content="Plan your studies, tasks, exams, goals and revision with Study Flow.">
+<meta property="og:type" content="website">
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#080d19;
+  --panel:#101827;
+  --panel2:#151f32;
+  --border:rgba(255,255,255,.09);
+  --text:#f5f7fb;
+  --muted:#9aa6b8;
+  --primary:#6d5dfc;
+  --primary2:#8b7fff;
+  --green:#20d995;
+  --red:#ff5d73;
+  --yellow:#ffc857;
+  --blue:#42a5ff;
+  --shadow:0 20px 60px rgba(0,0,0,.28);
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(109,93,252,.18),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(66,165,255,.12),transparent 28%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+button,input,select,textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* INTRO */
+
+#intro{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#050812;
+  overflow:hidden;
+}
+
+.intro-box{
+  text-align:center;
+  animation:introIn 1s ease forwards;
+}
+
+.intro-logo{
+  width:100px;
+  height:100px;
+  border-radius:28px;
+  margin:auto;
+  display:grid;
+  place-items:center;
+  font-size:46px;
+  background:linear-gradient(135deg,#6d5dfc,#42a5ff);
+  box-shadow:0 0 70px rgba(109,93,252,.65);
+}
+
+.intro-title{
+  margin-top:22px;
+  font-size:54px;
+  font-weight:900;
+  letter-spacing:-3px;
+  background:linear-gradient(90deg,#fff,#6d5dfc,#42a5ff,#fff);
+  background-size:300%;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:colorFlow 2.5s linear infinite;
+}
+
+.intro-sub{
+  color:#aeb9ca;
+  margin-top:10px;
+}
+
+.intro-flash{
+  position:absolute;
+  inset:0;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+  animation:flash 3.4s ease forwards;
+}
+
+@keyframes introIn{
+  from{opacity:0;transform:scale(.7)}
+  to{opacity:1;transform:scale(1)}
+}
+
+@keyframes colorFlow{
+  0%{background-position:0%}
+  100%{background-position:300%}
+}
+
+@keyframes flash{
+  0%,75%{opacity:0}
+  84%{opacity:1}
+  91%{opacity:0}
+  100%{opacity:0}
+}
+
+/* APP */
+
+.app{
+  min-height:100vh;
+}
+
+.topbar{
+  height:74px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,13,25,.82);
+  backdrop-filter:blur(18px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 25px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+  font-size:21px;
+}
+
+.brand-icon{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--primary),var(--blue));
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:7px 12px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:rgba(255,255,255,.035);
+}
+
+.user img{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:245px 1fr;
+  min-height:calc(100vh - 74px);
+}
+
+.sidebar{
+  border-right:1px solid var(--border);
+  padding:20px 14px;
+  background:rgba(8,13,25,.6);
+}
+
+.nav-title{
+  font-size:11px;
+  color:#68758a;
+  font-weight:800;
+  margin:20px 10px 8px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.nav-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#aeb9ca;
+  padding:12px 13px;
+  border-radius:12px;
+  text-align:left;
+  margin-bottom:4px;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+  background:rgba(109,93,252,.15);
+  color:#fff;
+}
+
+main{
+  padding:26px;
+  max-width:1500px;
+  width:100%;
+  margin:auto;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:20px;
+  margin-bottom:24px;
+}
+
+.hero h1{
+  font-size:32px;
+  letter-spacing:-1px;
+}
+
+.hero p{
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.btn{
+  border:1px solid var(--border);
+  color:#fff;
+  background:#172238;
+  padding:11px 16px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,255,255,.18);
+}
+
+.btn.primary{
+  border:0;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+}
+
+.btn.green{
+  border:0;
+  background:linear-gradient(135deg,#12b981,#20d995);
+}
+
+.btn.danger{
+  border:0;
+  background:linear-gradient(135deg,#e94360,#ff5d73);
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.stats{
+  grid-template-columns:repeat(4,1fr);
+}
+
+.card{
+  background:linear-gradient(145deg,rgba(21,31,50,.95),rgba(12,19,32,.95));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:19px;
+  box-shadow:var(--shadow);
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.stat-value{
+  font-size:30px;
+  font-weight:900;
+  margin-top:6px;
+}
+
+.stat.red .stat-value{color:var(--red)}
+.stat.green .stat-value{color:var(--green)}
+.stat.blue .stat-value{color:var(--blue)}
+.stat.yellow .stat-value{color:var(--yellow)}
+
+.section{
+  margin-top:20px;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.section-head h2{
+  font-size:19px;
+}
+
+/* TASKS */
+
+.task-list{
+  display:grid;
+  gap:10px;
+}
+
+.task{
+  display:grid;
+  grid-template-columns:6px 1fr auto;
+  gap:14px;
+  align-items:center;
+  padding:14px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.025);
+  border-radius:14px;
+}
+
+.task-bar{
+  width:6px;
+  height:50px;
+  border-radius:10px;
+  background:var(--primary);
+}
+
+.task.overdue .task-bar{
+  background:var(--red);
+}
+
+.task.live .task-bar{
+  background:var(--green);
+  box-shadow:0 0 15px var(--green);
+}
+
+.task.completed{
+  opacity:.55;
+}
+
+.task-title{
+  font-weight:800;
+}
+
+.task-meta{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  margin-left:6px;
+}
+
+.badge.red{
+  color:#ff8a9a;
+  background:rgba(255,93,115,.12);
+}
+
+.badge.green{
+  color:#58efb5;
+  background:rgba(32,217,149,.12);
+}
+
+.badge.blue{
+  color:#7fc5ff;
+  background:rgba(66,165,255,.12);
+}
+
+.task-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+/* CALENDAR */
+
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:7px;
+}
+
+.day-name{
+  color:#758196;
+  font-size:12px;
+  padding:8px;
+  text-align:center;
+}
+
+.day{
+  min-height:125px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.025);
+  border-radius:12px;
+  padding:8px;
+}
+
+.day.today{
+  border-color:var(--primary);
+  box-shadow:inset 0 0 0 1px rgba(109,93,252,.3);
+}
+
+.day-number{
+  font-size:12px;
+  color:#9aa6b8;
+  margin-bottom:6px;
+}
+
+.calendar-task{
+  padding:5px 7px;
+  border-radius:7px;
+  background:rgba(109,93,252,.18);
+  font-size:11px;
+  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* FORMS */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  color:#9aa6b8;
+  font-size:12px;
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  background:#0b1322;
+  border:1px solid var(--border);
+  color:#fff;
+  border-radius:11px;
+  padding:11px;
+  outline:none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--primary);
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:20px;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(650px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#101827;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:22px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+/* SUBJECTS */
+
+.subject{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  margin-bottom:9px;
+}
+
+.subject-name{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-weight:800;
+}
+
+.dot{
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  display:inline-block;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  max-width:380px;
+  padding:15px 17px;
+  background:#111c2d;
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  transform:translateY(140%);
+  transition:.3s;
+  z-index:5000;
+}
+
+.toast.show{
+  transform:translateY(0);
+}
+
+.toast-title{
+  font-weight:900;
+}
+
+.toast-text{
+  color:#aeb9ca;
+  font-size:13px;
+  margin-top:4px;
+}
+
+/* MOBILE */
+
+@media(max-width:950px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    display:flex;
+    overflow:auto;
+    border-right:0;
+    border-bottom:1px solid var(--border);
+    gap:5px;
+  }
+
+  .nav-title{
+    display:none;
+  }
+
+  .nav-btn{
+    min-width:max-content;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:650px){
+  main{
+    padding:15px;
+  }
+
+  .hero{
+    flex-direction:column;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .calendar{
+    min-width:800px;
+  }
+
+  .calendar-wrap{
+    overflow:auto;
+  }
+
+  .intro-title{
+    font-size:40px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-box">
+    <div class="intro-logo">📚</div>
+    <div class="intro-title">Study Flow</div>
+    <div class="intro-sub">Your smart study planner</div>
+  </div>
+  <div class="intro-flash"></div>
+</div>
+
+<div class="app">
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">📚</div>
+    <span>Study Flow</span>
+  </div>
+
+  <div class="top-actions">
+
+    <button class="btn" onclick="enableNotifications()">
+      🔔 Notifications
+    </button>
+
+    <div id="userArea"></div>
+
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+  <div class="nav-title">Workspace</div>
+
+  <button class="nav-btn active" data-page="dashboard">
+    🏠 Dashboard
+  </button>
+
+  <button class="nav-btn" data-page="tasks">
+    ✅ Tasks
+  </button>
+
+  <button class="nav-btn" data-page="calendar">
+    📅 Calendar
+  </button>
+
+  <button class="nav-btn" data-page="subjects">
+    📚 Subjects
+  </button>
+
+  <button class="nav-btn" data-page="exams">
+    📝 Exams
+  </button>
+
+  <button class="nav-btn" data-page="goals">
+    🎯 Goals
+  </button>
+
+  <button class="nav-btn" data-page="revision">
+    🔁 Revision
+  </button>
+
+  <button class="nav-btn" data-page="focus">
+    ⏱️ Focus
+  </button>
+
+  <div class="nav-title">Account</div>
+
+  <button class="nav-btn" onclick="backupData()">
+    📤 Backup
+  </button>
+
+  <button class="nav-btn" onclick="document.getElementById('restoreFile').click()">
+    📥 Restore
+  </button>
+
+  <input
+    id="restoreFile"
+    type="file"
+    accept=".json"
+    class="hidden"
+    onchange="restoreData(event)"
+  >
+
+  <button class="nav-btn" onclick="logout()">
+    🚪 Logout
+  </button>
+
+</aside>
+
+<main>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<div class="hero">
+  <div>
+    <h1>Good study session 👋</h1>
+    <p id="todayText"></p>
+  </div>
+
+  <button class="btn primary" onclick="openTaskModal()">
+    + Add Task
+  </button>
+</div>
+
+<div class="grid stats">
+
+  <div class="card stat blue">
+    <div class="stat-label">Today's Tasks</div>
+    <div class="stat-value" id="statTasks">0</div>
+  </div>
+
+  <div class="card stat green">
+    <div class="stat-label">Completed</div>
+    <div class="stat-value" id="statCompleted">0</div>
+  </div>
+
+  <div class="card stat red">
+    <div class="stat-label">Overdue</div>
+    <div class="stat-value" id="statOverdue">0</div>
+  </div>
+
+  <div class="card stat yellow">
+    <div class="stat-label">Active Goals</div>
+    <div class="stat-value" id="statGoals">0</div>
+  </div>
+
+</div>
+
+<div class="section">
+
+<div class="section-head">
+  <h2>⚡ Live Schedule</h2>
+</div>
+
+<div class="card">
+  <div id="liveTasks" class="task-list"></div>
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-head">
+  <h2>🔴 Overdue</h2>
+</div>
+
+<div class="card">
+  <div id="overdueTasks" class="task-list"></div>
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-head">
+  <h2>🧠 Smart Study</h2>
+</div>
+
+<div class="card">
+  <div id="smartStudy"></div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TASKS -->
+
+<section id="tasks" class="page">
+
+<div class="hero">
+  <div>
+    <h1>Tasks</h1>
+    <p>Plan every study session with start and end times.</p>
+  </div>
+
+  <button class="btn primary" onclick="openTaskModal()">
+    + Add Task
+  </button>
+</div>
+
+<div class="card">
+
+  <div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap">
+
+    <input
+      id="taskSearch"
+      placeholder="Search tasks..."
+      oninput="renderTasks()"
+      style="flex:1;min-width:200px;background:#0b1322;border:1px solid var(--border);color:#fff;padding:11px;border-radius:10px"
+    >
+
+    <select
+      id="taskFilter"
+      onchange="renderTasks()"
+      style="background:#0b1322;border:1px solid var(--border);color:#fff;padding:11px;border-radius:10px"
+    >
+      <option value="all">All</option>
+      <option value="today">Today</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="completed">Completed</option>
+      <option value="overdue">Overdue</option>
+    </select>
+
+  </div>
+
+  <div id="taskList" class="task-list"></div>
+
+</div>
+
+</section>
+
+
+<!-- CALENDAR -->
+
+<section id="calendar" class="page">
+
+<div class="hero">
+  <div>
+    <h1>Calendar</h1>
+    <p>Your tasks stay attached to their scheduled dates.</p>
+  </div>
+
+  <button class="btn primary" onclick="openTaskModal()">
+    + Add Task
+  </button>
+</div>
+
+<div class="card">
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+
+  <button class="btn" onclick="changeMonth(-1)">←</button>
+
+  <h2 id="calendarTitle"></h2>
+
+  <button class="btn" onclick="changeMonth(1)">→</button>
+
+</div>
+
+<div class="calendar-wrap">
+  <div id="calendarGrid" class="calendar"></div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SUBJECTS -->
+
+<section id="subjects" class="page">
+
+<div class="hero">
+  <div>
+    <h1>Subjects</h1>
+    <p>Organize your study by real subjects.</p>
+  </div>
+
+  <button class="btn primary" onclick="openSubjectModal()">
+    + Add Subject
+  </button>
+</div>
+
+<div class="card">
+  <div id="subjectList"></div>
+</div>
+
+</section>
+
+
+<!-- EXAMS -->
+
+<section id="exams" class="page">
+
+<div class="hero">
+  <div>
+    <h1>Exams</h1>
+    <p>Track subjective tests, MCQs and complete exam preparation.</p>
+  </div>
+
+  <button class="btn primary" onclick="openExamModal()">
+    + Add Exam
+  </button>
+</div>
+
+<div class="card">
+  <div id="examList"></div>
+</div>
+
+</section>
+
+
+<!-- GOALS -->
+
+<section id="goals" class="page">
+
+<div class="hero">
+  <div>
+    <h1>Goals</h1>
+    <p>Turn big targets into daily actions.</p>
+  </div>
+
+  <button class="btn primary" onclick="openGoalModal()">
+    + Set Goal
+  </button>
+</div>
+
+<div class="card">
+  <div id="goalList"></div>
+</div>
+
+</section>
+
+
+<!-- REVISION -->
+
+<section id="revision" class="page">
+
+<div class="hero">
+  <div>
+    <h1>Revision</h1>
+    <p>Keep important chapters in your revision cycle.</p>
+  </div>
+
+  <button class="btn primary" onclick="openRevisionModal()">
+    + Add Revision
+  </button>
+</div>
+
+<div class="card">
+  <div id="revisionList"></div>
+</div>
+
+</section>
+
+
+<!-- FOCUS -->
+
+<section id="focus" class="page">
+
+<div class="hero">
+  <div>
+    <h1>Focus Timer</h1>
+    <p>Stay focused during your study session.</p>
+  </div>
+</div>
+
+<div class="card" style="text-align:center;padding:45px">
+
+<div
+  id="timerDisplay"
+  style="font-size:70px;font-weight:900;letter-spacing:-3px"
+>
+25:00
+</div>
+
+<div style="display:flex;justify-content:center;gap:10px;margin-top:25px">
+
+<button class="btn primary" onclick="startTimer()">Start</button>
+<button class="btn" onclick="pauseTimer()">Pause</button>
+<button class="btn danger" onclick="resetTimer()">Reset</button>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+</div>
+</div>
+
+
+<!-- TASK MODAL -->
+
+<div id="taskModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+  <h2 id="taskModalTitle">Add Task</h2>
+  <button class="btn" onclick="closeModal('taskModal')">✕</button>
+</div>
+
+<div class="form-grid">
+
+<div class="field full">
+<label>Task name</label>
+<input id="taskName" placeholder="e.g. Complete Quadratic Equations">
+</div>
+
+<div class="field">
+<label>Subject</label>
+<select id="taskSubject"></select>
+</div>
+
+<div class="field">
+<label>Date</label>
+<input id="taskDate" type="date">
+</div>
+
+<div class="field">
+<label>Start time</label>
+<input id="taskStart" type="time">
+</div>
+
+<div class="field">
+<label>End time</label>
+<input id="taskEnd" type="time">
+</div>
+
+<div class="field">
+<label>Priority</label>
+<select id="taskPriority">
+<option>Low</option>
+<option selected>Medium</option>
+<option>High</option>
+</select>
+</div>
+
+<div class="field">
+<label>Type</label>
+<select id="taskType">
+<option>Study</option>
+<option>Class</option>
+<option>Revision</option>
+<option>Homework</option>
+<option>Practice</option>
+</select>
+</div>
+
+<div class="field full">
+<label>Notes</label>
+<textarea id="taskNotes" rows="3"></textarea>
+</div>
+
+</div>
+
+<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+<button class="btn" onclick="closeModal('taskModal')">Cancel</button>
+<button class="btn primary" onclick="saveTask()">Save Task</button>
+</div>
+
+</div>
+</div>
+
+
+<!-- SUBJECT MODAL -->
+
+<div id="subjectModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>Add Subject</h2>
+<button class="btn" onclick="closeModal('subjectModal')">✕</button>
+</div>
+
+<div class="field">
+<label>Subject name</label>
+<input id="subjectName" placeholder="Mathematics">
+</div>
+
+<div class="field" style="margin-top:12px">
+<label>Colour</label>
+<input id="subjectColor" type="color" value="#6d5dfc">
+</div>
+
+<div style="margin-top:20px;text-align:right">
+<button class="btn primary" onclick="saveSubject()">Add Subject</button>
+</div>
+
+</div>
+</div>
+
+
+<!-- EXAM MODAL -->
+
+<div id="examModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>Add Exam</h2>
+<button class="btn" onclick="closeModal('examModal')">✕</button>
+</div>
+
+<div class="form-grid">
+
+<div class="field full">
+<label>Exam/Test name</label>
+<input id="examName" placeholder="Science Chapter Test">
+</div>
+
+<div class="field">
+<label>Subject</label>
+<select id="examSubject"></select>
+</div>
+
+<div class="field">
+<label>Test type</label>
+<select id="examType">
+<option>Subjective</option>
+<option>MCQ</option>
+<option>Mixed</option>
+<option>Oral/Viva</option>
+</select>
+</div>
+
+<div class="field">
+<label>Exam date</label>
+<input id="examDate" type="date">
+</div>
+
+<div class="field">
+<label>Total marks</label>
+<input id="examMarks" type="number" min="1">
+</div>
+
+<div class="field">
+<label>Target marks</label>
+<input id="examTarget" type="number" min="1">
+</div>
+
+<div class="field full">
+<label>Chapters / syllabus</label>
+<textarea id="examChapters"></textarea>
+</div>
+
+</div>
+
+<div style="margin-top:20px;text-align:right">
+<button class="btn primary" onclick="saveExam()">Save Exam</button>
+</div>
+
+</div>
+</div>
+
+
+<!-- GOAL MODAL -->
+
+<div id="goalModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>Set Goal</h2>
+<button class="btn" onclick="closeModal('goalModal')">✕</button>
+</div>
+
+<div class="form-grid">
+
+<div class="field full">
+<label>Goal</label>
+<input id="goalName" placeholder="Score 95% in UP Board">
+</div>
+
+<div class="field">
+<label>Target</label>
+<input id="goalTarget" placeholder="95%">
+</div>
+
+<div class="field">
+<label>Deadline</label>
+<input id="goalDate" type="date">
+</div>
+
+<div class="field full">
+<label>Why this goal?</label>
+<textarea id="goalReason"></textarea>
+</div>
+
+</div>
+
+<div style="margin-top:20px;text-align:right">
+<button class="btn primary" onclick="saveGoal()">Save Goal</button>
+</div>
+
+</div>
+</div>
+
+
+<!-- REVISION MODAL -->
+
+<div id="revisionModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+<h2>Add Revision</h2>
+<button class="btn" onclick="closeModal('revisionModal')">✕</button>
+</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Subject</label>
+<select id="revisionSubject"></select>
+</div>
+
+<div class="field">
+<label>Revision date</label>
+<input id="revisionDate" type="date">
+</div>
+
+<div class="field full">
+<label>Chapter/topic</label>
+<input id="revisionTopic" placeholder="Electricity">
+</div>
+
+<div class="field">
+<label>Revision round</label>
+<select id="revisionRound">
+<option>1st Revision</option>
+<option>2nd Revision</option>
+<option>3rd Revision</option>
+<option>Final Revision</option>
+</select>
+</div>
+
+</div>
+
+<div style="margin-top:20px;text-align:right">
+<button class="btn primary" onclick="saveRevision()">Save Revision</button>
+</div>
+
+</div>
+</div>
+
+
+<div id="toast" class="toast">
+<div id="toastTitle" class="toast-title"></div>
+<div id="toastText" class="toast-text"></div>
+</div>
+
+
+<script type="module">
+
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  onSnapshot,
+  collection,
+  query,
+  orderBy
+}
+from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+import {
+  getAnalytics
+}
+from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
+
+
+const firebaseConfig = {
+
+  apiKey:"AIzaSyD0b358pzo3lVzShbRbRuonLG9-pxkVeyA",
+
+  authDomain:"study-flow-eaadf.firebaseapp.com",
+
+  projectId:"study-flow-eaadf",
+
+  storageBucket:"study-flow-eaadf.firebasestorage.app",
+
+  messagingSenderId:"499383545478",
+
+  appId:"1:499383545478:web:4e15ac1f2a50ebbc45ab07",
+
+  measurementId:"G-GWWE5C0LG6"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const analytics = getAnalytics(app);
+
+const provider = new GoogleAuthProvider();
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let state = {
+
+  tasks:[],
+
+  subjects:[
+    {
+      id:"math",
+      name:"Mathematics",
+      color:"#6d5dfc"
+    },
+    {
+      id:"science",
+      name:"Science",
+      color:"#20d995"
+    },
+    {
+      id:"english",
+      name:"English",
+      color:"#42a5ff"
+    },
+    {
+      id:"social",
+      name:"Social Science",
+      color:"#ffc857"
+    }
+  ],
+
+  exams:[],
+
+  goals:[],
+
+  revisions:[]
+
+};
+
+let currentUser = null;
+
+let unsubscribeCloud = null;
+
+let calendarDate = new Date();
+
+let timerSeconds = 1500;
+
+let timerInterval = null;
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+const LOCAL_KEY = "study_flow_pro_state_v1";
+
+
+function saveLocal(){
+
+  localStorage.setItem(
+    LOCAL_KEY,
+    JSON.stringify(state)
+  );
+
+}
+
+
+function loadLocal(){
+
+  try{
+
+    const saved =
+      localStorage.getItem(LOCAL_KEY);
+
+    if(saved){
+
+      const parsed =
+        JSON.parse(saved);
+
+      state = {
+
+        ...state,
+
+        ...parsed
+
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================================================
+   FIRESTORE
+========================================================= */
+
+async function saveCloud(){
+
+  if(!currentUser){
+
+    saveLocal();
+
+    return;
+
+  }
+
+  try{
+
+    await setDoc(
+
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      ),
+
+      {
+        ...state,
+        updatedAt:Date.now()
+      },
+
+      {
+        merge:true
+      }
+
+    );
+
+    saveLocal();
+
+  }catch(error){
+
+    console.error(
+      "Cloud save failed:",
+      error
+    );
+
+    saveLocal();
+
+    toast(
+      "Cloud save failed",
+      "Your data was saved locally."
+    );
+
+  }
+
+}
+
+
+async function loadCloud(){
+
+  if(!currentUser)
+    return;
+
+  try{
+
+    const ref =
+      doc(
+        db,
+        "users",
+        currentUser.uid
+      );
+
+    const snap =
+      await getDoc(ref);
+
+    if(snap.exists()){
+
+      const cloud =
+        snap.data();
+
+      state = {
+
+        tasks:cloud.tasks || [],
+
+        subjects:
+          cloud.subjects ||
+          state.subjects,
+
+        exams:cloud.exams || [],
+
+        goals:cloud.goals || [],
+
+        revisions:
+          cloud.revisions || []
+
+      };
+
+      saveLocal();
+
+      renderAll();
+
+    }else{
+
+      await saveCloud();
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "Cloud unavailable",
+      "Using local saved data."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   GOOGLE LOGIN
+========================================================= */
+
+async function login(){
+
+  try{
+
+    await signInWithPopup(
+      auth,
+      provider
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "Google Login failed",
+      error.message
+    );
+
+  }
+
+}
+
+
+window.logout = async function(){
+
+  try{
+
+    await signOut(auth);
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+};
+
+
+onAuthStateChanged(
+  auth,
+  async user => {
+
+    currentUser = user;
+
+    renderUser();
+
+    if(user){
+
+      await loadCloud();
+
+      toast(
+        "Welcome to Study Flow",
+        `Signed in as ${user.displayName || user.email}`
+      );
+
+    }else{
+
+      loadLocal();
+
+      renderAll();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   USER UI
+========================================================= */
+
+function renderUser(){
+
+  const area =
+    document.getElementById(
+      "userArea"
+    );
+
+  if(!currentUser){
+
+    area.innerHTML = `
+
+      <button
+        class="btn primary"
+        onclick="login()"
+      >
+        🔐 Continue with Google
+      </button>
+
+    `;
+
+    return;
+
+  }
+
+  const photo =
+    currentUser.photoURL ||
+    "https://ui-avatars.com/api/?name=Study+Flow";
+
+  area.innerHTML = `
+
+    <div class="user">
+
+      <img src="${photo}">
+
+      <span>
+        ${escapeHtml(
+          currentUser.displayName ||
+          currentUser.email
+        )}
+      </span>
+
+    </div>
+
+  `;
+
+}
+
+
+window.login = login;
+
+
+/* =========================================================
+   TASKS
+========================================================= */
+
+window.openTaskModal = function(){
+
+  populateSubjectSelects();
+
+  document.getElementById(
+    "taskDate"
+  ).value =
+    todayISO();
+
+  document.getElementById(
+    "taskStart"
+  ).value = "17:00";
+
+  document.getElementById(
+    "taskEnd"
+  ).value = "18:00";
+
+  document.getElementById(
+    "taskModal"
+  ).classList.add("show");
+
+};
+
+
+window.saveTask = async function(){
+
+  const name =
+    document.getElementById(
+      "taskName"
+    ).value.trim();
+
+  const subject =
+    document.getElementById(
+      "taskSubject"
+    ).value;
+
+  const date =
+    document.getElementById(
+      "taskDate"
+    ).value;
+
+  const start =
+    document.getElementById(
+      "taskStart"
+    ).value;
+
+  const end =
+    document.getElementById(
+      "taskEnd"
+    ).value;
+
+  if(!name || !date || !start || !end){
+
+    toast(
+      "Missing information",
+      "Please enter task name, date and times."
+    );
+
+    return;
+
+  }
+
+  const task = {
+
+    id:
+      crypto.randomUUID(),
+
+    name,
+
+    subject,
+
+    date,
+
+    start,
+
+    end,
+
+    priority:
+      document.getElementById(
+        "taskPriority"
+      ).value,
+
+    type:
+      document.getElementById(
+        "taskType"
+      ).value,
+
+    notes:
+      document.getElementById(
+        "taskNotes"
+      ).value,
+
+    completed:false,
+
+    createdAt:Date.now(),
+
+    overdueNotified:false,
+
+    startNotified:false,
+
+    endNotified:false
+
+  };
+
+  state.tasks.push(task);
+
+  saveLocal();
+
+  await saveCloud();
+
+  closeModal("taskModal");
+
+  clearTaskForm();
+
+  renderAll();
+
+  toast(
+    "Task saved",
+    `${name} added to ${date}.`
+  );
+
+};
+
+
+window.toggleTask = async function(id){
+
+  const task =
+    state.tasks.find(
+      t => t.id === id
+    );
+
+  if(!task)
+    return;
+
+  task.completed =
+    !task.completed;
+
+  saveLocal();
+
+  await saveCloud();
+
+  renderAll();
+
+};
+
+
+window.deleteTask = async function(id){
+
+  state.tasks =
+    state.tasks.filter(
+      t => t.id !== id
+    );
+
+  saveLocal();
+
+  await saveCloud();
+
+  renderAll();
+
+};
+
+
+function clearTaskForm(){
+
+  [
+    "taskName",
+    "taskNotes"
+  ].forEach(id => {
+
+    document.getElementById(id).value = "";
+
+  });
+
+}
+
+
+function taskStatus(task){
+
+  if(task.completed)
+    return "completed";
+
+  const now =
+    new Date();
+
+  const start =
+    new Date(
+      `${task.date}T${task.start}`
+    );
+
+  const end =
+    new Date(
+      `${task.date}T${task.end}`
+    );
+
+  if(now < start)
+    return "upcoming";
+
+  if(now >= start && now <= end)
+    return "live";
+
+  if(now > end)
+    return "overdue";
+
+  return "upcoming";
+
+}
+
+
+/* =========================================================
+   LIVE OVERDUE ENGINE
+========================================================= */
+
+async function checkTasksRealtime(){
+
+  let changed = false;
+
+  const now =
+    new Date();
+
+  for(const task of state.tasks){
+
+    if(task.completed)
+      continue;
+
+    const status =
+      taskStatus(task);
+
+    if(
+      status === "overdue" &&
+      !task.overdueNotified
+    ){
+
+      task.overdueNotified =
+        true;
+
+      changed = true;
+
+      notify(
+        "🔴 Task Overdue",
+        `${task.name} was not completed.`
+      );
+
+      toast(
+        "🔴 OVERDUE",
+        `${task.name} is now overdue.`
+      );
+
+    }
+
+    if(
+      status === "live" &&
+      !task.startNotified
+    ){
+
+      const start =
+        new Date(
+          `${task.date}T${task.start}`
+        );
+
+      if(
+        now >= start
+      ){
+
+        task.startNotified =
+          true;
+
+        changed = true;
+
+        notify(
+          "▶️ Task Started",
+          `${task.name} has started.`
+        );
+
+      }
+
+    }
+
+  }
+
+  if(changed){
+
+    saveLocal();
+
+    await saveCloud();
+
+    renderAll();
+
+  }
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+window.enableNotifications =
+async function(){
+
+  if(!("Notification" in window)){
+
+    toast(
+      "Not supported",
+      "This browser does not support notifications."
+    );
+
+    return;
+
+  }
+
+  const permission =
+    await Notification.requestPermission();
+
+  if(permission === "granted"){
+
+    new Notification(
+      "Study Flow 🔔",
+      {
+        body:"Notifications are enabled successfully."
+      }
+    );
+
+    toast(
+      "Notifications enabled",
+      "Study Flow can now send reminders while the page is open."
+    );
+
+  }else{
+
+    toast(
+      "Notifications blocked",
+      "Allow notifications from your browser site settings."
+    );
+
+  }
+
+};
+
+
+function notify(title,body){
+
+  if(
+    "Notification" in window &&
+    Notification.permission === "granted"
+  ){
+
+    try{
+
+      new Notification(
+        title,
+        {
+          body,
+          icon:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%236d5dfc'/%3E%3Ctext x='50' y='65' text-anchor='middle' font-size='55'%3E📚%3C/text%3E%3C/svg%3E"
+        }
+      );
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   TASK RENDER
+========================================================= */
+
+window.renderTasks = function(){
+
+  const container =
+    document.getElementById(
+      "taskList"
+    );
+
+  const search =
+    (
+      document.getElementById(
+        "taskSearch"
+      )?.value || ""
+    ).toLowerCase();
+
+  const filter =
+    document.getElementById(
+      "taskFilter"
+    )?.value || "all";
+
+  let tasks =
+    [...state.tasks];
+
+  tasks =
+    tasks.filter(
+      t =>
+        t.name
+          .toLowerCase()
+          .includes(search)
+    );
+
+  tasks =
+    tasks.filter(
+      t => {
+
+        const status =
+          taskStatus(t);
+
+        if(filter === "all")
+          return true;
+
+        if(filter === "completed")
+          return t.completed;
+
+        if(filter === "overdue")
+          return status === "overdue";
+
+        if(filter === "today")
+          return t.date === todayISO();
+
+        if(filter === "upcoming")
+          return status === "upcoming";
+
+        return true;
+
+      }
+    );
+
+  tasks.sort(
+    (a,b) =>
+      `${a.date}T${a.start}`
+      .localeCompare(
+        `${b.date}T${b.start}`
+      )
+  );
+
+  if(!tasks.length){
+
+    container.innerHTML =
+      `<div style="color:#8d9aad;padding:20px;text-align:center">
+        No tasks found.
+      </div>`;
+
+    return;
+
+  }
+
+  container.innerHTML =
+    tasks
+      .map(taskHTML)
+      .join("");
+
+};
+
+
+function taskHTML(task){
+
+  const status =
+    taskStatus(task);
+
+  const subject =
+    state.subjects.find(
+      s => s.id === task.subject
+    );
+
+  const color =
+    subject?.color ||
+    "#6d5dfc";
+
+  let badge = "";
+
+  if(status === "overdue")
+    badge =
+      `<span class="badge red">🔴 OVERDUE</span>`;
+
+  else if(status === "live")
+    badge =
+      `<span class="badge green">● LIVE</span>`;
+
+  else if(task.completed)
+    badge =
+      `<span class="badge green">✓ DONE</span>`;
+
+  else
+    badge =
+      `<span class="badge blue">UPCOMING</span>`;
+
+  return `
+
+  <div class="task ${status}">
+
+    <div
+      class="task-bar"
+      style="background:${color}"
+    ></div>
+
+    <div>
+
+      <div class="task-title">
+
+        ${escapeHtml(task.name)}
+
+        ${badge}
+
+      </div>
+
+      <div class="task-meta">
+
+        ${escapeHtml(
+          subject?.name || "General"
+        )}
+
+        ·
+
+        ${task.date}
+
+        ·
+
+        ${task.start} – ${task.end}
+
+        ·
+
+        ${task.type}
+
+      </div>
+
+    </div>
+
+    <div class="task-actions">
+
+      <button
+        class="btn"
+        onclick="toggleTask('${task.id}')"
+      >
+        ${task.completed ? "↩️" : "✓"}
+      </button>
+
+      <button
+        class="btn danger"
+        onclick="deleteTask('${task.id}')"
+      >
+        🗑️
+      </button>
+
+    </div>
+
+  </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function renderDashboard(){
+
+  const today =
+    todayISO();
+
+  const todays =
+    state.tasks.filter(
+      t => t.date === today
+    );
+
+  const completed =
+    todays.filter(
+      t => t.completed
+    );
+
+  const overdue =
+    state.tasks.filter(
+      t =>
+        taskStatus(t) ===
+        "overdue"
+    );
+
+  document.getElementById(
+    "statTasks"
+  ).textContent =
+    todays.length;
+
+  document.getElementById(
+    "statCompleted"
+  ).textContent =
+    completed.length;
+
+  document.getElementById(
+    "statOverdue"
+  ).textContent =
+    overdue.length;
+
+  document.getElementById(
+    "statGoals"
+  ).textContent =
+    state.goals.length;
+
+  document.getElementById(
+    "todayText"
+  ).textContent =
+    new Date().toLocaleDateString(
+      undefined,
+      {
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    );
+
+  document.getElementById(
+    "liveTasks"
+  ).innerHTML =
+    todays.length
+      ? todays.map(taskHTML).join("")
+      : `<div style="color:#8d9aad">
+          No tasks scheduled for today.
+        </div>`;
+
+  document.getElementById(
+    "overdueTasks"
+  ).innerHTML =
+    overdue.length
+      ? overdue.map(taskHTML).join("")
+      : `<div style="color:#58efb5">
+          🎉 No overdue tasks!
+        </div>`;
+
+  const smart = [];
+
+  if(overdue.length)
+    smart.push(
+      `🔴 You have ${overdue.length} overdue task(s). Clear them first.`
+    );
+
+  const upcomingExam =
+    [...state.exams]
+      .sort(
+        (a,b) =>
+          a.date.localeCompare(b.date)
+      )[0];
+
+  if(upcomingExam)
+    smart.push(
+      `📝 Upcoming ${upcomingExam.type} exam: ${upcomingExam.name}.`
+    );
+
+  if(!overdue.length)
+    smart.push(
+      "🟢 Great! Your schedule is under control."
+    );
+
+  document.getElementById(
+    "smartStudy"
+  ).innerHTML =
+    smart
+      .map(
+        x =>
+          `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
+            ${escapeHtml(x)}
+          </div>`
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   SUBJECTS
+========================================================= */
+
+function populateSubjectSelects(){
+
+  const ids = [
+    "taskSubject",
+    "examSubject",
+    "revisionSubject"
+  ];
+
+  ids.forEach(id => {
+
+    const el =
+      document.getElementById(id);
+
+    if(!el)
+      return;
+
+    el.innerHTML =
+      state.subjects
+        .map(
+          s =>
+            `<option value="${s.id}">
+              ${escapeHtml(s.name)}
+            </option>`
+        )
+        .join("");
+
+  });
+
+}
+
+
+window.openSubjectModal =
+function(){
+
+  document.getElementById(
+    "subjectModal"
+  ).classList.add("show");
+
+};
+
+
+window.saveSubject =
+async function(){
+
+  const name =
+    document.getElementById(
+      "subjectName"
+    ).value.trim();
+
+  const color =
+    document.getElementById(
+      "subjectColor"
+    ).value;
+
+  if(!name)
+    return;
+
+  state.subjects.push({
+
+    id:crypto.randomUUID(),
+
+    name,
+
+    color
+
+  });
+
+  saveLocal();
+
+  await saveCloud();
+
+  closeModal("subjectModal");
+
+  document.getElementById(
+    "subjectName"
+  ).value = "";
+
+  renderAll();
+
+};
+
+
+function renderSubjects(){
+
+  const el =
+    document.getElementById(
+      "subjectList"
+    );
+
+  el.innerHTML =
+    state.subjects
+      .map(
+        s => {
+
+          const total =
+            state.tasks.filter(
+              t => t.subject === s.id
+            ).length;
+
+          const done =
+            state.tasks.filter(
+              t =>
+                t.subject === s.id &&
+                t.completed
+            ).length;
+
+          const percent =
+            total
+              ? Math.round(
+                  done / total * 100
+                )
+              : 0;
+
+          return `
+
+          <div class="subject">
+
+            <div>
+
+              <div class="subject-name">
+
+                <span
+                  class="dot"
+                  style="background:${s.color}"
+                ></span>
+
+                ${escapeHtml(s.name)}
+
+              </div>
+
+              <div
+                style="color:#8793a7;font-size:12px;margin-top:5px"
+              >
+                ${total} tasks · ${percent}% complete
+              </div>
+
+            </div>
+
+            <div>${percent}%</div>
+
+          </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   EXAMS
+========================================================= */
+
+window.openExamModal =
+function(){
+
+  populateSubjectSelects();
+
+  document.getElementById(
+    "examDate"
+  ).value =
+    todayISO();
+
+  document.getElementById(
+    "examModal"
+  ).classList.add("show");
+
+};
+
+
+window.saveExam =
+async function(){
+
+  const exam = {
+
+    id:crypto.randomUUID(),
+
+    name:
+      document.getElementById(
+        "examName"
+      ).value.trim(),
+
+    subject:
+      document.getElementById(
+        "examSubject"
+      ).value,
+
+    type:
+      document.getElementById(
+        "examType"
+      ).value,
+
+    date:
+      document.getElementById(
+        "examDate"
+      ).value,
+
+    marks:
+      Number(
+        document.getElementById(
+          "examMarks"
+        ).value
+      ),
+
+    target:
+      Number(
+        document.getElementById(
+          "examTarget"
+        ).value
+      ),
+
+    chapters:
+      document.getElementById(
+        "examChapters"
+      ).value
+
+  };
+
+  if(!exam.name || !exam.date){
+
+    toast(
+      "Missing information",
+      "Enter exam name and date."
+    );
+
+    return;
+
+  }
+
+  state.exams.push(exam);
+
+  saveLocal();
+
+  await saveCloud();
+
+  closeModal("examModal");
+
+  renderAll();
+
+  toast(
+    "Exam saved",
+    `${exam.type} exam added.`
+  );
+
+};
+
+
+function renderExams(){
+
+  const el =
+    document.getElementById(
+      "examList"
+    );
+
+  if(!state.exams.length){
+
+    el.innerHTML =
+      `<div style="color:#8d9aad">
+        No exams added yet.
+      </div>`;
+
+    return;
+
+  }
+
+  el.innerHTML =
+    state.exams
+      .sort(
+        (a,b) =>
+          a.date.localeCompare(b.date)
+      )
+      .map(
+        exam => {
+
+          const days =
+            Math.ceil(
+              (
+                new Date(
+                  exam.date
+                ) -
+                new Date()
+              ) /
+              86400000
+            );
+
+          const subject =
+            state.subjects.find(
+              s => s.id === exam.subject
+            );
+
+          return `
+
+          <div class="task">
+
+            <div
+              class="task-bar"
+              style="background:#42a5ff"
+            ></div>
+
+            <div>
+
+              <div class="task-title">
+
+                ${escapeHtml(exam.name)}
+
+                <span class="badge blue">
+                  ${escapeHtml(exam.type)}
+                </span>
+
+              </div>
+
+              <div class="task-meta">
+
+                ${escapeHtml(subject?.name || "")}
+
+                ·
+
+                ${exam.date}
+
+                ·
+
+                ${Math.max(0,days)} days remaining
+
+                ·
+
+                Target ${exam.target || "-"} / ${exam.marks || "-"}
+
+              </div>
+
+            </div>
+
+            <div>
+
+              <span class="badge green">
+                📝 TEST
+              </span>
+
+            </div>
+
+          </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   GOALS
+========================================================= */
+
+window.openGoalModal =
+function(){
+
+  document.getElementById(
+    "goalDate"
+  ).value =
+    todayISO();
+
+  document.getElementById(
+    "goalModal"
+  ).classList.add("show");
+
+};
+
+
+window.saveGoal =
+async function(){
+
+  const goal = {
+
+    id:crypto.randomUUID(),
+
+    name:
+      document.getElementById(
+        "goalName"
+      ).value.trim(),
+
+    target:
+      document.getElementById(
+        "goalTarget"
+      ).value,
+
+    date:
+      document.getElementById(
+        "goalDate"
+      ).value,
+
+    reason:
+      document.getElementById(
+        "goalReason"
+      ).value,
+
+    progress:0
+
+  };
+
+  if(!goal.name)
+    return;
+
+  state.goals.push(goal);
+
+  saveLocal();
+
+  await saveCloud();
+
+  closeModal("goalModal");
+
+  renderAll();
+
+};
+
+
+function renderGoals(){
+
+  const el =
+    document.getElementById(
+      "goalList"
+    );
+
+  if(!state.goals.length){
+
+    el.innerHTML =
+      `<div style="color:#8d9aad">
+        No goals yet. Set your first goal.
+      </div>`;
+
+    return;
+
+  }
+
+  el.innerHTML =
+    state.goals
+      .map(
+        g => `
+
+        <div class="card" style="margin-bottom:10px">
+
+          <div style="display:flex;justify-content:space-between">
+
+            <div>
+
+              <h3>
+                🎯 ${escapeHtml(g.name)}
+              </h3>
+
+              <div class="task-meta">
+                Target: ${escapeHtml(g.target)}
+                · Deadline: ${g.date}
+              </div>
+
+            </div>
+
+            <strong>
+              ${g.progress || 0}%
+            </strong>
+
+          </div>
+
+          <div
+            style="height:9px;background:#202c40;border-radius:20px;margin-top:15px;overflow:hidden"
+          >
+            <div
+              style="width:${g.progress || 0}%;height:100%;background:linear-gradient(90deg,#6d5dfc,#42a5ff)"
+            ></div>
+          </div>
+
+        </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   REVISION
+========================================================= */
+
+window.openRevisionModal =
+function(){
+
+  populateSubjectSelects();
+
+  document.getElementById(
+    "revisionDate"
+  ).value =
+    todayISO();
+
+  document.getElementById(
+    "revisionModal"
+  ).classList.add("show");
+
+};
+
+
+window.saveRevision =
+async function(){
+
+  const revision = {
+
+    id:crypto.randomUUID(),
+
+    subject:
+      document.getElementById(
+        "revisionSubject"
+      ).value,
+
+    date:
+      document.getElementById(
+        "revisionDate"
+      ).value,
+
+    topic:
+      document.getElementById(
+        "revisionTopic"
+      ).value.trim(),
+
+    round:
+      document.getElementById(
+        "revisionRound"
+      ).value,
+
+    completed:false
+
+  };
+
+  if(!revision.topic)
+    return;
+
+  state.revisions.push(revision);
+
+  saveLocal();
+
+  await saveCloud();
+
+  closeModal("revisionModal");
+
+  renderAll();
+
+};
+
+
+function renderRevisions(){
+
+  const el =
+    document.getElementById(
+      "revisionList"
+    );
+
+  if(!state.revisions.length){
+
+    el.innerHTML =
+      `<div style="color:#8d9aad">
+        No revision sessions yet.
+      </div>`;
+
+    return;
+
+  }
+
+  el.innerHTML =
+    state.revisions
+      .map(
+        r => {
+
+          const subject =
+            state.subjects.find(
+              s => s.id === r.subject
+            );
+
+          return `
+
+          <div class="task">
+
+            <div
+              class="task-bar"
+              style="background:#20d995"
+            ></div>
+
+            <div>
+
+              <div class="task-title">
+
+                🔁 ${escapeHtml(r.topic)}
+
+              </div>
+
+              <div class="task-meta">
+
+                ${escapeHtml(subject?.name || "")}
+
+                ·
+
+                ${r.date}
+
+                ·
+
+                ${escapeHtml(r.round)}
+
+              </div>
+
+            </div>
+
+          </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
+   CALENDAR
+========================================================= */
+
+window.changeMonth =
+function(delta){
+
+  calendarDate.setMonth(
+    calendarDate.getMonth() + delta
+  );
+
+  renderCalendar();
+
+};
+
+
+function renderCalendar(){
+
+  const year =
+    calendarDate.getFullYear();
+
+  const month =
+    calendarDate.getMonth();
+
+  document.getElementById(
+    "calendarTitle"
+  ).textContent =
+    calendarDate.toLocaleDateString(
+      undefined,
+      {
+        month:"long",
+        year:"numeric"
+      }
+    );
+
+  const grid =
+    document.getElementById(
+      "calendarGrid"
+    );
+
+  const first =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+  const last =
+    new Date(
+      year,
+      month + 1,
+      0
+    );
+
+  let html = "";
+
+  [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+  ].forEach(
+    day =>
+      html +=
+        `<div class="day-name">${day}</div>`
+  );
+
+  for(
+    let i=0;
+    i<first.getDay();
+    i++
+  ){
+
+    html +=
+      `<div></div>`;
+
+  }
+
+  for(
+    let d=1;
+    d<=last.getDate();
+    d++
+  ){
+
+    const date =
+      `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+
+    const today =
+      date === todayISO()
+        ? "today"
+        : "";
+
+    const tasks =
+      state.tasks.filter(
+        t => t.date === date
+      );
+
+    html += `
+
+      <div class="day ${today}">
+
+        <div class="day-number">
+          ${d}
+        </div>
+
+        ${tasks
+          .map(
+            t =>
+              `<div class="calendar-task">
+                ${escapeHtml(t.name)}
+              </div>`
+          )
+          .join("")}
+
+      </div>
+
+    `;
+
+  }
+
+  grid.innerHTML = html;
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function updateTimer(){
+
+  const minutes =
+    Math.floor(
+      timerSeconds / 60
+    );
+
+  const seconds =
+    timerSeconds % 60;
+
+  document.getElementById(
+    "timerDisplay"
+  ).textContent =
+    `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+}
+
+
+window.startTimer =
+function(){
+
+  if(timerInterval)
+    return;
+
+  timerInterval =
+    setInterval(
+      () => {
+
+        if(timerSeconds <= 0){
+
+          clearInterval(
+            timerInterval
+          );
+
+          timerInterval = null;
+
+          notify(
+            "🎉 Focus session complete",
+            "Great work! Take a short break."
+          );
+
+          toast(
+            "Focus complete",
+            "Great work!"
+          );
+
+          return;
+
+        }
+
+        timerSeconds--;
+
+        updateTimer();
+
+      },
+      1000
+    );
+
+};
+
+
+window.pauseTimer =
+function(){
+
+  clearInterval(
+    timerInterval
+  );
+
+  timerInterval = null;
+
+};
+
+
+window.resetTimer =
+function(){
+
+  pauseTimer();
+
+  timerSeconds = 1500;
+
+  updateTimer();
+
+};
+
+
+/* =========================================================
+   BACKUP / RESTORE
+========================================================= */
+
+window.backupData =
+function(){
+
+  const blob =
+    new Blob(
+      [
+        JSON.stringify(
+          state,
+          null,
+          2
+        )
+      ],
+      {
+        type:"application/json"
+      }
+    );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const a =
+    document.createElement("a");
+
+  a.href = url;
+
+  a.download =
+    `study-flow-backup-${todayISO()}.json`;
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+};
+
+
+window.restoreData =
+function(event){
+
+  const file =
+    event.target.files[0];
+
+  if(!file)
+    return;
+
+  const reader =
+    new FileReader();
+
+  reader.onload =
+    async e => {
+
+      try{
+
+        const imported =
+          JSON.parse(
+            e.target.result
+          );
+
+        state = {
+
+          tasks:imported.tasks || [],
+
+          subjects:
+            imported.subjects ||
+            state.subjects,
+
+          exams:imported.exams || [],
+
+          goals:imported.goals || [],
+
+          revisions:
+            imported.revisions || []
+
+        };
+
+        saveLocal();
+
+        await saveCloud();
+
+        renderAll();
+
+        toast(
+          "Restore complete",
+          "Your Study Flow backup was restored."
+        );
+
+      }catch(error){
+
+        toast(
+          "Restore failed",
+          "The selected file is not a valid Study Flow backup."
+        );
+
+      }
+
+    };
+
+  reader.readAsText(file);
+
+};
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+document
+  .querySelectorAll(".nav-btn[data-page]")
+  .forEach(
+    btn => {
+
+      btn.addEventListener(
+        "click",
+        () => {
+
+          document
+            .querySelectorAll(".nav-btn")
+            .forEach(
+              b =>
+                b.classList.remove(
+                  "active"
+                )
+            );
+
+          btn.classList.add(
+            "active"
+          );
+
+          document
+            .querySelectorAll(".page")
+            .forEach(
+              page =>
+                page.classList.remove(
+                  "active"
+                )
+            );
+
+          document
+            .getElementById(
+              btn.dataset.page
+            )
+            .classList.add(
+              "active"
+            );
+
+          renderAll();
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+window.closeModal =
+function(id){
+
+  document
+    .getElementById(id)
+    .classList.remove("show");
+
+};
+
+
+function todayISO(){
+
+  const d =
+    new Date();
+
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+
+}
+
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function toast(title,text){
+
+  const el =
+    document.getElementById(
+      "toast"
+    );
+
+  document.getElementById(
+    "toastTitle"
+  ).textContent =
+    title;
+
+  document.getElementById(
+    "toastText"
+  ).textContent =
+    text;
+
+  el.classList.add("show");
+
+  setTimeout(
+    () =>
+      el.classList.remove(
+        "show"
+      ),
+    4000
+  );
+
+}
+
+
+/* =========================================================
+   RENDER ALL
+========================================================= */
+
+function renderAll(){
+
+  renderDashboard();
+
+  renderTasks();
+
+  renderCalendar();
+
+  renderSubjects();
+
+  renderExams();
+
+  renderGoals();
+
+  renderRevisions();
+
+  populateSubjectSelects();
+
+  updateTimer();
+
+}
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+loadLocal();
+
+renderAll();
+
+setInterval(
+  checkTasksRealtime,
+  1000
+);
+
+setInterval(
+  renderAll,
+  5000
+);
+
+setTimeout(
+  () => {
+
+    document
+      .getElementById("intro")
+      .style.display = "none";
+
+  },
+  3600
+);
+
+</script>
+
+</body>
+</html>
