@@ -258,4 +258,224 @@ window.addEventListener("load",()=>{sfFixOnboarding();sfInjectDock()});
 </script>
 <!-- ================= END RELIABILITY PATCH ================= -->
 
+
+<!-- ================= STUDY FLOW CORE STORAGE + UNIQUE UX ================= -->
+<style>
+/* Larger, clearer action icons */
+#taskModal .modalhead h2::first-letter{font-size:1.35em}
+#taskModal .modalactions .btn.primary{font-size:15px;padding:12px 18px}
+button[onclick*="openTask"],#addTaskBtn{min-height:46px;font-weight:800}
+button[onclick*="openTask"]::first-letter,#addTaskBtn::first-letter{font-size:1.35em}
+
+/* Premium utility strip */
+.sf-unique-strip{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:10px 0 18px}
+.sf-unique-pill{border:1px solid rgba(127,127,127,.18);background:linear-gradient(135deg,rgba(108,99,255,.13),rgba(36,214,156,.08));padding:9px 12px;border-radius:14px;font-size:12px;font-weight:800}
+.sf-unique-pill strong{font-size:15px;margin-right:4px}
+.sf-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0}
+.sf-quick button{border:1px solid rgba(127,127,127,.16);background:rgba(127,127,127,.07);color:inherit;border-radius:14px;padding:12px 8px;cursor:pointer;font-weight:800}
+.sf-quick button:hover{transform:translateY(-1px);background:rgba(108,99,255,.13)}
+@media(max-width:720px){.sf-quick{grid-template-columns:repeat(2,1fr)}}
+
+/* Sidebar really scrolls */
+#sidebar{overflow-y:auto!important;overflow-x:hidden!important;max-height:100vh}
+#sidebar::-webkit-scrollbar{width:6px}
+#sidebar::-webkit-scrollbar-thumb{background:rgba(130,130,150,.45);border-radius:99px}
+
+/* Storage status */
+.sf-storage-ok{color:#22a967!important}
+.sf-storage-bad{color:#d44!important}
+</style>
+
+<script>
+(function(){
+"use strict";
+const IDB_NAME="StudyFlowDatabase";
+const IDB_VERSION=1;
+const IDB_STORE="app_state";
+const IDB_KEY="current";
+const LS_KEY="study_flow_pro_v8";
+const RECOVERY_FLAG="studyflow_idb_recovery_attempt";
+
+let dbPromise=null;
+function openDB(){
+ if(!("indexedDB" in window)) return Promise.reject(new Error("IndexedDB unavailable"));
+ if(dbPromise)return dbPromise;
+ dbPromise=new Promise((resolve,reject)=>{
+  const req=indexedDB.open(IDB_NAME,IDB_VERSION);
+  req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(IDB_STORE))db.createObjectStore(IDB_STORE)};
+  req.onsuccess=()=>resolve(req.result);
+  req.onerror=()=>reject(req.error||new Error("IndexedDB open failed"));
+ });
+ return dbPromise;
+}
+function idbPut(value){
+ return openDB().then(db=>new Promise((resolve,reject)=>{
+  const tx=db.transaction(IDB_STORE,"readwrite"),st=tx.objectStore(IDB_STORE);
+  st.put({savedAt:Date.now(),json:value},IDB_KEY);
+  tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error);
+ }));
+}
+function idbGet(){
+ return openDB().then(db=>new Promise((resolve,reject)=>{
+  const tx=db.transaction(IDB_STORE,"readonly"),st=tx.objectStore(IDB_STORE),r=st.get(IDB_KEY);
+  r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error);
+ }));
+}
+function idbClear(){
+ return openDB().then(db=>new Promise((resolve,reject)=>{
+  const tx=db.transaction(IDB_STORE,"readwrite");tx.objectStore(IDB_STORE).delete(IDB_KEY);
+  tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error);
+ }));
+}
+function readLS(){try{return localStorage.getItem(LS_KEY)}catch(e){return null}}
+function writeLS(v){try{localStorage.setItem(LS_KEY,v);return true}catch(e){return false}}
+function notify(msg){
+ try{if(typeof toast==="function"){toast(msg);return}}catch(e){}
+ const old=document.getElementById("sfRepairNotice");
+ if(old){old.textContent=msg;old.style.display="block";setTimeout(()=>old.style.display="none",2200)}
+}
+
+/* IDB is the durable primary backup; localStorage is the synchronous boot cache. */
+function durableSave(){
+ const raw=readLS();
+ if(!raw)return;
+ idbPut(raw).then(()=>{
+  const s=document.getElementById("storage");
+  if(s){s.textContent="✓ LocalStorage + IndexedDB • saved";s.classList.add("sf-storage-ok")}
+ }).catch(()=>{
+  const s=document.getElementById("storage");
+  if(s){s.textContent="⚠ LocalStorage only";s.classList.add("sf-storage-bad")}
+ });
+}
+
+/* If localStorage was wiped but IDB still has data, restore it BEFORE the app's next boot. */
+function recoverBeforeBoot(){
+ if(sessionStorage.getItem(RECOVERY_FLAG))return;
+ const ls=readLS();
+ if(ls)return;
+ idbGet().then(rec=>{
+  if(rec&&rec.json){
+   sessionStorage.setItem(RECOVERY_FLAG,"1");
+   writeLS(rec.json);
+   location.reload();
+  }
+ }).catch(()=>{});
+}
+recoverBeforeBoot();
+
+function installAfterApp(){
+ /* Wrap the real saveTask: the original app remains responsible for its data model. */
+ if(typeof window.saveTask==="function" && !window.saveTask.__sfWrapped){
+  const original=window.saveTask;
+  const wrapped=function(){
+   const result=original.apply(this,arguments);
+   setTimeout(durableSave,60);
+   return result;
+  };
+  wrapped.__sfWrapped=true;window.saveTask=wrapped;
+ }
+ /* Wrap every major mutation exposed by the app. */
+ ["toggleTask","deleteTask","saveExam","saveGoal","saveSubject","saveRevision"].forEach(name=>{
+  const fn=window[name];
+  if(typeof fn==="function"&&!fn.__sfWrapped){
+   const w=function(){const r=fn.apply(this,arguments);setTimeout(durableSave,60);return r};
+   w.__sfWrapped=true;window[name]=w;
+  }
+ });
+
+ /* Bulletproof backup: exports exactly what the app currently stores. */
+ window.backup=function(){
+  const raw=readLS();
+  let data;
+  try{data=JSON.parse(raw||"{}")}catch(e){data={}};
+  const payload={app:"Study Flow",format:"study-flow-backup",version:9,exportedAt:new Date().toISOString(),data};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="study-flow-backup-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  durableSave();notify("💾 Complete backup exported");
+ };
+
+ /* Bulletproof restore: accepts the current format plus older JSON structures. */
+ window.restore=function(ev){
+  const file=ev&&ev.target&&ev.target.files&&ev.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+   try{
+    const p=JSON.parse(reader.result);
+    const x=p.data||p.state||p.localState||p;
+    if(!x||typeof x!=="object"||!Array.isArray(x.tasks))throw new Error("not a Study Flow backup");
+    const repaired={
+      profile:x.profile||{},
+      subjects:Array.isArray(x.subjects)?x.subjects:[],
+      tasks:x.tasks,
+      exams:Array.isArray(x.exams)?x.exams:[],
+      goals:Array.isArray(x.goals)?x.goals:[],
+      revisions:Array.isArray(x.revisions)?x.revisions:[]
+    };
+    const raw=JSON.stringify(repaired);
+    writeLS(raw);
+    idbPut(raw).then(()=>{
+      sessionStorage.removeItem(RECOVERY_FLAG);
+      notify("♻️ Backup restored successfully — reopening…");
+      setTimeout(()=>location.reload(),500);
+    }).catch(()=>{
+      writeLS(raw);setTimeout(()=>location.reload(),500);
+    });
+   }catch(e){notify("❌ This JSON is not a valid Study Flow backup")}
+   ev.target.value="";
+  };
+  reader.readAsText(file);
+ };
+
+ /* Reset both storage engines, not just localStorage. */
+ const oldReset=window.resetAll;
+ window.resetAll=function(){
+  if(!confirm("Erase all Study Flow data from this device?"))return;
+  idbClear().catch(()=>{});
+  try{localStorage.removeItem(LS_KEY)}catch(e){}
+  sessionStorage.removeItem(RECOVERY_FLAG);
+  if(typeof oldReset==="function")oldReset();else location.reload();
+ };
+
+ durableSave();
+}
+
+/* Wait for the Firebase/module app to expose its functions. */
+let tries=0;
+const timer=setInterval(()=>{
+ tries++;
+ if(typeof window.saveTask==="function"||tries>80){clearInterval(timer);installAfterApp()}
+},50);
+
+/* Auto durability every 3 seconds + tab switching safety. */
+setInterval(()=>{if(readLS())durableSave()},3000);
+window.addEventListener("beforeunload",durableSave);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")durableSave()});
+
+/* Unique quick actions + storage badge */
+function addUniqueUX(){
+ const host=document.querySelector("#dashboard,.page.active,.content");
+ if(!host||document.getElementById("sfUniqueUX"))return;
+ const el=document.createElement("div");el.id="sfUniqueUX";
+ el.innerHTML=`
+  <div class="sf-unique-strip">
+   <div class="sf-unique-pill"><strong>⚡</strong> Study Pulse</div>
+   <div class="sf-unique-pill"><strong>💾</strong> Dual Save</div>
+   <div class="sf-unique-pill"><strong>🔴</strong> Live Tracking</div>
+  </div>
+  <div class="sf-quick">
+   <button onclick="openTask()">➕<br>Quick Task</button>
+   <button onclick="openExam()">📝<br>Exam</button>
+   <button onclick="openGoal()">🎯<br>Goal</button>
+   <button onclick="goPage('focusPage')">⏱️<br>Focus</button>
+  </div>`;
+ host.insertBefore(el,host.firstChild);
+}
+setTimeout(addUniqueUX,900);
+})();
+</script>
+<!-- ================= END CORE STORAGE + UNIQUE UX ================= -->
+
 </body></html>
