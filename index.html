@@ -70,4 +70,192 @@ function startOnboard(){if(data.profile.onboarded)return;step=0;sel={};drawOnboa
 window.backup=()=>{let p={app:"Study Flow",version:8,exportedAt:new Date().toISOString(),data:repair(data)},b=new Blob([JSON.stringify(p,null,2)],{type:"application/json"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=`study-flow-backup-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(u),500);toast("📦 Backup exported")};window.restore=e=>{let f=e.target.files?.[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let p=JSON.parse(r.result),x=p.data||p;if(!Array.isArray(x.tasks))throw 0;data=repair(x);save();render();toast("✅ Backup restored successfully")}catch{toast("❌ Invalid Study Flow backup")}e.target.value=""};r.readAsText(f)};window.resetAll=()=>{if(confirm("Erase all local planner data?")){localStorage.removeItem(KEY);data=clone();save();render();startOnboard();toast("Planner reset")}};
 function render(){clock();opts();dashboard();tt();renderTasks();calendar();subjects();exams();revisions();goals();focus();profile();live();storage()}
 document.querySelectorAll(".modal").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("show")});window.addEventListener("beforeunload",()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch{}});window.addEventListener("error",()=>toast("🛠️ Study Flow recovered from a page error."));document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal.show").forEach(m=>m.classList.remove("show"));if(e.key.toLowerCase()==="n"&&!['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){e.preventDefault();openTask()}});setInterval(()=>{clock();let changed=false;data.tasks.forEach(t=>{if(!t.done&&status(t)==="overdue"&&!t.notified){t.notified=true;changed=true;toast("🔴 OVERDUE · "+t.name)}});if(changed)save();dashboard();live()},1000);setInterval(()=>{tt();renderTasks();calendar()},5000);render();if(!data.profile.onboarded)setTimeout(startOnboard,300);
-</script><style>#sfProfileModal,#sfBackupModal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:#0009;backdrop-filter:blur(7px)}.sf-card{width:min(520px,92vw);max-height:90vh;overflow:auto;background:var(--card,#fff);color:var(--text,#111);border-radius:20px;padding:22px;box-shadow:0 24px 80px #0006}.sf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.sf-card input,.sf-card textarea{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid #aaa;background:transparent;color:inherit}.sf-actions{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;margin-top:15px}.sf-btn{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}.sf-primary{background:#6c63ff;color:#fff}.sf-muted{background:#8882;color:inherit}#sfToast{position:fixed;right:18px;bottom:18px;z-index:100001;background:#171717;color:#fff;padding:12px 16px;border-radius:12px;display:none}@media(max-width:600px){.sf-grid{grid-template-columns:1fr}}</style><div id="sfToast"></div><div id="sfProfileModal"><div class="sf-card"><h2>👤 Profile & Goal</h2><p>Profile ek baar set karo; baad mein edit bhi kar sakte ho.</p><div class="sf-grid"><label>Name<input id="sfName"></label><label>Class<input id="sfClass"></label><label>Region<input id="sfRegion"></label><label>Target %<input id="sfTarget" type="number" min="0" max="100"></label></div><label style="display:block;margin-top:12px">Goal<textarea id="sfGoal" rows="3"></textarea></label><div class="sf-actions"><button class="sf-btn sf-muted" onclick="sfCloseProfile()">Cancel</button><button class="sf-btn sf-primary" onclick="sfSaveProfile()">Save Goal & Profile</button></div></div></div><div id="sfBackupModal"><div class="sf-card"><h2>💾 Backup & Restore</h2><p>Complete app data ka backup export karo ya restore karo.</p><div class="sf-actions" style="justify-content:flex-start"><button class="sf-btn sf-primary" onclick="sfExportBackup()">⬇ Export Backup</button><button class="sf-btn sf-muted" onclick="document.getElementById('sfRestoreFile').click()">⬆ Restore Backup</button><input id="sfRestoreFile" type="file" accept=".json,application/json" hidden></div><div class="sf-actions"><button class="sf-btn sf-muted" onclick="sfCloseBackup()">Close</button></div></div></div><div id="sfUtilityDock" style="position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:7px"><button class="sf-btn sf-muted" onclick="sfOpenProfile()">👤 Profile</button><button class="sf-btn sf-muted" onclick="sfOpenBackup()">💾 Backup</button></div><script>(function(){const K='studyFlowStateV2';function S(){try{return JSON.parse(localStorage.getItem(K)||'{}')}catch(e){return {}}}function save(x){localStorage.setItem(K,JSON.stringify(x));localStorage.setItem('studyFlowLastSaved',new Date().toISOString())}function toast(t){let x=document.getElementById('sfToast');x.textContent=t;x.style.display='block';clearTimeout(window.sfT);window.sfT=setTimeout(()=>x.style.display='none',2200)}window.sfOpenProfile=()=>{let p=S().profile||{};sfName.value=p.name||'';sfClass.value=p.className||'';sfRegion.value=p.region||'';sfTarget.value=p.target||'';sfGoal.value=p.goal||'';sfProfileModal.style.display='flex'};window.sfCloseProfile=()=>sfProfileModal.style.display='none';window.sfSaveProfile=()=>{let s=S();s.profile={name:sfName.value.trim(),className:sfClass.value.trim(),region:sfRegion.value.trim(),target:sfTarget.value,goal:sfGoal.value.trim()};s.profileCompleted=true;save(s);sfCloseProfile();toast('✅ Profile & goal saved')};window.sfOpenBackup=()=>sfBackupModal.style.display='flex';window.sfCloseBackup=()=>sfBackupModal.style.display='none';window.sfExportBackup=()=>{let all={version:2,app:'Study Flow',exportedAt:new Date().toISOString(),state:S(),localStorage:{}};for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k)all.localStorage[k]=localStorage.getItem(k)}let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(all,null,2)],{type:'application/json'}));a.download='study-flow-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('💾 Backup exported')};sfRestoreFile.onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(d.localStorage)Object.entries(d.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));if(d.state)localStorage.setItem(K,JSON.stringify(d.state));toast('✅ Restored — reloading');setTimeout(()=>location.reload(),700)}catch(x){toast('❌ Invalid backup')}};setInterval(()=>{let s=S();s.autoSaveAt=new Date().toISOString();save(s)},15000);window.addEventListener('beforeunload',()=>{let s=S();s.autoSaveAt=new Date().toISOString();save(s)});setTimeout(()=>{let s=S();if(!s.profileCompleted&&!s.profile)sfOpenProfile()},500)})();</script></body></html>
+</script>
+<!-- ================= STUDY FLOW RELIABILITY PATCH ================= -->
+<style>
+/* Professional sidebar scrolling + compact utility controls */
+.sidebar,.side-nav,.nav-panel,aside{
+  overflow-y:auto!important;overflow-x:hidden!important;
+  scrollbar-width:thin;scrollbar-color:rgba(120,120,140,.45) transparent;
+}
+.sidebar::-webkit-scrollbar,.side-nav::-webkit-scrollbar,.nav-panel::-webkit-scrollbar,aside::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-thumb,.side-nav::-webkit-scrollbar-thumb,.nav-panel::-webkit-scrollbar-thumb,aside::-webkit-scrollbar-thumb{background:rgba(120,120,140,.45);border-radius:99px}
+.sf-reliability-dock{display:grid;gap:7px;padding:10px;margin-top:8px}
+.sf-reliability-dock button{width:100%;border:1px solid rgba(127,127,127,.18);background:rgba(127,127,127,.08);color:inherit;border-radius:10px;padding:9px 11px;text-align:left;cursor:pointer;font-weight:700}
+.sf-reliability-dock button:hover{background:rgba(108,99,255,.13)}
+.sf-cloud-status{font-size:11px;opacity:.7;padding:3px 2px}
+#sfRepairNotice{position:fixed;right:18px;bottom:18px;z-index:100001;background:#17181d;color:#fff;padding:12px 15px;border-radius:12px;display:none;box-shadow:0 12px 40px #0004}
+</style>
+<div id="sfRepairNotice"></div>
+<script>
+(function(){
+"use strict";
+const SF_KEY="study_flow_pro_v8";
+const SF_OLD_KEYS=["study_flow_final_v7","study_flow_final_v6","study_flow_pro_state_v1","study_flow_state","studyFlowStateV2"];
+const sfDefault={
+ profile:{name:"Student",age:"",dob:"",country:"India",region:"",className:"",board:"",preparation:"",goal:"",onboarded:false,points:0},
+ subjects:[
+  {id:"math",name:"Mathematics",color:"#7657ff",icon:"📐"},
+  {id:"science",name:"Science",color:"#24d69c",icon:"⚛️"},
+  {id:"english",name:"English",color:"#35a9ff",icon:"📖"},
+  {id:"sst",name:"Social Science",color:"#ffc857",icon:"🌍"},
+  {id:"hindi",name:"Hindi",color:"#ff678b",icon:"📚"}
+ ],
+ tasks:[],exams:[],goals:[],revisions:[]
+};
+const clone=o=>JSON.parse(JSON.stringify(o));
+function mergeState(a){
+ const x=clone(sfDefault), s=(a&&typeof a==="object")?a:{};
+ x.profile={...x.profile,...(s.profile||{})};
+ ["subjects","tasks","exams","goals","revisions"].forEach(k=>{
+   if(Array.isArray(s[k])) x[k]=s[k];
+ });
+ return x;
+}
+function sfRead(){
+ for(const k of [SF_KEY,...SF_OLD_KEYS]){
+   try{
+    const raw=localStorage.getItem(k);
+    if(raw){const parsed=JSON.parse(raw);return mergeState(parsed)}
+   }catch(e){}
+ }
+ return clone(sfDefault);
+}
+function sfWrite(s){
+ const clean=mergeState(s);
+ localStorage.setItem(SF_KEY,JSON.stringify(clean));
+ /* Keep the legacy key synchronized so older app functions don't lose data. */
+ for(const k of SF_OLD_KEYS) try{localStorage.setItem(k,JSON.stringify(clean))}catch(e){}
+ return clean;
+}
+window.sfSaveReliable=function(){
+ try{
+   /* Pick up the app's live data variable when available. */
+   if(typeof data!=="undefined") sfWrite(data);
+   else if(typeof state!=="undefined") sfWrite(state);
+ }catch(e){sfWrite(sfRead())}
+};
+
+/* One-time profile: never force onboarding again after a saved profile. */
+function sfFixOnboarding(){
+ try{
+  const s=sfRead();
+  const p=s.profile||{};
+  const looksConfigured=!!(p.onboarded || p.name&&p.name!=="Student" || p.className || p.board || p.goal);
+  if(looksConfigured && !p.onboarded){p.onboarded=true;sfWrite(s)}
+  if(p.onboarded){
+    const modal=document.getElementById("onboard");
+    if(modal) modal.classList.remove("show");
+    window.__sfProfileDone=true;
+  }
+ }catch(e){}
+}
+
+/* Backup contains the complete local state, including legacy-compatible data. */
+window.sfExportCompleteBackup=function(){
+ try{
+  sfSaveReliable();
+  const s=sfRead();
+  const payload={
+   format:"study-flow-complete-backup",
+   version:3,
+   exportedAt:new Date().toISOString(),
+   state:s,
+   localState:s
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob), a=document.createElement("a");
+  a.href=url;a.download="study-flow-backup-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  sfToast("💾 Complete backup exported");
+ }catch(e){sfToast("❌ Backup export failed")}
+};
+window.sfRestoreCompleteBackup=function(input){
+ const file=input?.files?.[0]; if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const raw=JSON.parse(reader.result);
+   const imported=raw.state||raw.localState||raw;
+   const restored=mergeState(imported);
+   if(!Array.isArray(restored.tasks)||!Array.isArray(restored.subjects))throw Error("invalid");
+   sfWrite(restored);
+   /* Synchronize live app globals if present. */
+   try{if(typeof data!=="undefined") data=restored}catch(e){}
+   try{if(typeof state!=="undefined") state=restored}catch(e){}
+   sfToast("✅ Backup restored. Reloading…");
+   setTimeout(()=>location.reload(),650);
+  }catch(e){sfToast("❌ Invalid Study Flow JSON backup")}
+  input.value="";
+ };
+ reader.readAsText(file);
+};
+
+/* Task modal cancel: force-close every common task modal id and clear unsaved inputs. */
+window.sfCancelTask=function(){
+ ["taskModal","addTaskModal","taskFormModal"].forEach(id=>{
+   const el=document.getElementById(id);if(el){el.classList.remove("show");el.style.display="none"}
+ });
+ ["taskName","taskSubject","taskType","taskDate","taskStart","taskEnd","taskPriority"].forEach(id=>{
+   const el=document.getElementById(id);if(el&&("value" in el)) el.value="";
+ });
+ sfToast("Task cancelled");
+};
+
+/* Intro should always have a usable Open Web button, without forcing the landing page. */
+window.sfOpenWeb=function(){
+ const url=location.href;
+ window.open(url,"_blank","noopener,noreferrer");
+};
+function sfInjectDock(){
+ const side=document.querySelector(".sidebar,aside,.side-nav,.nav-panel");
+ if(!side||document.getElementById("sfReliabilityDock"))return;
+ const d=document.createElement("div");d.id="sfReliabilityDock";d.className="sf-reliability-dock";
+ d.innerHTML=`
+  <button type="button" onclick="sfOpenProfile()">👤 Profile & Goal</button>
+  <button type="button" onclick="sfExportCompleteBackup()">⬇ Export Backup</button>
+  <button type="button" onclick="document.getElementById('sfRestoreCompleteFile').click()">⬆ Restore Backup</button>
+  <button type="button" onclick="sfOpenWeb()">🌐 Open Web</button>
+  <div class="sf-cloud-status" id="sfCloudStatus">☁ Data auto-save enabled</div>
+  <input id="sfRestoreCompleteFile" type="file" accept=".json,application/json" hidden>
+ `;
+ side.appendChild(d);
+ document.getElementById("sfRestoreCompleteFile").addEventListener("change",e=>sfRestoreCompleteBackup(e.target));
+}
+/* Profile opener bridges both the old and new profile implementations. */
+window.sfOpenProfile=function(){
+ try{
+   if(typeof editProfile==="function"){editProfile();return}
+   if(typeof window.openProfile==="function"){window.openProfile();return}
+ }catch(e){}
+ const el=document.getElementById("profileModal");if(el){el.classList.add("show");el.style.display="flex"}
+};
+/* Toast works with either existing toast implementation. */
+function sfToast(msg){
+ try{if(typeof toast==="function"){toast(msg);return}}catch(e){}
+ const n=document.getElementById("sfRepairNotice");if(!n)return;
+ n.textContent=msg;n.style.display="block";clearTimeout(window.__sfT);
+ window.__sfT=setTimeout(()=>n.style.display="none",2300);
+}
+/* Continuous local autosave + before-close safety. */
+setInterval(sfSaveReliable,8000);
+window.addEventListener("beforeunload",sfSaveReliable);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")sfSaveReliable()});
+document.addEventListener("DOMContentLoaded",()=>{
+ sfFixOnboarding();sfInjectDock();
+ /* Add Open Web to intro if an intro element exists. */
+ const intro=document.querySelector("#intro,#landing-page-view,.intro");
+ if(intro&&!intro.querySelector(".sf-open-web-btn")){
+  const b=document.createElement("button");b.className="sf-open-web-btn";
+  b.type="button";b.textContent="🌐 Open Web";b.onclick=sfOpenWeb;
+  b.style.cssText="margin:12px auto;padding:10px 18px;border:1px solid rgba(108,99,255,.35);border-radius:11px;background:rgba(108,99,255,.1);color:inherit;font-weight:700;cursor:pointer";
+  intro.appendChild(b);
+ }
+});
+window.addEventListener("load",()=>{sfFixOnboarding();sfInjectDock()});
+})();
+</script>
+<!-- ================= END RELIABILITY PATCH ================= -->
+
+</body></html>
