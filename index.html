@@ -3,338 +3,741 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="A smart study planner with tasks, exams, calendar, focus timer, analytics and backups.">
-<meta name="theme-color" content="#090d18">
-<title>Study Planner | Focus. Plan. Progress.</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="StudyFlow - Smart student planner with tasks, colorful calendar, exams, revision, goals, focus timer and backup.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#7657ff">
+
+<!-- APNA EXISTING GOOGLE SEARCH CONSOLE META TAG YAHA REHNE DO -->
+
+<title>StudyFlow | Smart Study Planner</title>
 
 <style>
 :root{
-  --bg:#090d18;
-  --panel:#111827;
-  --panel2:#171f31;
-  --panel3:#202b40;
-  --line:#2b3852;
-  --text:#f7f9ff;
-  --muted:#94a0b8;
-  --accent:#7567ff;
-  --accent2:#32b7ff;
-  --green:#28d89b;
-  --red:#ff667d;
-  --yellow:#ffca5c;
-  --pink:#f65ba8;
-  --shadow:0 22px 60px rgba(0,0,0,.32);
+ --bg:#080b14;
+ --bg2:#0e1424;
+ --panel:#121827;
+ --panel2:#181f31;
+ --panel3:#202940;
+ --line:#293650;
+ --text:#f7f8ff;
+ --muted:#929db4;
+ --purple:#7657ff;
+ --blue:#35a9ff;
+ --green:#24d69c;
+ --red:#ff617c;
+ --yellow:#ffc857;
+ --orange:#ff914d;
+ --shadow:0 22px 65px rgba(0,0,0,.32);
 }
+
 body.light{
-  --bg:#f4f7fb;
-  --panel:#fff;
-  --panel2:#f7f9fd;
-  --panel3:#eaf0f8;
-  --line:#dce3ef;
-  --text:#172033;
-  --muted:#68748a;
-  --shadow:0 22px 60px rgba(40,55,80,.12);
+ --bg:#f2f5fb;
+ --bg2:#e9eef8;
+ --panel:#ffffff;
+ --panel2:#f7f9fd;
+ --panel3:#edf1f8;
+ --line:#dce3ef;
+ --text:#162033;
+ --muted:#68748a;
+ --shadow:0 22px 60px rgba(70,85,115,.12);
 }
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;min-height:100vh;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:var(--bg);color:var(--text);overflow-x:hidden
+ margin:0;
+ min-height:100vh;
+ font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+ background:
+ radial-gradient(circle at 10% 10%,rgba(118,87,255,.14),transparent 24%),
+ radial-gradient(circle at 90% 90%,rgba(53,169,255,.10),transparent 28%),
+ var(--bg);
+ color:var(--text);
 }
+
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
-::-webkit-scrollbar{width:8px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--line);border-radius:20px}
+.muted{color:var(--muted)}
 
-/* INTRO */
 #intro{
-  position:fixed;inset:0;z-index:9999;
-  display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(circle at center,#1b2352 0,var(--bg) 55%);
-  transition:opacity .6s,visibility .6s
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ display:grid;
+ place-items:center;
+ background:
+ radial-gradient(circle at center,rgba(118,87,255,.32),transparent 30%),
+ var(--bg);
+ transition:.7s ease;
 }
-#intro.hide{opacity:0;visibility:hidden}
-.introBox{text-align:center}
-.introLogo{
-  width:92px;height:92px;margin:auto auto 22px;border-radius:30px;
-  display:grid;place-items:center;font-size:40px;font-weight:900;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:0 0 80px rgba(117,103,255,.55);
-  animation:pulse 1.5s infinite alternate
+#intro.hide{
+ opacity:0;
+ pointer-events:none;
 }
-.introTitle{font-size:34px;font-weight:900;letter-spacing:-1px}
-.introText{color:var(--muted);margin-top:8px}
-@keyframes pulse{to{transform:translateY(-6px) scale(1.04);box-shadow:0 0 100px rgba(50,183,255,.45)}}
+.introbox{text-align:center}
+.intro-logo{
+ width:94px;
+ height:94px;
+ margin:auto;
+ border-radius:30px;
+ display:grid;
+ place-items:center;
+ font-size:31px;
+ font-weight:900;
+ letter-spacing:-2px;
+ background:linear-gradient(135deg,var(--purple),var(--blue));
+ box-shadow:0 25px 80px rgba(118,87,255,.45);
+}
+.introbox h1{
+ margin:18px 0 6px;
+ font-size:42px;
+ letter-spacing:-1.5px;
+}
+.introbox p{margin:0;color:#aeb8ce}
 
-/* APP */
-.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+.app{
+ display:grid;
+ grid-template-columns:280px minmax(0,1fr);
+ min-height:100vh;
+}
+
+/* SIDEBAR */
 .sidebar{
-  position:fixed;left:0;top:0;bottom:0;width:270px;
-  background:rgba(12,18,32,.88);border-right:1px solid var(--line);
-  backdrop-filter:blur(20px);padding:22px 14px;z-index:100;
-  display:flex;flex-direction:column;overflow-y:auto
+ position:sticky;
+ top:0;
+ height:100vh;
+ overflow-y:auto;
+ overflow-x:hidden;
+ padding:18px 13px;
+ background:rgba(12,17,30,.88);
+ border-right:1px solid var(--line);
+ backdrop-filter:blur(18px);
+ scrollbar-width:thin;
 }
 body.light .sidebar{background:rgba(255,255,255,.88)}
-.brand{display:flex;align-items:center;gap:12px;padding:7px 9px 24px}
-.brandMark{
- width:44px;height:44px;border-radius:15px;display:grid;place-items:center;
- background:linear-gradient(135deg,var(--accent),var(--accent2));
- font-size:22px;font-weight:900
-}
-.brand h2{font-size:18px;margin:0}
-.brand small{color:var(--muted)}
-.navLabel{font-size:10px;color:var(--muted);letter-spacing:1.5px;padding:18px 11px 8px}
-.navBtn{
- width:100%;border:0;background:transparent;color:var(--muted);
- display:flex;align-items:center;gap:13px;padding:12px 13px;border-radius:13px;
- text-align:left;margin:3px 0;transition:.2s
-}
-.navBtn:hover,.navBtn.active{background:var(--panel3);color:var(--text)}
-.navIcon{
- width:29px;height:29px;border-radius:9px;display:grid;place-items:center;
- background:var(--panel2);font-size:16px
-}
-.sidebarBottom{margin-top:auto;padding:15px 5px 4px}
-.userMini{
- border:1px solid var(--line);background:var(--panel);border-radius:16px;
- padding:12px;display:flex;gap:10px;align-items:center
-}
-.avatar{
- width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
- background:linear-gradient(135deg,var(--pink),var(--accent));font-weight:800
-}
-.userMini b{display:block;font-size:13px}.userMini span{font-size:11px;color:var(--muted)}
 
-.main{margin-left:270px;padding:26px;max-width:1700px;width:100%}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:26px}
-.mobileMenu{display:none}
-.pageTitle h1{margin:0;font-size:27px;letter-spacing:-1px}
-.pageTitle p{margin:5px 0 0;color:var(--muted);font-size:13px}
-.topActions{display:flex;align-items:center;gap:10px}
-.iconBtn,.primaryBtn,.softBtn{
- border:1px solid var(--line);background:var(--panel);color:var(--text);
- border-radius:13px;padding:11px 14px
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:8px 10px 24px;
 }
-.iconBtn{width:43px;height:43px;padding:0;font-size:17px}
-.primaryBtn{
- border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));
- font-weight:750;box-shadow:0 12px 30px rgba(85,90,255,.22)
+.brand-icon{
+ width:48px;
+ height:48px;
+ border-radius:16px;
+ display:grid;
+ place-items:center;
+ font-weight:1000;
+ letter-spacing:-1px;
+ background:linear-gradient(135deg,var(--purple),var(--blue));
+ box-shadow:0 12px 35px rgba(118,87,255,.28);
 }
-.softBtn:hover,.iconBtn:hover{background:var(--panel3)}
-.primaryBtn:active,.softBtn:active{transform:scale(.97)}
+.brand strong{
+ display:block;
+ font-size:18px;
+}
+.brand span{
+ display:block;
+ font-size:11px;
+ color:var(--muted);
+ margin-top:2px;
+}
 
-/* DASHBOARD */
-.statsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.statCard,.card{
- background:linear-gradient(145deg,var(--panel),var(--panel2));
- border:1px solid var(--line);box-shadow:var(--shadow);border-radius:22px
+.nav-title{
+ margin:20px 10px 8px;
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1.4px;
+ font-weight:900;
 }
-.statCard{padding:18px;position:relative;overflow:hidden}
-.statCard:after{
- content:"";position:absolute;width:80px;height:80px;border-radius:50%;
- right:-25px;bottom:-30px;background:var(--accent);opacity:.12
-}
-.statLabel{font-size:12px;color:var(--muted)}
-.statValue{font-size:28px;font-weight:850;margin-top:8px}
-.statSub{font-size:11px;color:var(--muted);margin-top:5px}
-.dashboardGrid{display:grid;grid-template-columns:1.45fr .95fr;gap:18px;margin-top:18px}
-.card{padding:20px}
-.cardHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.cardHead h3{margin:0;font-size:16px}
-.cardHead span{font-size:12px;color:var(--muted)}
 
-.timeline{position:relative;padding-left:55px}
-.timeRow{position:relative;min-height:64px;border-top:1px dashed var(--line);padding:8px 0 8px 16px}
-.timeRow:first-child{border-top:0}
-.timeLabel{position:absolute;left:-54px;top:8px;color:var(--muted);font-size:11px}
-.taskBar{
- border-radius:11px;padding:9px 12px;margin:2px 0;
- border-left:4px solid var(--accent);background:var(--panel3);font-size:12px
+.nav{
+ width:100%;
+ border:0;
+ background:transparent;
+ color:var(--muted);
+ border-radius:14px;
+ padding:13px 14px;
+ margin:3px 0;
+ text-align:left;
+ font-weight:800;
+ display:flex;
+ align-items:center;
+ gap:10px;
+ transition:.2s;
 }
-.taskBar small{display:block;color:var(--muted);margin-top:3px}
-.nowLine{height:2px;background:var(--red);position:absolute;left:0;right:0;top:35%;opacity:.85}
+.nav:hover{
+ background:var(--panel2);
+ color:var(--text);
+ transform:translateX(2px);
+}
+.nav.active{
+ color:#fff;
+ background:linear-gradient(135deg,rgba(118,87,255,.95),rgba(53,169,255,.72));
+ box-shadow:0 10px 28px rgba(118,87,255,.22);
+}
 
-.focusCard{
- background:
- radial-gradient(circle at 80% 20%,rgba(50,183,255,.15),transparent 32%),
- var(--panel);
- text-align:center
+.storage{
+ margin:24px 5px 8px;
+ padding:13px;
+ border:1px solid var(--line);
+ background:var(--panel2);
+ border-radius:16px;
+ font-size:11px;
+ color:var(--muted);
+ line-height:1.7;
 }
-.timerMode{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:2px}
-.timerDisplay{font-size:55px;font-weight:900;letter-spacing:-3px;margin:18px 0}
-.timerTask{color:var(--muted);font-size:13px;min-height:20px}
-.timerControls{display:flex;justify-content:center;gap:9px;margin-top:18px}
-.timerControls button{
- width:48px;height:48px;border-radius:50%;border:0;color:#fff;font-size:17px
-}
-.play{background:linear-gradient(135deg,var(--accent),var(--accent2))}
-.reset{background:var(--panel3)}
-.modeSwitch{display:flex;gap:7px;justify-content:center;margin-top:17px}
-.modeSwitch button{
- background:transparent;border:1px solid var(--line);color:var(--muted);
- border-radius:20px;padding:7px 11px;font-size:11px
-}
-.modeSwitch button.active{background:var(--panel3);color:var(--text)}
+.dotlive{color:var(--green);font-weight:900}
 
-.bottomGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:18px}
-.progressRing{width:105px;height:105px;border-radius:50%;margin:8px auto;display:grid;place-items:center}
-.ringInner{width:78px;height:78px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-weight:800}
-.subjectRow{display:flex;align-items:center;gap:9px;margin:12px 0}
-.dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px}
-.subjectRow b{font-size:12px;flex:1}.subjectRow span{font-size:11px;color:var(--muted)}
-.streak{font-size:42px;font-weight:900;text-align:center;margin:12px 0}
-.level{text-align:center;color:var(--muted);font-size:12px}
-.miniProgress{height:8px;border-radius:8px;background:var(--panel3);overflow:hidden;margin-top:14px}
-.miniProgress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:inherit}
+/* MAIN */
+.main{
+ min-width:0;
+ width:100%;
+}
+
+.topbar{
+ position:sticky;
+ top:0;
+ z-index:100;
+ min-height:82px;
+ padding:15px clamp(22px,3vw,48px);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:20px;
+ border-bottom:1px solid var(--line);
+ background:rgba(8,11,20,.76);
+ backdrop-filter:blur(18px);
+}
+body.light .topbar{background:rgba(242,245,251,.82)}
+
+.topdate small{
+ display:block;
+ color:var(--muted);
+ margin-bottom:4px;
+}
+.topdate b{font-size:18px}
+
+.top-actions{
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+
+.clock{
+ padding:10px 15px;
+ border-radius:13px;
+ background:var(--panel2);
+ border:1px solid var(--line);
+ font-weight:900;
+}
+
+.content{
+ width:100%;
+ max-width:1800px;
+ margin:auto;
+ padding:clamp(24px,3vw,50px);
+}
+
+.page{display:none}
+.page.active{display:block;animation:pageIn .28s ease}
+
+@keyframes pageIn{
+ from{opacity:0;transform:translateY(8px)}
+ to{opacity:1;transform:none}
+}
+
+.hero-row,.between,.calendar-head,.head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+}
+
+.eyebrow{
+ color:var(--purple);
+ font-size:11px;
+ letter-spacing:1.4px;
+ font-weight:1000;
+}
+
+h1{
+ margin:5px 0 0;
+ font-size:clamp(28px,3vw,42px);
+ letter-spacing:-1.4px;
+}
+h2{letter-spacing:-.7px}
+
+.btn{
+ border:1px solid var(--line);
+ background:var(--panel2);
+ color:var(--text);
+ padding:11px 15px;
+ border-radius:13px;
+ font-weight:850;
+ transition:.2s;
+}
+.btn:hover{transform:translateY(-1px);border-color:var(--purple)}
+.btn.primary{
+ border:0;
+ color:#fff;
+ background:linear-gradient(135deg,var(--purple),var(--blue));
+ box-shadow:0 10px 28px rgba(118,87,255,.24);
+}
+.btn.red{
+ border-color:rgba(255,97,124,.25);
+ color:#fff;
+ background:rgba(255,97,124,.16);
+}
+.iconbtn{
+ width:44px;
+ height:44px;
+ padding:0;
+ display:grid;
+ place-items:center;
+ font-size:20px;
+}
+.mobile-menu{display:none}
+
+.card{
+ background:rgba(18,24,39,.82);
+ border:1px solid var(--line);
+ border-radius:24px;
+ padding:22px;
+ box-shadow:var(--shadow);
+}
+body.light .card{background:rgba(255,255,255,.88)}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:16px;
+ margin:26px 0;
+}
+.stat{
+ min-height:155px;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+}
+.stat small{
+ color:var(--muted);
+ font-weight:900;
+ letter-spacing:.8px;
+}
+.stat-number{
+ font-size:38px;
+ font-weight:1000;
+ letter-spacing:-1.5px;
+}
+.stat-line{
+ height:5px;
+ background:var(--panel3);
+ border-radius:99px;
+ overflow:hidden;
+}
+.stat-line i{
+ display:block;
+ height:100%;
+ border-radius:99px;
+ background:linear-gradient(90deg,var(--purple),var(--blue));
+}
+
+.grid2{
+ display:grid;
+ grid-template-columns:minmax(0,1.55fr) minmax(330px,.85fr);
+ gap:18px;
+}
+
+.profilegrid{
+ display:grid;
+ grid-template-columns:220px minmax(0,1fr);
+ gap:25px;
+}
+.infogrid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+}
+.info{
+ background:var(--panel2);
+ border:1px solid var(--line);
+ border-radius:15px;
+ padding:14px;
+}
+.info small{
+ display:block;
+ color:var(--muted);
+ margin-bottom:5px;
+}
+.info b{word-break:break-word}
 
 /* TASKS */
-.view{display:none}.view.active{display:block}
-.taskLayout{display:grid;grid-template-columns:1fr 330px;gap:18px}
-.taskFilters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.filterBtn{padding:8px 12px;border-radius:20px;background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:12px}
-.filterBtn.active{color:var(--text);background:var(--panel3)}
-.taskList{display:flex;flex-direction:column;gap:10px}
-.taskItem{
- padding:14px;border:1px solid var(--line);background:var(--panel);
- border-radius:17px;display:flex;align-items:center;gap:12px;transition:.2s
+.toolbar{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin:22px 0;
 }
-.taskItem:hover{transform:translateY(-2px);background:var(--panel2)}
-.taskItem.done{opacity:.55}
+.search{
+ flex:1;
+ min-width:220px;
+}
+.input,select,textarea{
+ width:100%;
+ border:1px solid var(--line);
+ outline:none;
+ color:var(--text);
+ background:var(--panel2);
+ border-radius:13px;
+ padding:12px 14px;
+}
+textarea{min-height:95px;resize:vertical}
+.input:focus,select:focus,textarea:focus{
+ border-color:var(--purple);
+ box-shadow:0 0 0 3px rgba(118,87,255,.12);
+}
+
+.task-list,.list{
+ display:grid;
+ gap:11px;
+}
+.task{
+ display:grid;
+ grid-template-columns:auto minmax(0,1fr) auto;
+ align-items:center;
+ gap:14px;
+ padding:16px;
+ background:var(--panel2);
+ border:1px solid var(--line);
+ border-radius:18px;
+ transition:.2s;
+}
+.task:hover{
+ border-color:rgba(118,87,255,.6);
+ transform:translateY(-1px);
+}
 .check{
- width:24px;height:24px;border-radius:8px;border:2px solid var(--line);
- background:transparent;color:#fff;display:grid;place-items:center;flex:0 0 24px
+ width:22px;
+ height:22px;
+ accent-color:var(--green);
 }
-.taskItem.done .check{background:var(--green);border-color:var(--green)}
-.taskMain{flex:1;min-width:0}
-.taskTitle{font-size:14px;font-weight:750}
-.done .taskTitle{text-decoration:line-through}
-.taskMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:10px;color:var(--muted)}
-.badge{padding:3px 7px;border-radius:20px;background:var(--panel3)}
-.taskActions{display:flex;gap:5px}
-.taskActions button{border:0;background:transparent;color:var(--muted);padding:7px}
-.priorityHigh{border-left:4px solid var(--red)}
-.priorityMedium{border-left:4px solid var(--yellow)}
-.priorityLow{border-left:4px solid var(--green)}
-.sideInfo{display:flex;flex-direction:column;gap:16px}
-.quickAdd{padding:18px}
-.quickAdd h3{margin-top:0}
-.field{margin-bottom:11px}
-.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px}
-.field input,.field select,.field textarea{
- width:100%;padding:11px 12px;border-radius:11px;border:1px solid var(--line);
- background:var(--panel2);color:var(--text);outline:none
+.task.done{opacity:.62}
+.task.done .task-title{text-decoration:line-through}
+.task-title{font-weight:900}
+.task-meta{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:5px;
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
 }
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
-.field textarea{min-height:75px;resize:vertical}
+.pill{
+ display:inline-flex;
+ align-items:center;
+ gap:6px;
+ padding:5px 9px;
+ border-radius:99px;
+ background:var(--panel3);
+ font-size:11px;
+ font-weight:800;
+}
+.dot{
+ width:9px;
+ height:9px;
+ border-radius:50%;
+ display:inline-block;
+}
+
+.task-actions{
+ display:flex;
+ gap:7px;
+}
+.small-btn{
+ border:1px solid var(--line);
+ background:var(--panel3);
+ color:var(--text);
+ width:38px;
+ height:38px;
+ border-radius:11px;
+}
 
 /* CALENDAR */
-.calendarCard{padding:20px}
-.calHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.calHeader h2{font-size:18px;margin:0}
-.calNav{display:flex;gap:7px}
-.calNav button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;width:36px;height:36px}
-.weekdays,.calendarGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
-.weekdays div{text-align:center;color:var(--muted);font-size:11px;padding:8px}
+.calendar-wrap{
+ width:100%;
+ overflow-x:auto;
+ padding-bottom:6px;
+}
+.calendar{
+ min-width:980px;
+ display:grid;
+ grid-template-columns:repeat(7,minmax(120px,1fr));
+ border:1px solid var(--line);
+ border-radius:20px;
+ overflow:hidden;
+ background:var(--line);
+ gap:1px;
+}
+.weekday{
+ background:var(--panel);
+ color:var(--muted);
+ padding:13px;
+ text-align:center;
+ font-size:11px;
+ font-weight:1000;
+ letter-spacing:.8px;
+}
 .day{
- min-height:118px;border:1px solid var(--line);border-radius:16px;
- padding:9px;background:var(--panel);transition:.2s;overflow:hidden
+ min-height:150px;
+ background:var(--panel);
+ padding:10px;
+ position:relative;
 }
-.day:hover{background:var(--panel2);transform:translateY(-2px)}
-.day.other{opacity:.35}
-.day.today{box-shadow:inset 0 0 0 1px var(--accent)}
-.dayNum{font-size:12px;font-weight:800;margin-bottom:7px}
-.calTask{
- font-size:9px;padding:4px 6px;border-radius:6px;margin-top:3px;
- white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--panel3);
- border-left:3px solid var(--accent)
+.day.muted-day{opacity:.45}
+.day.today{
+ box-shadow:inset 0 0 0 2px var(--purple);
 }
-.calMore{font-size:9px;color:var(--muted);margin-top:3px}
+.day-number{
+ width:30px;
+ height:30px;
+ border-radius:10px;
+ display:grid;
+ place-items:center;
+ font-size:12px;
+ font-weight:1000;
+ margin-bottom:7px;
+}
+.today .day-number{
+ background:linear-gradient(135deg,var(--purple),var(--blue));
+ color:#fff;
+}
+.event{
+ padding:6px 7px;
+ border-radius:8px;
+ margin-top:5px;
+ font-size:10px;
+ font-weight:800;
+ overflow:hidden;
+ white-space:nowrap;
+ text-overflow:ellipsis;
+ color:#fff;
+}
+
+/* LIVE TRACKING */
+.timeline{
+ position:relative;
+ display:grid;
+ gap:0;
+}
+.timeline-item{
+ display:grid;
+ grid-template-columns:100px 16px minmax(0,1fr);
+ gap:14px;
+ padding:13px 0;
+}
+.timeline-time{
+ color:var(--muted);
+ font-size:12px;
+ font-weight:800;
+}
+.timeline-dot{
+ width:13px;
+ height:13px;
+ border-radius:50%;
+ margin-top:3px;
+ background:var(--blue);
+ box-shadow:0 0 0 5px rgba(53,169,255,.1);
+}
+.timeline-card{
+ border-bottom:1px solid var(--line);
+ padding-bottom:13px;
+}
+.live-now .timeline-dot{
+ background:var(--green);
+ box-shadow:0 0 0 6px rgba(36,214,156,.12);
+}
+.overdue .timeline-dot{background:var(--red)}
+
+/* FORMS */
+.form{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:15px;
+}
+.field{min-width:0}
+.field.full{grid-column:1/-1}
+.field label{
+ display:block;
+ font-size:11px;
+ font-weight:1000;
+ color:var(--muted);
+ letter-spacing:.7px;
+ margin-bottom:7px;
+}
 
 /* EXAMS */
-.examGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-.examCard{padding:18px;border-radius:20px;border:1px solid var(--line);background:var(--panel)}
-.examTop{display:flex;justify-content:space-between;gap:10px}
-.examName{font-size:16px;font-weight:850}
-.countdown{font-size:26px;font-weight:900;margin:18px 0 5px}
-.examCard small{color:var(--muted)}
-.examProgress{margin-top:16px}
+.exam{
+ padding:16px;
+ border:1px solid var(--line);
+ border-radius:17px;
+ background:var(--panel2);
+ display:flex;
+ justify-content:space-between;
+ gap:15px;
+ align-items:center;
+}
+.exam h3{margin:0 0 5px}
+.exam small{color:var(--muted)}
+.countdown{
+ min-width:85px;
+ text-align:center;
+ padding:10px;
+ border-radius:13px;
+ background:var(--panel3);
+ font-weight:1000;
+}
 
-/* ANALYTICS */
-.analyticsGrid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
-.chart{height:260px;display:flex;align-items:flex-end;gap:12px;padding:20px 5px 5px}
-.barWrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px}
-.bar{width:100%;max-width:42px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,var(--accent2),var(--accent));min-height:5px}
-.barWrap span{font-size:10px;color:var(--muted)}
-.scoreBig{text-align:center;font-size:60px;font-weight:900;margin:25px 0 0}
-.scoreText{text-align:center;color:var(--muted);font-size:12px}
-
-/* PROFILE */
-.profileLayout{max-width:780px}
-.profileHero{display:flex;gap:18px;align-items:center;margin-bottom:18px}
-.bigAvatar{width:82px;height:82px;border-radius:28px;display:grid;place-items:center;font-size:30px;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--accent))}
-.goalBox{padding:17px;background:var(--panel3);border-radius:16px;margin-top:12px}
-.goalBox b{font-size:18px}
+/* TIMER */
+.timer{
+ text-align:center;
+ padding:42px 20px;
+}
+.timer-display{
+ font-size:clamp(64px,9vw,120px);
+ font-weight:1000;
+ letter-spacing:-5px;
+ margin:20px 0;
+}
+.progress{
+ height:10px;
+ max-width:650px;
+ margin:auto;
+ background:var(--panel3);
+ border-radius:99px;
+ overflow:hidden;
+}
+.progress i{
+ display:block;
+ height:100%;
+ width:100%;
+ background:linear-gradient(90deg,var(--purple),var(--blue));
+ transition:.3s;
+}
 
 /* MODAL */
 .modal{
- position:fixed;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(8px);
- display:none;align-items:center;justify-content:center;padding:20px;z-index:500
+ position:fixed;
+ inset:0;
+ z-index:1000;
+ display:none;
+ place-items:center;
+ padding:20px;
+ background:rgba(0,0,0,.65);
+ backdrop-filter:blur(7px);
 }
-.modal.show{display:flex}
-.modalBox{
- width:min(620px,100%);max-height:90vh;overflow:auto;padding:22px;
- background:var(--panel);border:1px solid var(--line);border-radius:25px;box-shadow:var(--shadow)
+.modal.show{display:grid}
+.modalbox{
+ width:min(720px,100%);
+ max-height:90vh;
+ overflow:auto;
+ padding:24px;
+ border-radius:25px;
+ background:var(--panel);
+ border:1px solid var(--line);
+ box-shadow:var(--shadow);
 }
-.modalHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.modalHead h2{margin:0;font-size:19px}
-.closeBtn{background:transparent;border:0;color:var(--muted);font-size:22px}
+.modalhead{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:18px;
+}
+.modalhead h2{margin:0}
+.close{
+ border:0;
+ background:var(--panel2);
+ color:var(--text);
+ width:40px;
+ height:40px;
+ border-radius:12px;
+ font-size:20px;
+}
 
-/* TOAST */
+.avatar{
+ width:100px;
+ height:100px;
+ border-radius:30px;
+ display:grid;
+ place-items:center;
+ margin:auto;
+ font-size:35px;
+ font-weight:1000;
+ background:linear-gradient(135deg,var(--purple),var(--blue));
+ color:#fff;
+}
+
 .toast{
- position:fixed;right:22px;bottom:22px;z-index:2000;padding:13px 17px;
- background:var(--panel);border:1px solid var(--line);border-radius:14px;
- box-shadow:var(--shadow);transform:translateY(100px);opacity:0;transition:.3s
+ position:fixed;
+ right:24px;
+ bottom:24px;
+ z-index:2000;
+ transform:translateY(150%);
+ opacity:0;
+ transition:.3s;
+ max-width:380px;
+ background:var(--panel);
+ border:1px solid var(--line);
+ box-shadow:var(--shadow);
+ border-radius:16px;
+ padding:14px 17px;
+ font-weight:800;
 }
-.toast.show{transform:none;opacity:1}
-
-/* EMPTY */
-.empty{text-align:center;padding:45px 20px;color:var(--muted)}
-.empty strong{display:block;color:var(--text);font-size:16px;margin-bottom:5px}
-
-@media(max-width:1100px){
- .statsGrid{grid-template-columns:repeat(2,1fr)}
- .dashboardGrid,.taskLayout,.analyticsGrid{grid-template-columns:1fr}
- .bottomGrid{grid-template-columns:1fr}
+.toast.show{
+ transform:translateY(0);
+ opacity:1;
 }
-@media(max-width:800px){
+
+@media(max-width:1200px){
+ .app{grid-template-columns:250px minmax(0,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .grid2{grid-template-columns:1fr}
+}
+
+@media(max-width:850px){
  .app{display:block}
- .sidebar{transform:translateX(-100%);transition:.25s;width:270px}
- .sidebar.open{transform:none}
- .main{margin-left:0;padding:18px}
- .mobileMenu{display:block}
- .topbar{align-items:flex-start}
- .topActions .primaryBtn{font-size:0;width:43px;padding:0}
- .topActions .primaryBtn:after{content:"+";font-size:23px}
- .dashboardGrid{margin-top:14px}
- .statsGrid{gap:10px}
- .day{min-height:85px;padding:6px}
- .weekdays,.calendarGrid{gap:3px}
- .calTask{font-size:7px;padding:3px}
- .dayNum{font-size:10px}
- .timerDisplay{font-size:47px}
+ .sidebar{
+  position:fixed;
+  left:-300px;
+  top:0;
+  z-index:500;
+  width:280px;
+  transition:.3s;
+  box-shadow:var(--shadow);
+ }
+ .sidebar.open{left:0}
+ .mobile-menu{display:grid}
+ .topbar{padding:12px 16px}
+ .content{padding:20px 15px}
+ .clock{display:none}
+ .profilegrid,.infogrid{grid-template-columns:1fr}
+ .calendar{min-width:860px}
 }
-@media(max-width:500px){
- .statsGrid{grid-template-columns:1fr 1fr}
- .statValue{font-size:23px}
- .pageTitle h1{font-size:21px}
- .main{padding:13px}
- .card{padding:15px}
- .calendarCard{padding:9px}
- .day{min-height:72px}
- .calTask{display:none}
+
+@media(max-width:600px){
+ .stats{grid-template-columns:1fr 1fr;gap:10px}
+ .card{padding:16px;border-radius:18px}
+ .hero-row,.calendar-head{align-items:flex-start;flex-direction:column}
+ .form{grid-template-columns:1fr}
+ .field.full{grid-column:auto}
+ .task{grid-template-columns:auto minmax(0,1fr)}
+ .task-actions{grid-column:2}
+ .timeline-item{grid-template-columns:72px 14px minmax(0,1fr)}
+ .timer-display{font-size:62px}
 }
 </style>
 </head>
@@ -342,1047 +745,1612 @@ body.light .sidebar{background:rgba(255,255,255,.88)}
 <body>
 
 <div id="intro">
-  <div class="introBox">
-    <div class="introLogo">S</div>
-    <div class="introTitle">Study Planner</div>
-    <div class="introText">Focus your time. Build your progress.</div>
-  </div>
+ <div class="introbox">
+  <div class="intro-logo">SF</div>
+  <h1>StudyFlow</h1>
+  <p>Your personal study command center</p>
+ </div>
 </div>
 
 <div class="app">
 
 <aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <div class="brandMark">S</div>
-    <div>
-      <h2>Study Planner</h2>
-      <small>Personal workspace</small>
-    </div>
+
+ <div class="brand">
+  <div class="brand-icon">SF</div>
+  <div>
+   <strong>StudyFlow</strong>
+   <span>Smart Student Planner</span>
   </div>
+ </div>
 
-  <div class="navLabel">WORKSPACE</div>
-  <button class="navBtn active" data-view="dashboard"><span class="navIcon">⌂</span>Dashboard</button>
-  <button class="navBtn" data-view="tasks"><span class="navIcon">✓</span>My Tasks</button>
-  <button class="navBtn" data-view="calendar"><span class="navIcon">□</span>Calendar</button>
-  <button class="navBtn" data-view="focus"><span class="navIcon">◉</span>Focus Session</button>
+ <div class="nav-title">WORKSPACE</div>
+ <button class="nav active" data-page="dashboard">Dashboard</button>
+ <button class="nav" data-page="tasks">My Tasks</button>
+ <button class="nav" data-page="calendar">Calendar</button>
+ <button class="nav" data-page="subjects">Subjects</button>
+ <button class="nav" data-page="exams">Exams & Tests</button>
+ <button class="nav" data-page="revision">Revision</button>
+ <button class="nav" data-page="goals">Goals</button>
 
-  <div class="navLabel">PLANNING</div>
-  <button class="navBtn" data-view="exams"><span class="navIcon">▣</span>Exams</button>
-  <button class="navBtn" data-view="analytics"><span class="navIcon">▥</span>Analytics</button>
+ <div class="nav-title">STUDY TOOLS</div>
+ <button class="nav" data-page="live">Live Task Tracking</button>
+ <button class="nav" data-page="focus">Focus Timer</button>
 
-  <div class="navLabel">PERSONAL</div>
-  <button class="navBtn" data-view="profile"><span class="navIcon">◎</span>Profile & Goal</button>
-  <button class="navBtn" data-view="backup"><span class="navIcon">⇅</span>Backup & Restore</button>
+ <div class="nav-title">ACCOUNT & DATA</div>
+ <button class="nav" data-page="profile">Profile & Backup</button>
+ <button class="nav" onclick="toggleTheme()">Dark / Light Mode</button>
 
-  <div class="sidebarBottom">
-    <div class="userMini">
-      <div class="avatar" id="miniAvatar">?</div>
-      <div>
-        <b id="miniName">Your Study Space</b>
-        <span id="miniGoal">Set up your profile</span>
-      </div>
-    </div>
-  </div>
+ <div class="storage">
+  <div class="dotlive">Dual Storage Active</div>
+  <div>LocalStorage + IndexedDB mirror</div>
+ </div>
 </aside>
 
 <main class="main">
 
-<div class="topbar">
-  <div class="topActions" style="order:-1">
-    <button class="iconBtn mobileMenu" id="menuBtn">☰</button>
+<header class="topbar">
+ <div style="display:flex;align-items:center;gap:12px">
+  <button class="btn iconbtn mobile-menu" onclick="toggleSidebar()">☰</button>
+  <div class="topdate">
+   <small id="topDate"></small>
+   <b id="topGreeting">Welcome</b>
   </div>
-  <div class="pageTitle">
-    <h1 id="pageHeading">Good day</h1>
-    <p id="todayText"></p>
-  </div>
-  <div class="topActions">
-    <button class="iconBtn" id="themeBtn" title="Theme">◐</button>
-    <button class="primaryBtn" id="openTaskModal">+ Add Task</button>
-  </div>
-</div>
+ </div>
+
+ <div class="top-actions">
+  <div class="clock" id="clock">00:00:00</div>
+  <button class="btn primary" onclick="openTask()">Add Task</button>
+ </div>
+</header>
+
+<div class="content">
 
 <!-- DASHBOARD -->
-<section class="view active" id="dashboard">
+<section id="dashboard" class="page active">
 
-<div class="statsGrid">
-  <div class="statCard">
-    <div class="statLabel">Today’s Focus</div>
-    <div class="statValue" id="todayFocus">0m</div>
-    <div class="statSub">Tracked automatically</div>
+ <div class="hero-row">
+  <div>
+   <div class="eyebrow">STUDY COMMAND CENTER</div>
+   <h1 id="welcomeTitle">Welcome back</h1>
+   <p class="muted">Your schedule, focus and progress in one place.</p>
   </div>
-  <div class="statCard">
-    <div class="statLabel">Tasks Completed</div>
-    <div class="statValue" id="completedStat">0/0</div>
-    <div class="statSub">Today's progress</div>
-  </div>
-  <div class="statCard">
-    <div class="statLabel">Current Streak</div>
-    <div class="statValue" id="streakStat">0</div>
-    <div class="statSub">Days of progress</div>
-  </div>
-  <div class="statCard">
-    <div class="statLabel">Productivity Score</div>
-    <div class="statValue" id="scoreStat">0%</div>
-    <div class="statSub">Based on your activity</div>
-  </div>
-</div>
+  <button class="btn primary" onclick="openTask()">Add New Task</button>
+ </div>
 
-<div class="dashboardGrid">
+ <div class="stats">
+  <div class="card stat">
+   <small>TOTAL TASKS</small>
+   <div class="stat-number" id="totalStat">0</div>
+   <div class="stat-line"><i id="totalLine" style="width:40%"></i></div>
+  </div>
+
+  <div class="card stat">
+   <small>COMPLETED</small>
+   <div class="stat-number" id="doneStat">0</div>
+   <div class="stat-line"><i id="doneLine"></i></div>
+  </div>
+
+  <div class="card stat">
+   <small>FOCUS TODAY</small>
+   <div class="stat-number" id="focusStat">0m</div>
+   <div class="stat-line"><i id="focusLine"></i></div>
+  </div>
+
+  <div class="card stat">
+   <small>OVERDUE</small>
+   <div class="stat-number" id="overdueStat">0</div>
+   <div class="stat-line"><i id="overdueLine"></i></div>
+  </div>
+ </div>
+
+ <div class="grid2">
   <div class="card">
-    <div class="cardHead">
-      <h3>Live Task Tracking</h3>
-      <span id="liveStatus">No active task</span>
+   <div class="head">
+    <div>
+     <div class="eyebrow">TODAY</div>
+     <h2 style="margin:4px 0">Today's Tasks</h2>
     </div>
-    <div class="timeline" id="liveTimeline"></div>
-  </div>
-
-  <div class="card focusCard">
-    <div class="timerMode" id="dashTimerMode">Focus</div>
-    <div class="timerDisplay" id="dashTimer">25:00</div>
-    <div class="timerTask" id="dashTimerTask">Choose a task and begin</div>
-    <div class="timerControls">
-      <button class="play" id="dashPlay">▶</button>
-      <button class="reset" id="dashReset">↺</button>
-    </div>
-    <div class="modeSwitch">
-      <button class="active" data-mode="focus">Focus</button>
-      <button data-mode="short">Short Break</button>
-      <button data-mode="long">Long Break</button>
-    </div>
-  </div>
-</div>
-
-<div class="bottomGrid">
-  <div class="card">
-    <div class="cardHead"><h3>Today's Progress</h3><span id="progressText">0%</span></div>
-    <div class="progressRing" id="progressRing"><div class="ringInner" id="ringText">0%</div></div>
-    <div class="miniProgress"><i id="mainProgress"></i></div>
+    <button class="btn" onclick="showPage('tasks')">View All</button>
+   </div>
+   <div class="task-list" id="todayTasks" style="margin-top:18px"></div>
   </div>
 
   <div class="card">
-    <div class="cardHead"><h3>Subjects</h3><span>Task load</span></div>
-    <div id="subjectSummary"></div>
-  </div>
+   <div class="eyebrow">AUTOMATIC SMART STUDY</div>
+   <h2 style="margin:5px 0">Next Best Step</h2>
+   <p class="muted" id="smartText">Add your first task to start planning.</p>
 
-  <div class="card">
-    <div class="cardHead"><h3>Consistency</h3><span>Keep moving</span></div>
-    <div class="streak" id="streakBig">0</div>
-    <div class="level" id="levelText">Beginner</div>
-    <div class="miniProgress"><i id="streakProgress" style="width:0%"></i></div>
+   <div style="height:1px;background:var(--line);margin:20px 0"></div>
+
+   <div class="eyebrow">MAIN GOAL</div>
+   <h3 id="goalText">Set your study goal</h3>
+
+   <div class="progress"><i id="goalProgress"></i></div>
+   <p class="muted" id="goalMeta"></p>
   </div>
-</div>
+ </div>
 </section>
 
 <!-- TASKS -->
-<section class="view" id="tasks">
-<div class="taskLayout">
+<section id="tasks" class="page">
+ <div class="hero-row">
   <div>
-    <div class="taskFilters">
-      <button class="filterBtn active" data-filter="all">All Tasks</button>
-      <button class="filterBtn" data-filter="today">Today</button>
-      <button class="filterBtn" data-filter="upcoming">Upcoming</button>
-      <button class="filterBtn" data-filter="overdue">Overdue</button>
-      <button class="filterBtn" data-filter="completed">Completed</button>
-    </div>
-    <div class="taskList" id="taskList"></div>
+   <div class="eyebrow">PLANNER</div>
+   <h1>My Tasks</h1>
   </div>
+  <button class="btn primary" onclick="openTask()">Add Task</button>
+ </div>
 
-  <div class="sideInfo">
-    <div class="card quickAdd">
-      <h3>Quick Add</h3>
-      <div class="field"><input id="quickTitle" placeholder="What do you need to study?"></div>
-      <div class="field">
-        <select id="quickSubject">
-          <option>General</option>
-          <option>Mathematics</option>
-          <option>Physics</option>
-          <option>Chemistry</option>
-          <option>Biology</option>
-          <option>English</option>
-          <option>Hindi</option>
-          <option>Social Science</option>
-        </select>
-      </div>
-      <button class="primaryBtn" style="width:100%" id="quickAddBtn">Add to Today</button>
-    </div>
+ <div class="toolbar">
+  <input class="input search" id="taskSearch" placeholder="Search tasks or chapters..." oninput="renderTasks()">
+  <select id="taskFilter" onchange="renderTasks()" style="max-width:180px">
+   <option value="all">All Tasks</option>
+   <option value="active">Active</option>
+   <option value="done">Completed</option>
+   <option value="overdue">Overdue</option>
+  </select>
+ </div>
 
-    <div class="card">
-      <div class="cardHead"><h3>Smart Overview</h3></div>
-      <p style="color:var(--muted);font-size:12px;line-height:1.7;margin:0" id="smartInsight">
-        Add your tasks and Study Planner will track completed work, overdue tasks and your daily progress automatically.
-      </p>
-    </div>
-  </div>
-</div>
+ <div class="card">
+  <div class="task-list" id="taskList"></div>
+ </div>
 </section>
 
 <!-- CALENDAR -->
-<section class="view" id="calendar">
-<div class="card calendarCard">
-  <div class="calHeader">
-    <div>
-      <h2 id="calendarMonth"></h2>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">Tasks, subjects and study schedule</div>
-    </div>
-    <div class="calNav">
-      <button id="prevMonth">‹</button>
-      <button id="goToday">Today</button>
-      <button id="nextMonth">›</button>
-    </div>
+<section id="calendar" class="page">
+ <div class="calendar-head">
+  <div>
+   <div class="eyebrow">SCHEDULE</div>
+   <h1 id="monthTitle">Calendar</h1>
   </div>
-  <div class="weekdays">
-    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+  <div style="display:flex;gap:8px">
+   <button class="btn" onclick="changeMonth(-1)">Previous</button>
+   <button class="btn" onclick="todayMonth()">Today</button>
+   <button class="btn" onclick="changeMonth(1)">Next</button>
   </div>
-  <div class="calendarGrid" id="calendarGrid"></div>
-</div>
+ </div>
+
+ <div class="card" style="margin-top:22px">
+  <div class="calendar-wrap">
+   <div class="calendar" id="calendarGrid"></div>
+  </div>
+ </div>
 </section>
 
-<!-- FOCUS -->
-<section class="view" id="focus">
-<div style="max-width:850px;margin:auto">
-<div class="card focusCard" style="padding:45px 25px">
-  <div class="timerMode" id="focusTimerMode">Focus Session</div>
-  <div class="timerDisplay" id="focusTimer" style="font-size:82px">25:00</div>
-  <div class="timerTask" id="focusSelectedTask">No task selected</div>
-  <div class="timerControls">
-    <button class="play" id="focusPlay">▶</button>
-    <button class="reset" id="focusReset">↺</button>
+<!-- SUBJECTS -->
+<section id="subjects" class="page">
+ <div class="hero-row">
+  <div>
+   <div class="eyebrow">SUBJECT LIBRARY</div>
+   <h1>Subjects</h1>
   </div>
-  <div class="modeSwitch">
-    <button class="active" data-mode="focus">25 / 5</button>
-    <button data-mode="custom">Custom</button>
-  </div>
-</div>
+  <button class="btn primary" onclick="openSubject()">Add Subject</button>
+ </div>
 
-<div class="card" style="margin-top:18px">
-  <div class="cardHead"><h3>Select a task for focus</h3></div>
-  <div id="focusTaskList" class="taskList"></div>
-</div>
-</div>
+ <div class="card" style="margin-top:22px">
+  <div class="list" id="subjectList"></div>
+ </div>
 </section>
 
 <!-- EXAMS -->
-<section class="view" id="exams">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-  <div><h2 style="margin:0;font-size:21px">Exams</h2><p style="color:var(--muted);font-size:12px">Track important dates and preparation.</p></div>
-  <button class="primaryBtn" id="addExamBtn">+ Add Exam</button>
-</div>
-<div class="examGrid" id="examGrid"></div>
+<section id="exams" class="page">
+ <div class="hero-row">
+  <div>
+   <div class="eyebrow">EXAMS & TESTS</div>
+   <h1>Exam Countdown</h1>
+  </div>
+  <button class="btn primary" onclick="openExam()">Add Exam</button>
+ </div>
+
+ <div class="card" style="margin-top:22px">
+  <div class="list" id="examList"></div>
+ </div>
 </section>
 
-<!-- ANALYTICS -->
-<section class="view" id="analytics">
-<div class="analyticsGrid">
-<div class="card">
- <div class="cardHead"><h3>Focus Minutes — Last 7 Days</h3></div>
- <div class="chart" id="weeklyChart"></div>
-</div>
-<div class="card">
- <div class="cardHead"><h3>Productivity</h3></div>
- <div class="scoreBig" id="analyticsScore">0%</div>
- <div class="scoreText">Your current activity score</div>
- <div style="margin-top:28px">
-   <div class="subjectRow"><span class="dot" style="background:var(--green)"></span><b>Completed</b><span id="analyticsDone">0</span></div>
-   <div class="subjectRow"><span class="dot" style="background:var(--yellow)"></span><b>Pending</b><span id="analyticsPending">0</span></div>
-   <div class="subjectRow"><span class="dot" style="background:var(--red)"></span><b>Overdue</b><span id="analyticsOverdue">0</span></div>
+<!-- REVISION -->
+<section id="revision" class="page">
+ <div class="hero-row">
+  <div>
+   <div class="eyebrow">REVISION SYSTEM</div>
+   <h1>Revision Queue</h1>
+  </div>
  </div>
-</div>
-</div>
 
-<div class="card" style="margin-top:18px">
- <div class="cardHead"><h3>Distraction Log</h3><button class="softBtn" id="addDistraction">+ Log distraction</button></div>
- <div id="distractionList"></div>
-</div>
+ <div class="card" style="margin-top:22px">
+  <p class="muted">Tasks marked as revision automatically appear here.</p>
+  <div class="list" id="revisionList"></div>
+ </div>
+</section>
+
+<!-- GOALS -->
+<section id="goals" class="page">
+ <div class="hero-row">
+  <div>
+   <div class="eyebrow">TARGETS</div>
+   <h1>Goals</h1>
+  </div>
+  <button class="btn primary" onclick="openGoal()">Set Goal</button>
+ </div>
+
+ <div class="card" style="margin-top:22px">
+  <div class="list" id="goalList"></div>
+ </div>
+</section>
+
+<!-- LIVE -->
+<section id="live" class="page">
+ <div class="hero-row">
+  <div>
+   <div class="eyebrow">REAL-TIME SCHEDULE</div>
+   <h1>Live Task Tracking</h1>
+   <p class="muted">Upcoming, live and overdue tasks update automatically.</p>
+  </div>
+ </div>
+
+ <div class="card" style="margin-top:22px">
+  <div class="head">
+   <h2 style="margin:0">Today's Timeline</h2>
+   <span class="muted" id="liveNow"></span>
+  </div>
+  <div class="timeline" id="liveList" style="margin-top:16px"></div>
+ </div>
+</section>
+
+<!-- FOCUS -->
+<section id="focus" class="page">
+ <div>
+  <div class="eyebrow">DEEP WORK</div>
+  <h1>Focus Timer</h1>
+ </div>
+
+ <div class="card timer" style="margin-top:22px">
+  <div class="timer-display" id="timer">25:00</div>
+  <div class="progress"><i id="timerBar"></i></div>
+
+  <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:25px">
+   <button class="btn" onclick="setTimer(25)">25 min</button>
+   <button class="btn" onclick="setTimer(50)">50 min</button>
+   <button class="btn primary" id="timerStart" onclick="toggleTimer()">Start</button>
+   <button class="btn red" onclick="resetTimer()">Reset</button>
+  </div>
+
+  <p class="muted">Completed focus sessions are automatically saved.</p>
+ </div>
 </section>
 
 <!-- PROFILE -->
-<section class="view" id="profile">
-<div class="profileLayout">
-<div class="card">
- <div class="profileHero">
-  <div class="bigAvatar" id="profileAvatar">?</div>
-  <div><h2 id="profileDisplayName" style="margin:0">Set up your profile</h2><p id="profileDisplayInfo" style="color:var(--muted);font-size:12px"></p></div>
+<section id="profile" class="page">
+ <div>
+  <div class="eyebrow">ACCOUNT & LOCAL DATA</div>
+  <h1>Profile & Backup</h1>
  </div>
 
- <div class="field"><label>Your Name</label><input id="profileName" placeholder="Enter your name"></div>
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-   <div class="field"><label>Class / Course</label><input id="profileClass" placeholder="Example: Class 10"></div>
-   <div class="field"><label>Board / Region</label><input id="profileRegion" placeholder="Example: UP Board"></div>
+ <div class="card profilegrid" style="margin-top:22px">
+  <div style="text-align:center">
+   <div class="avatar" id="avatar">S</div>
+   <button class="btn primary" style="margin-top:15px" onclick="editProfile()">Edit Profile</button>
+  </div>
+
+  <div class="infogrid" id="profileInfo"></div>
  </div>
 
- <div class="goalBox">
-  <div style="font-size:11px;color:var(--muted)">YOUR MAIN GOAL</div>
-  <b id="goalPreview">No goal set yet</b>
- </div>
+ <div class="card" style="margin-top:18px">
+  <div class="head">
+   <div>
+    <div class="eyebrow">FULL BACKUP</div>
+    <h2 style="margin:5px 0">Backup & Restore</h2>
+   </div>
+   <span class="muted">Dual Storage</span>
+  </div>
 
- <div class="field" style="margin-top:14px"><label>Goal</label><input id="profileGoal" placeholder="Example: Score 90% in board exams"></div>
- <div class="field"><label>Target Date</label><input type="date" id="profileGoalDate"></div>
+  <p class="muted">Export all tasks, exams, subjects, goals and profile as JSON.</p>
 
- <div style="display:flex;gap:10px;flex-wrap:wrap">
-  <button class="primaryBtn" id="saveProfile">Save Profile</button>
-  <button class="softBtn" id="cancelProfile">Cancel Changes</button>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <button class="btn primary" onclick="backup()">Export Backup</button>
+   <button class="btn" onclick="$('restoreFile').click()">Restore Backup</button>
+   <button class="btn red" onclick="resetAll()">Reset Planner</button>
+   <input id="restoreFile" class="hidden" type="file" accept=".json,application/json" onchange="restore(event)">
+  </div>
+
+  <p class="muted" id="storageInfo" style="margin-bottom:0"></p>
  </div>
-</div>
-</div>
 </section>
 
-<!-- BACKUP -->
-<section class="view" id="backup">
-<div style="max-width:780px">
-<div class="card">
- <div class="cardHead"><h3>Backup & Restore</h3></div>
- <p style="color:var(--muted);font-size:13px;line-height:1.7">
- Your tasks, exams, profile, settings, focus history and distractions can be exported into one JSON file.
- </p>
- <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
-   <button class="primaryBtn" id="exportBackup">Export Backup</button>
-   <button class="softBtn" id="restoreBtn">Restore Backup</button>
-   <input type="file" id="restoreInput" accept=".json,application/json" class="hidden">
- </div>
- <div style="margin-top:20px;padding:14px;border-radius:13px;background:var(--panel3);font-size:12px;color:var(--muted)" id="storageStatus">
- Checking storage…
- </div>
 </div>
-
-<div class="card" style="margin-top:18px">
- <div class="cardHead"><h3>Danger Zone</h3></div>
- <p style="font-size:12px;color:var(--muted)">Clear all planner data from this browser.</p>
- <button class="softBtn" id="clearData" style="color:var(--red)">Clear All Data</button>
-</div>
-</div>
-</section>
-
 </main>
 </div>
 
 <!-- TASK MODAL -->
 <div class="modal" id="taskModal">
-<div class="modalBox">
-<div class="modalHead"><h2 id="taskModalTitle">Add Study Task</h2><button class="closeBtn" data-close="taskModal">×</button></div>
+ <div class="modalbox">
+  <div class="modalhead">
+   <h2 id="taskModalTitle">Plan a Study Task</h2>
+   <button class="close" onclick="closeModal('taskModal')">×</button>
+  </div>
 
-<div class="field"><label>Task title</label><input id="taskTitleInput" placeholder="Example: Revise Chapter 3"></div>
-<div class="field"><label>Subject</label>
-<select id="taskSubjectInput">
-<option>General</option><option>Mathematics</option><option>Physics</option>
-<option>Chemistry</option><option>Biology</option><option>English</option>
-<option>Hindi</option><option>Social Science</option>
-</select></div>
+  <div class="form">
+   <div class="field full">
+    <label>TASK / CHAPTER</label>
+    <input class="input" id="taskName" placeholder="Example: Electric Current revision">
+   </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div class="field"><label>Date</label><input type="date" id="taskDateInput"></div>
-<div class="field"><label>Start time</label><input type="time" id="taskStartInput"></div>
+   <div class="field">
+    <label>SUBJECT</label>
+    <select id="taskSubject"></select>
+   </div>
+
+   <div class="field">
+    <label>DATE</label>
+    <input class="input" type="date" id="taskDate">
+   </div>
+
+   <div class="field">
+    <label>START TIME</label>
+    <input class="input" type="time" id="taskStart">
+   </div>
+
+   <div class="field">
+    <label>END TIME</label>
+    <input class="input" type="time" id="taskEnd">
+   </div>
+
+   <div class="field">
+    <label>TYPE</label>
+    <select id="taskType">
+     <option value="study">Study</option>
+     <option value="revision">Revision</option>
+     <option value="assignment">Assignment</option>
+     <option value="test">Test Practice</option>
+    </select>
+   </div>
+
+   <div class="field">
+    <label>PRIORITY</label>
+    <select id="taskPriority">
+     <option value="normal">Normal</option>
+     <option value="high">High</option>
+     <option value="low">Low</option>
+    </select>
+   </div>
+
+   <div class="field full">
+    <label>NOTES</label>
+    <textarea id="taskNotes" placeholder="Optional notes"></textarea>
+   </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:20px">
+   <button class="btn" onclick="closeModal('taskModal')">Cancel</button>
+   <button class="btn primary" onclick="saveTask()">Save Task</button>
+  </div>
+ </div>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div class="field"><label>End time</label><input type="time" id="taskEndInput"></div>
-<div class="field"><label>Priority</label>
-<select id="taskPriorityInput"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select>
-</div>
-</div>
-<div class="field"><label>Notes</label><textarea id="taskNotesInput" placeholder="Optional notes"></textarea></div>
-<div style="display:flex;gap:10px;justify-content:flex-end">
-<button class="softBtn" data-close="taskModal">Cancel</button>
-<button class="primaryBtn" id="saveTaskBtn">Save Task</button>
-</div>
-</div>
+
+<!-- SUBJECT MODAL -->
+<div class="modal" id="subjectModal">
+ <div class="modalbox">
+  <div class="modalhead">
+   <h2>Add Subject</h2>
+   <button class="close" onclick="closeModal('subjectModal')">×</button>
+  </div>
+
+  <div class="form">
+   <div class="field full">
+    <label>SUBJECT NAME</label>
+    <input class="input" id="subjectName" placeholder="Physics">
+   </div>
+
+   <div class="field full">
+    <label>COLOR</label>
+    <input class="input" id="subjectColor" type="color" value="#7657ff">
+   </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:20px">
+   <button class="btn" onclick="closeModal('subjectModal')">Cancel</button>
+   <button class="btn primary" onclick="saveSubject()">Save Subject</button>
+  </div>
+ </div>
 </div>
 
 <!-- EXAM MODAL -->
 <div class="modal" id="examModal">
-<div class="modalBox">
-<div class="modalHead"><h2>Add Exam</h2><button class="closeBtn" data-close="examModal">×</button></div>
-<div class="field"><label>Exam name</label><input id="examNameInput" placeholder="Example: Mathematics Board Exam"></div>
-<div class="field"><label>Date</label><input type="date" id="examDateInput"></div>
-<div class="field"><label>Subject</label><input id="examSubjectInput" placeholder="Subject"></div>
-<div style="display:flex;justify-content:flex-end;gap:10px">
-<button class="softBtn" data-close="examModal">Cancel</button>
-<button class="primaryBtn" id="saveExamBtn">Save Exam</button>
+ <div class="modalbox">
+  <div class="modalhead">
+   <h2>Add Exam</h2>
+   <button class="close" onclick="closeModal('examModal')">×</button>
+  </div>
+
+  <div class="form">
+   <div class="field full">
+    <label>EXAM NAME</label>
+    <input class="input" id="examName" placeholder="Physics Unit Test">
+   </div>
+   <div class="field">
+    <label>SUBJECT</label>
+    <select id="examSubject"></select>
+   </div>
+   <div class="field">
+    <label>EXAM DATE</label>
+    <input class="input" type="date" id="examDate">
+   </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:20px">
+   <button class="btn" onclick="closeModal('examModal')">Cancel</button>
+   <button class="btn primary" onclick="saveExam()">Save Exam</button>
+  </div>
+ </div>
 </div>
+
+<!-- GOAL MODAL -->
+<div class="modal" id="goalModal">
+ <div class="modalbox">
+  <div class="modalhead">
+   <h2>Set Study Goal</h2>
+   <button class="close" onclick="closeModal('goalModal')">×</button>
+  </div>
+
+  <div class="form">
+   <div class="field full">
+    <label>GOAL</label>
+    <input class="input" id="goalName" placeholder="Score 95% in board exams">
+   </div>
+   <div class="field full">
+    <label>TARGET DATE</label>
+    <input class="input" type="date" id="goalDate">
+   </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:20px">
+   <button class="btn" onclick="closeModal('goalModal')">Cancel</button>
+   <button class="btn primary" onclick="saveGoal()">Save Goal</button>
+  </div>
+ </div>
 </div>
+
+<!-- PROFILE MODAL -->
+<div class="modal" id="profileModal">
+ <div class="modalbox">
+  <div class="modalhead">
+   <h2>Profile & Study Goal</h2>
+   <button class="close" onclick="closeModal('profileModal')">×</button>
+  </div>
+
+  <div class="form">
+   <div class="field">
+    <label>NAME</label>
+    <input class="input" id="profileName">
+   </div>
+
+   <div class="field">
+    <label>CLASS</label>
+    <input class="input" id="profileClass" placeholder="Class 10">
+   </div>
+
+   <div class="field">
+    <label>BOARD</label>
+    <input class="input" id="profileBoard" placeholder="UP Board / CBSE">
+   </div>
+
+   <div class="field">
+    <label>REGION</label>
+    <input class="input" id="profileRegion" placeholder="State / Country">
+   </div>
+
+   <div class="field full">
+    <label>MAIN GOAL</label>
+    <input class="input" id="profileGoal" placeholder="Example: Score 95%">
+   </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:20px">
+   <button class="btn" onclick="closeModal('profileModal')">Cancel</button>
+   <button class="btn primary" onclick="saveProfile()">Save Profile</button>
+  </div>
+ </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* =========================
-   STUDY PLANNER CORE
-   IndexedDB + LocalStorage
-========================= */
+const $=id=>document.getElementById(id);
 
-const DB_NAME="StudyPlannerDB";
-const DB_VERSION=1;
-const STORE="plannerData";
-const STORAGE_KEY="studyPlannerBackup";
+const KEY="studyflow_final_v20";
+const DB_NAME="StudyFlowDB";
+const STORE="planner";
+let db=null;
+let cal=new Date();
+let editingTask=null;
+let timerSeconds=25*60;
+let timerRunning=false;
+let timerInterval=null;
 
-let state={
- profile:{name:"",className:"",region:"",goal:"",goalDate:""},
+const DEFAULT={
+ profile:{
+  name:"",
+  className:"",
+  board:"",
+  region:"",
+  goal:"",
+  onboarded:false
+ },
+ subjects:[
+  {id:"math",name:"Mathematics",color:"#7657ff"},
+  {id:"physics",name:"Physics",color:"#35a9ff"},
+  {id:"chem",name:"Chemistry",color:"#24d69c"},
+  {id:"english",name:"English",color:"#ff914d"}
+ ],
  tasks:[],
  exams:[],
- focusLogs:[],
- distractions:[],
- settings:{theme:"dark"},
- streak:{lastDate:"",count:0},
- selectedFocusTask:null
+ goals:[],
+ focusMinutes:0,
+ focusDate:"",
+ theme:"dark"
 };
 
-let db=null;
-let editingTaskId=null;
-let currentFilter="all";
-let calDate=new Date();
-let timer={
- mode:"focus",
- seconds:1500,
- running:false,
- interval:null,
- sessionStart:null
-};
+let data=clone(DEFAULT);
 
-const subjectColors={
- General:"#7567ff",
- Mathematics:"#32b7ff",
- Physics:"#f65ba8",
- Chemistry:"#28d89b",
- Biology:"#ffca5c",
- English:"#a879ff",
- Hindi:"#ff8a5b",
- "Social Science":"#42d3c1"
-};
+function clone(x){
+ return JSON.parse(JSON.stringify(x));
+}
 
 function uid(){
  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 }
 
-function dateKey(d){
- const x=new Date(d);
- return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`;
+function today(){
+ const d=new Date();
+ return [
+  d.getFullYear(),
+  String(d.getMonth()+1).padStart(2,"0"),
+  String(d.getDate()).padStart(2,"0")
+ ].join("-");
 }
 
-function todayKey(){return dateKey(new Date())}
-
-function showToast(msg){
- const t=document.getElementById("toast");
- t.textContent=msg;t.classList.add("show");
- clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>t.classList.remove("show"),2600);
+function esc(v){
+ return String(v??"")
+ .replaceAll("&","&amp;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;")
+ .replaceAll('"',"&quot;");
 }
 
-/* INDEXED DB */
-function openDB(){
- return new Promise((resolve,reject)=>{
-  const req=indexedDB.open(DB_NAME,DB_VERSION);
-  req.onupgradeneeded=e=>{
-   const database=e.target.result;
-   if(!database.objectStoreNames.contains(STORE)) database.createObjectStore(STORE);
-  };
-  req.onsuccess=e=>{db=e.target.result;resolve()};
-  req.onerror=()=>reject(req.error);
- });
+function normalize(x){
+ const d=clone(DEFAULT);
+ if(!x||typeof x!=="object")return d;
+
+ d.profile={...d.profile,...(x.profile||{})};
+ d.subjects=Array.isArray(x.subjects)&&x.subjects.length?x.subjects:d.subjects;
+ d.tasks=Array.isArray(x.tasks)?x.tasks:[];
+ d.exams=Array.isArray(x.exams)?x.exams:[];
+ d.goals=Array.isArray(x.goals)?x.goals:[];
+ d.focusMinutes=Number(x.focusMinutes)||0;
+ d.focusDate=x.focusDate||today();
+ d.theme=x.theme==="light"?"light":"dark";
+
+ return d;
 }
 
-function dbSave(){
- return new Promise((resolve,reject)=>{
-  if(!db){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return resolve();}
-  const tx=db.transaction(STORE,"readwrite");
-  tx.objectStore(STORE).put(JSON.parse(JSON.stringify(state)),"main");
-  tx.oncomplete=()=>{
-   try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
-   resolve();
-  };
-  tx.onerror=()=>reject(tx.error);
- });
-}
-
-function dbLoad(){
+async function initDB(){
  return new Promise(resolve=>{
-  if(!db)return resolve(null);
-  const tx=db.transaction(STORE,"readonly");
-  const req=tx.objectStore(STORE).get("main");
-  req.onsuccess=()=>resolve(req.result||null);
-  req.onerror=()=>resolve(null);
- });
-}
+  const req=indexedDB.open(DB_NAME,1);
 
-async function save(){
- try{await dbSave()}catch(e){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(x){}
- }
- renderAll();
-}
-
-async function initStorage(){
- try{
-  await openDB();
-  const data=await dbLoad();
-  if(data) state={...state,...data};
-  else{
-   const local=localStorage.getItem(STORAGE_KEY);
-   if(local) state={...state,...JSON.parse(local)};
-  }
- }catch(e){
-  const local=localStorage.getItem(STORAGE_KEY);
-  if(local) state={...state,...JSON.parse(local)};
- }
- state.tasks=Array.isArray(state.tasks)?state.tasks:[];
- state.exams=Array.isArray(state.exams)?state.exams:[];
- state.focusLogs=Array.isArray(state.focusLogs)?state.focusLogs:[];
- state.distractions=Array.isArray(state.distractions)?state.distractions:[];
-}
-
-/* NAVIGATION */
-document.querySelectorAll(".navBtn").forEach(btn=>{
- btn.onclick=()=>{
-  document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById(btn.dataset.view).classList.add("active");
-  document.getElementById("pageHeading").textContent=btn.textContent.trim();
-  document.getElementById("sidebar").classList.remove("open");
-  if(btn.dataset.view==="calendar") renderCalendar();
-  if(btn.dataset.view==="analytics") renderAnalytics();
- };
-});
-
-document.getElementById("menuBtn").onclick=()=>document.getElementById("sidebar").classList.toggle("open");
-
-/* THEME */
-function applyTheme(){
- document.body.classList.toggle("light",state.settings.theme==="light");
- document.getElementById("themeBtn").textContent=state.settings.theme==="light"?"☾":"◐";
-}
-document.getElementById("themeBtn").onclick=async()=>{
- state.settings.theme=state.settings.theme==="light"?"dark":"light";
- applyTheme();await save();
-};
-
-/* PROFILE */
-function initials(name){
- return name?name.trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase():"?";
-}
-
-function renderProfile(){
- const p=state.profile;
- ["profileName","profileClass","profileRegion","profileGoal","profileGoalDate"].forEach(id=>{
-  const key=id.replace("profile","").replace("Class","className").replace("Region","region").replace("GoalDate","goalDate").replace("Goal","goal").replace("Name","name");
-  const map={
-   profileName:p.name,profileClass:p.className,profileRegion:p.region,
-   profileGoal:p.goal,profileGoalDate:p.goalDate
+  req.onupgradeneeded=()=>{
+   const x=req.result;
+   if(!x.objectStoreNames.contains(STORE)){
+    x.createObjectStore(STORE);
+   }
   };
-  const el=document.getElementById(id);
-  if(document.activeElement!==el) el.value=map[id]||"";
+
+  req.onsuccess=()=>{
+   db=req.result;
+   resolve(true);
+  };
+
+  req.onerror=()=>resolve(false);
  });
- document.getElementById("profileDisplayName").textContent=p.name||"Set up your profile";
- document.getElementById("profileDisplayInfo").textContent=[p.className,p.region].filter(Boolean).join(" · ")||"Your study information";
- document.getElementById("goalPreview").textContent=p.goal||"No goal set yet";
- document.getElementById("profileAvatar").textContent=initials(p.name);
- document.getElementById("miniAvatar").textContent=initials(p.name);
- document.getElementById("miniName").textContent=p.name||"Your Study Space";
- document.getElementById("miniGoal").textContent=p.goal||"Set up your profile";
 }
 
-document.getElementById("saveProfile").onclick=async()=>{
- state.profile={
-  name:document.getElementById("profileName").value.trim(),
-  className:document.getElementById("profileClass").value.trim(),
-  region:document.getElementById("profileRegion").value.trim(),
-  goal:document.getElementById("profileGoal").value.trim(),
-  goalDate:document.getElementById("profileGoalDate").value
- };
- await save();showToast("Profile saved successfully");
-};
+async function idbSave(){
+ if(!db)return false;
 
-document.getElementById("cancelProfile").onclick=()=>{renderProfile();showToast("Changes cancelled")};
-
-/* TASK MODAL */
-function openTask(task=null){
- editingTaskId=task?task.id:null;
- document.getElementById("taskModalTitle").textContent=task?"Edit Task":"Add Study Task";
- document.getElementById("taskTitleInput").value=task?.title||"";
- document.getElementById("taskSubjectInput").value=task?.subject||"General";
- document.getElementById("taskDateInput").value=task?.date||todayKey();
- document.getElementById("taskStartInput").value=task?.start||"";
- document.getElementById("taskEndInput").value=task?.end||"";
- document.getElementById("taskPriorityInput").value=task?.priority||"medium";
- document.getElementById("taskNotesInput").value=task?.notes||"";
- document.getElementById("taskModal").classList.add("show");
+ return new Promise(resolve=>{
+  try{
+   const tx=db.transaction(STORE,"readwrite");
+   tx.objectStore(STORE).put(data,"state");
+   tx.oncomplete=()=>resolve(true);
+   tx.onerror=()=>resolve(false);
+  }catch(e){
+   resolve(false);
+  }
+ });
 }
 
-document.getElementById("openTaskModal").onclick=()=>openTask();
-document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>{
- document.getElementById(b.dataset.close).classList.remove("show");
- editingTaskId=null;
+async function idbLoad(){
+ if(!db)return null;
+
+ return new Promise(resolve=>{
+  try{
+   const tx=db.transaction(STORE,"readonly");
+   const req=tx.objectStore(STORE).get("state");
+   req.onsuccess=()=>resolve(req.result||null);
+   req.onerror=()=>resolve(null);
+  }catch(e){
+   resolve(null);
+  }
+ });
+}
+
+function localLoad(){
+ try{
+  return JSON.parse(localStorage.getItem(KEY)||"null");
+ }catch(e){
+  return null;
+ }
+}
+
+async function saveAll(){
+ data=normalize(data);
+
+ try{
+  localStorage.setItem(KEY,JSON.stringify(data));
+ }catch(e){
+  console.warn("LocalStorage save failed",e);
+ }
+
+ await idbSave();
+ updateStorageInfo();
+}
+
+async function loadAll(){
+ const idbData=await idbLoad();
+ const localData=localLoad();
+
+ if(idbData&&localData){
+  const a=JSON.stringify(idbData).length;
+  const b=JSON.stringify(localData).length;
+  data=normalize(a>=b?idbData:localData);
+ }else{
+  data=normalize(idbData||localData||DEFAULT);
+ }
+
+ await saveAll();
+}
+
+function toast(msg){
+ const t=$("toast");
+ t.textContent=msg;
+ t.classList.add("show");
+
+ clearTimeout(toast._timer);
+
+ toast._timer=setTimeout(()=>{
+  t.classList.remove("show");
+ },3000);
+}
+
+function subject(id){
+ return data.subjects.find(x=>x.id===id)||
+ {id:"",name:"General",color:"#7657ff"};
+}
+
+function taskStatus(t){
+ if(t.done)return "done";
+
+ const now=new Date();
+
+ if(!t.date)return "upcoming";
+
+ const start=new Date(`${t.date}T${t.start||"00:00"}`);
+ const end=new Date(`${t.date}T${t.end||"23:59"}`);
+
+ if(now>end)return "overdue";
+ if(now>=start&&now<=end)return "live";
+
+ return "upcoming";
+}
+
+function applyTheme(){
+ document.body.classList.toggle("light",data.theme==="light");
+}
+
+function toggleTheme(){
+ data.theme=data.theme==="dark"?"light":"dark";
+ applyTheme();
+ saveAll();
+}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+
+ document.querySelectorAll(".nav[data-page]").forEach(x=>{
+  x.classList.toggle("active",x.dataset.page===id);
+ });
+
+ $(id).classList.add("active");
+ $("sidebar").classList.remove("open");
+
+ window.scrollTo({
+  top:0,
+  behavior:"smooth"
+ });
+}
+
+document.querySelectorAll(".nav[data-page]").forEach(btn=>{
+ btn.onclick=()=>showPage(btn.dataset.page);
 });
 
-document.getElementById("saveTaskBtn").onclick=async()=>{
- const title=document.getElementById("taskTitleInput").value.trim();
- if(!title)return showToast("Please enter a task title");
-
- const task={
-  id:editingTaskId||uid(),
-  title,
-  subject:document.getElementById("taskSubjectInput").value,
-  date:document.getElementById("taskDateInput").value||todayKey(),
-  start:document.getElementById("taskStartInput").value,
-  end:document.getElementById("taskEndInput").value,
-  priority:document.getElementById("taskPriorityInput").value,
-  notes:document.getElementById("taskNotesInput").value.trim(),
-  completed:editingTaskId?(state.tasks.find(t=>t.id===editingTaskId)?.completed||false):false,
-  createdAt:editingTaskId?(state.tasks.find(t=>t.id===editingTaskId)?.createdAt):Date.now()
- };
-
- if(editingTaskId){
-  state.tasks=state.tasks.map(t=>t.id===editingTaskId?task:t);
-  showToast("Task updated");
- }else{
-  state.tasks.push(task);
-  showToast("Task saved");
- }
- document.getElementById("taskModal").classList.remove("show");
- editingTaskId=null;
- await save();
-};
-
-function isOverdue(t){
- if(t.completed)return false;
- if(t.date<todayKey())return true;
- if(t.date===todayKey()&&t.end){
-  return new Date(`${t.date}T${t.end}`)<new Date();
- }
- return false;
+function toggleSidebar(){
+ $("sidebar").classList.toggle("open");
 }
 
-function filteredTasks(){
- return state.tasks.filter(t=>{
-  if(currentFilter==="today")return t.date===todayKey();
-  if(currentFilter==="upcoming")return t.date>todayKey()&&!t.completed;
-  if(currentFilter==="overdue")return isOverdue(t);
-  if(currentFilter==="completed")return t.completed;
-  return true;
- }).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));
+function updateClock(){
+ const n=new Date();
+
+ $("clock").textContent=n.toLocaleTimeString([],{
+  hour:"2-digit",
+  minute:"2-digit",
+  second:"2-digit"
+ });
+
+ $("topDate").textContent=n.toLocaleDateString(undefined,{
+  weekday:"long",
+  day:"numeric",
+  month:"long",
+  year:"numeric"
+ });
+
+ const h=n.getHours();
+
+ $("topGreeting").textContent=
+ h<12?"Good Morning":
+ h<17?"Good Afternoon":
+ h<21?"Good Evening":"Good Night";
+
+ renderLive();
+}
+
+function renderDashboard(){
+ const total=data.tasks.length;
+ const done=data.tasks.filter(x=>x.done).length;
+ const overdue=data.tasks.filter(x=>taskStatus(x)==="overdue").length;
+
+ $("totalStat").textContent=total;
+ $("doneStat").textContent=done;
+ $("focusStat").textContent=(data.focusMinutes||0)+"m";
+ $("overdueStat").textContent=overdue;
+
+ const pct=total?Math.round(done/total*100):0;
+
+ $("doneLine").style.width=pct+"%";
+ $("focusLine").style.width=Math.min(100,(data.focusMinutes||0)/2)+"%";
+ $("overdueLine").style.width=Math.min(100,overdue*25)+"%";
+
+ const name=data.profile.name||"Student";
+ $("welcomeTitle").textContent="Welcome back, "+name;
+
+ const todays=data.tasks
+ .filter(x=>x.date===today())
+ .sort((a,b)=>(a.start||"").localeCompare(b.start||""));
+
+ $("todayTasks").innerHTML=todays.length?
+ todays.slice(0,7).map(taskHTML).join(""):
+ `<p class="muted">No tasks planned for today.</p>`;
+
+ let suggestion="Add your first task to start planning.";
+
+ if(overdue){
+  suggestion=`You have ${overdue} overdue task${overdue>1?"s":""}. Complete or reschedule them first.`;
+ }else if(todays.some(x=>!x.done)){
+  suggestion="Focus on your next scheduled task and complete it before starting something new.";
+ }else if(data.exams.length){
+  suggestion="Your schedule is clear. Use this time for revision and exam preparation.";
+ }
+
+ $("smartText").textContent=suggestion;
+
+ const goal=data.profile.goal||
+ data.goals[0]?.name||
+ "Set your main study goal";
+
+ $("goalText").textContent=goal;
+ $("goalProgress").style.width=pct+"%";
+ $("goalMeta").textContent=total?
+ `${pct}% overall task completion`:
+ "Start adding tasks to track progress";
 }
 
 function taskHTML(t){
- const color=subjectColors[t.subject]||"var(--accent)";
- const status=isOverdue(t)?"Overdue":t.completed?"Completed":"Scheduled";
- return `<div class="taskItem ${t.completed?"done":""} priority${t.priority[0].toUpperCase()+t.priority.slice(1)}">
-   <button class="check" onclick="toggleTask('${t.id}')">${t.completed?"✓":""}</button>
-   <div class="taskMain">
-    <div class="taskTitle">${escapeHTML(t.title)}</div>
-    <div class="taskMeta">
-     <span class="badge"><span class="dot" style="display:inline-block;background:${color};margin-right:4px"></span>${escapeHTML(t.subject)}</span>
-     <span class="badge">${t.date}</span>
-     ${t.start?`<span class="badge">${t.start}${t.end?" – "+t.end:""}</span>`:""}
-     <span class="badge">${status}</span>
-    </div>
+ const s=subject(t.subject);
+ const status=taskStatus(t);
+
+ return `
+ <div class="task ${t.done?"done":""}">
+  <input
+   class="check"
+   type="checkbox"
+   ${t.done?"checked":""}
+   onchange="toggleTask('${t.id}')"
+  >
+
+  <div>
+   <div class="task-title">${esc(t.name)}</div>
+
+   <div class="task-meta">
+    <span class="pill">
+     <span class="dot" style="background:${s.color}"></span>
+     ${esc(s.name)}
+    </span>
+
+    <span class="pill">${esc(t.date||"No date")}</span>
+
+    ${t.start?
+    `<span class="pill">${esc(t.start)}${t.end?" - "+esc(t.end):""}</span>`:""}
+
+    <span class="pill">${status}</span>
    </div>
-   <div class="taskActions">
-    <button title="Focus" onclick="selectFocusTask('${t.id}')">◉</button>
-    <button title="Edit" onclick="editTask('${t.id}')">✎</button>
-    <button title="Delete" onclick="deleteTask('${t.id}')">×</button>
-   </div>
+  </div>
+
+  <div class="task-actions">
+   <button class="small-btn" onclick="editTask('${t.id}')">Edit</button>
+   <button class="small-btn" onclick="deleteTask('${t.id}')">Delete</button>
+  </div>
  </div>`;
 }
 
-function escapeHTML(s){
- return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-}
-
 function renderTasks(){
- const list=document.getElementById("taskList");
- const tasks=filteredTasks();
- list.innerHTML=tasks.length?tasks.map(taskHTML).join(""):`<div class="empty"><strong>No tasks here</strong>Plan your next study session.</div>`;
- const insight=document.getElementById("smartInsight");
- const overdue=state.tasks.filter(isOverdue).length;
- const today=state.tasks.filter(t=>t.date===todayKey()&&!t.completed).length;
- insight.textContent=overdue?`${overdue} task${overdue>1?"s are":" is"} overdue. Complete or reschedule them.`:today?`You have ${today} active task${today>1?"s":""} planned for today.`:"Your schedule is clear. Add a focused study task.";
+ const q=$("taskSearch").value.trim().toLowerCase();
+ const filter=$("taskFilter").value;
+
+ let tasks=[...data.tasks];
+
+ if(q){
+  tasks=tasks.filter(t=>
+   t.name.toLowerCase().includes(q)||
+   subject(t.subject).name.toLowerCase().includes(q)
+  );
+ }
+
+ if(filter==="active"){
+  tasks=tasks.filter(x=>!x.done&&taskStatus(x)!=="overdue");
+ }
+
+ if(filter==="done"){
+  tasks=tasks.filter(x=>x.done);
+ }
+
+ if(filter==="overdue"){
+  tasks=tasks.filter(x=>taskStatus(x)==="overdue");
+ }
+
+ tasks.sort((a,b)=>{
+  const x=(a.date||"9999")+" "+(a.start||"");
+  const y=(b.date||"9999")+" "+(b.start||"");
+  return x.localeCompare(y);
+ });
+
+ $("taskList").innerHTML=tasks.length?
+ tasks.map(taskHTML).join(""):
+ `<p class="muted">No tasks found.</p>`;
 }
 
-window.toggleTask=async id=>{
- const task=state.tasks.find(t=>t.id===id);
- if(!task)return;
- task.completed=!task.completed;
- if(task.completed)updateStreak();
- await save();
-};
+function openTask(id=null){
+ editingTask=id;
 
-window.editTask=id=>{
- const task=state.tasks.find(t=>t.id===id);
- if(task)openTask(task);
-};
+ $("taskModalTitle").textContent=
+ id?"Edit Study Task":"Plan a Study Task";
 
-window.deleteTask=async id=>{
+ fillSubjectSelects();
+
+ const t=id?
+ data.tasks.find(x=>x.id===id):null;
+
+ $("taskName").value=t?.name||"";
+ $("taskSubject").value=t?.subject||data.subjects[0]?.id||"";
+ $("taskDate").value=t?.date||today();
+ $("taskStart").value=t?.start||"";
+ $("taskEnd").value=t?.end||"";
+ $("taskType").value=t?.type||"study";
+ $("taskPriority").value=t?.priority||"normal";
+ $("taskNotes").value=t?.notes||"";
+
+ $("taskModal").classList.add("show");
+}
+
+async function saveTask(){
+ const name=$("taskName").value.trim();
+
+ if(!name){
+  toast("Enter a task name first.");
+  return;
+ }
+
+ const task={
+  id:editingTask||uid(),
+  name,
+  subject:$("taskSubject").value,
+  date:$("taskDate").value,
+  start:$("taskStart").value,
+  end:$("taskEnd").value,
+  type:$("taskType").value,
+  priority:$("taskPriority").value,
+  notes:$("taskNotes").value.trim(),
+  done:editingTask?
+   !!data.tasks.find(x=>x.id===editingTask)?.done:false
+ };
+
+ if(editingTask){
+  const i=data.tasks.findIndex(x=>x.id===editingTask);
+  data.tasks[i]=task;
+ }else{
+  data.tasks.push(task);
+ }
+
+ await saveAll();
+
+ closeModal("taskModal");
+ renderAll();
+
+ toast(editingTask?"Task updated successfully.":"Task saved successfully.");
+
+ editingTask=null;
+}
+
+async function toggleTask(id){
+ const t=data.tasks.find(x=>x.id===id);
+
+ if(!t)return;
+
+ t.done=!t.done;
+
+ await saveAll();
+ renderAll();
+}
+
+function editTask(id){
+ openTask(id);
+}
+
+async function deleteTask(id){
  if(!confirm("Delete this task?"))return;
- state.tasks=state.tasks.filter(t=>t.id!==id);
- if(state.selectedFocusTask===id)state.selectedFocusTask=null;
- await save();showToast("Task deleted");
-};
 
-document.querySelectorAll(".filterBtn").forEach(b=>b.onclick=()=>{
- currentFilter=b.dataset.filter;
- document.querySelectorAll(".filterBtn").forEach(x=>x.classList.remove("active"));
- b.classList.add("active");renderTasks();
-});
+ data.tasks=data.tasks.filter(x=>x.id!==id);
 
-document.getElementById("quickAddBtn").onclick=async()=>{
- const title=document.getElementById("quickTitle").value.trim();
- if(!title)return showToast("Enter a task first");
- state.tasks.push({
-  id:uid(),title,subject:document.getElementById("quickSubject").value,
-  date:todayKey(),start:"",end:"",priority:"medium",notes:"",
-  completed:false,createdAt:Date.now()
- });
- document.getElementById("quickTitle").value="";
- await save();showToast("Added to today's tasks");
-};
+ await saveAll();
+ renderAll();
 
-/* CALENDAR */
+ toast("Task deleted.");
+}
+
 function renderCalendar(){
- const year=calDate.getFullYear(),month=calDate.getMonth();
- document.getElementById("calendarMonth").textContent=calDate.toLocaleString("en-US",{month:"long",year:"numeric"});
+ const year=cal.getFullYear();
+ const month=cal.getMonth();
+
+ $("monthTitle").textContent=
+ new Date(year,month,1).toLocaleDateString(undefined,{
+  month:"long",
+  year:"numeric"
+ });
+
+ const names=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+ let html=names.map(x=>`<div class="weekday">${x}</div>`).join("");
+
  const first=new Date(year,month,1);
- const startDay=first.getDay();
+ const start=(first.getDay()+6)%7;
+
  const days=new Date(year,month+1,0).getDate();
  const prevDays=new Date(year,month,0).getDate();
- const grid=document.getElementById("calendarGrid");
- let html="";
- for(let i=0;i<42;i++){
-  let d,m=month,y=year,other=false;
-  if(i<startDay){d=prevDays-startDay+i;m=month-1;other=true}
-  else if(i>=startDay+days){d=i-startDay-days+1;m=month+1;other=true}
-  else d=i-startDay+1;
-  const date=new Date(y,m,d);
-  const key=dateKey(date);
-  const tasks=state.tasks.filter(t=>t.date===key);
-  html+=`<div class="day ${other?"other":""} ${key===todayKey()?"today":""}" onclick="calendarDay('${key}')">
-   <div class="dayNum">${d}</div>
-   ${tasks.slice(0,3).map(t=>`<div class="calTask" style="border-color:${subjectColors[t.subject]||'#7567ff'}">${t.start?t.start+" ":""}${escapeHTML(t.title)}</div>`).join("")}
-   ${tasks.length>3?`<div class="calMore">+${tasks.length-3} more</div>`:""}
-  </div>`;
+
+ for(let i=start-1;i>=0;i--){
+  html+=dayHTML(
+   new Date(year,month-1,prevDays-i),
+   true
+  );
  }
- grid.innerHTML=html;
-}
-window.calendarDay=key=>{openTask({date:key,subject:"General",priority:"medium"})};
-document.getElementById("prevMonth").onclick=()=>{calDate.setMonth(calDate.getMonth()-1);renderCalendar()};
-document.getElementById("nextMonth").onclick=()=>{calDate.setMonth(calDate.getMonth()+1);renderCalendar()};
-document.getElementById("goToday").onclick=()=>{calDate=new Date();renderCalendar()};
 
-/* FOCUS TIMER */
-const modeSeconds={focus:1500,short:300,long:900};
+ for(let d=1;d<=days;d++){
+  html+=dayHTML(new Date(year,month,d),false);
+ }
 
-function setTimerMode(mode){
- timer.mode=mode;
- timer.seconds=modeSeconds[mode]||1500;
- timer.running=false;
- clearInterval(timer.interval);
- document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
- updateTimerUI();
+ const totalCells=start+days;
+ const extra=(7-totalCells%7)%7;
+
+ for(let d=1;d<=extra;d++){
+  html+=dayHTML(new Date(year,month+1,d),true);
+ }
+
+ $("calendarGrid").innerHTML=html;
 }
 
-function formatTime(sec){
- return `${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`;
+function dayHTML(date,muted){
+ const iso=[
+  date.getFullYear(),
+  String(date.getMonth()+1).padStart(2,"0"),
+  String(date.getDate()).padStart(2,"0")
+ ].join("-");
+
+ const tasks=data.tasks.filter(x=>x.date===iso);
+
+ return `
+ <div class="day ${muted?"muted-day":""} ${iso===today()?"today":""}">
+  <div class="day-number">${date.getDate()}</div>
+
+  ${tasks.slice(0,4).map(t=>{
+   const s=subject(t.subject);
+
+   return `
+   <div
+    class="event"
+    title="${esc(t.name)}"
+    style="background:${s.color}"
+    onclick="openTask('${t.id}')"
+   >
+    ${t.start?esc(t.start)+" · ":"}${esc(t.name)}
+   </div>`;
+  }).join("")}
+
+  ${tasks.length>4?
+   `<div class="muted" style="font-size:10px;margin-top:4px">
+   +${tasks.length-4} more
+   </div>`:""}
+ </div>`;
 }
 
-function updateTimerUI(){
- const time=formatTime(timer.seconds);
- document.getElementById("dashTimer").textContent=time;
- document.getElementById("focusTimer").textContent=time;
- const label=timer.mode==="focus"?"Focus":timer.mode==="short"?"Short Break":"Long Break";
- document.getElementById("dashTimerMode").textContent=label;
- document.getElementById("focusTimerMode").textContent=label;
- const selected=state.tasks.find(t=>t.id===state.selectedFocusTask);
- const taskText=selected?selected.title:"Choose a task and begin";
- document.getElementById("dashTimerTask").textContent=taskText;
- document.getElementById("focusSelectedTask").textContent=selected?selected.title:"No task selected";
+function changeMonth(v){
+ cal=new Date(cal.getFullYear(),cal.getMonth()+v,1);
+ renderCalendar();
 }
 
-function startTimer(){
- if(timer.running)return;
- timer.running=true;
- timer.sessionStart=Date.now();
- timer.interval=setInterval(async()=>{
-  timer.seconds--;
-  updateTimerUI();
-  if(timer.seconds<=0){
-   clearInterval(timer.interval);
-   timer.running=false;
-   if(timer.mode==="focus"){
-    state.focusLogs.push({id:uid(),date:todayKey(),minutes:25,taskId:state.selectedFocusTask,time:Date.now()});
-    updateStreak();
-    await save();
-    showToast("Focus session completed");
-    setTimerMode("short");
-   }else{
-    showToast("Break finished. Ready to focus?");
-    setTimerMode("focus");
-   }
+function todayMonth(){
+ cal=new Date();
+ renderCalendar();
+}
+
+function fillSubjectSelects(){
+ const html=data.subjects.map(s=>
+  `<option value="${s.id}">${esc(s.name)}</option>`
+ ).join("");
+
+ $("taskSubject").innerHTML=html;
+ $("examSubject").innerHTML=html;
+}
+
+function renderSubjects(){
+ $("subjectList").innerHTML=data.subjects.map(s=>`
+ <div class="task">
+  <div class="dot" style="background:${s.color};width:16px;height:16px"></div>
+  <div>
+   <div class="task-title">${esc(s.name)}</div>
+   <div class="task-meta">
+    <span>${data.tasks.filter(t=>t.subject===s.id).length} tasks</span>
+   </div>
+  </div>
+  <div></div>
+ </div>
+ `).join("");
+}
+
+function openSubject(){
+ $("subjectName").value="";
+ $("subjectColor").value="#7657ff";
+ $("subjectModal").classList.add("show");
+}
+
+async function saveSubject(){
+ const name=$("subjectName").value.trim();
+
+ if(!name){
+  toast("Enter a subject name.");
+  return;
+ }
+
+ data.subjects.push({
+  id:uid(),
+  name,
+  color:$("subjectColor").value
+ });
+
+ await saveAll();
+
+ closeModal("subjectModal");
+
+ fillSubjectSelects();
+ renderAll();
+
+ toast("Subject added.");
+}
+
+function openExam(){
+ fillSubjectSelects();
+
+ $("examName").value="";
+ $("examDate").value=today();
+
+ $("examModal").classList.add("show");
+}
+
+async function saveExam(){
+ const name=$("examName").value.trim();
+
+ if(!name){
+  toast("Enter an exam name.");
+  return;
+ }
+
+ data.exams.push({
+  id:uid(),
+  name,
+  subject:$("examSubject").value,
+  date:$("examDate").value
+ });
+
+ await saveAll();
+
+ closeModal("examModal");
+ renderAll();
+
+ toast("Exam saved.");
+}
+
+async function deleteExam(id){
+ if(!confirm("Delete this exam?"))return;
+
+ data.exams=data.exams.filter(x=>x.id!==id);
+
+ await saveAll();
+ renderAll();
+}
+
+function renderExams(){
+ const exams=[...data.exams].sort((a,b)=>
+  (a.date||"").localeCompare(b.date||"")
+ );
+
+ $("examList").innerHTML=exams.length?
+ exams.map(e=>{
+  const s=subject(e.subject);
+
+  let diff=0;
+
+  if(e.date){
+   const a=new Date(today()+"T00:00");
+   const b=new Date(e.date+"T00:00");
+   diff=Math.ceil((b-a)/86400000);
   }
+
+  return `
+  <div class="exam">
+   <div>
+    <h3>${esc(e.name)}</h3>
+    <small>
+     <span class="dot" style="background:${s.color}"></span>
+     ${esc(s.name)} · ${esc(e.date)}
+    </small>
+   </div>
+
+   <div style="display:flex;gap:8px;align-items:center">
+    <div class="countdown">${diff>=0?diff+" days":"Passed"}</div>
+    <button class="small-btn" onclick="deleteExam('${e.id}')">Delete</button>
+   </div>
+  </div>`;
+ }).join(""):
+ `<p class="muted">No exams added yet.</p>`;
+}
+
+function renderRevision(){
+ const list=data.tasks.filter(x=>x.type==="revision");
+
+ $("revisionList").innerHTML=list.length?
+ list.map(taskHTML).join(""):
+ `<p class="muted">No revision tasks yet.</p>`;
+}
+
+function openGoal(){
+ $("goalName").value="";
+ $("goalDate").value="";
+ $("goalModal").classList.add("show");
+}
+
+async function saveGoal(){
+ const name=$("goalName").value.trim();
+
+ if(!name){
+  toast("Enter a goal.");
+  return;
+ }
+
+ data.goals.push({
+  id:uid(),
+  name,
+  date:$("goalDate").value
+ });
+
+ await saveAll();
+
+ closeModal("goalModal");
+ renderAll();
+
+ toast("Goal saved.");
+}
+
+async function deleteGoal(id){
+ data.goals=data.goals.filter(x=>x.id!==id);
+
+ await saveAll();
+ renderAll();
+}
+
+function renderGoals(){
+ $("goalList").innerHTML=data.goals.length?
+ data.goals.map(g=>`
+ <div class="task">
+  <div></div>
+  <div>
+   <div class="task-title">${esc(g.name)}</div>
+   <div class="task-meta">
+    <span>${esc(g.date||"No target date")}</span>
+   </div>
+  </div>
+  <div class="task-actions">
+   <button class="small-btn" onclick="deleteGoal('${g.id}')">Delete</button>
+  </div>
+ </div>
+ `).join(""):
+ `<p class="muted">No goals added yet.</p>`;
+}
+
+function renderLive(){
+ $("liveNow").textContent=new Date().toLocaleTimeString([],{
+  hour:"2-digit",
+  minute:"2-digit",
+  second:"2-digit"
+ });
+
+ const list=data.tasks
+ .filter(x=>x.date===today())
+ .sort((a,b)=>(a.start||"").localeCompare(b.start||""));
+
+ $("liveList").innerHTML=list.length?
+ list.map(t=>{
+  const st=taskStatus(t);
+  const s=subject(t.subject);
+
+  return `
+  <div class="timeline-item ${st==="live"?"live-now":""} ${st==="overdue"?"overdue":""}">
+   <div class="timeline-time">${esc(t.start||"--:--")}</div>
+
+   <div class="timeline-dot" style="background:${st==="live"?s.color:""}"></div>
+
+   <div class="timeline-card">
+    <div class="task-title">${esc(t.name)}</div>
+    <div class="task-meta">
+     <span class="pill">
+      <span class="dot" style="background:${s.color}"></span>
+      ${esc(s.name)}
+     </span>
+     <span class="pill">${st}</span>
+     ${t.end?`<span class="pill">Ends ${esc(t.end)}</span>`:""}
+    </div>
+   </div>
+  </div>`;
+ }).join(""):
+ `<p class="muted">No tasks scheduled for today.</p>`;
+}
+
+function setTimer(min){
+ timerRunning=false;
+
+ clearInterval(timerInterval);
+
+ timerSeconds=min*60;
+
+ updateTimer();
+
+ $("timerStart").textContent="Start";
+}
+
+function updateTimer(){
+ const m=Math.floor(timerSeconds/60);
+ const s=timerSeconds%60;
+
+ $("timer").textContent=
+ String(m).padStart(2,"0")+":"+
+ String(s).padStart(2,"0");
+
+ const pct=Math.max(0,Math.min(100,timerSeconds/(25*60)*100));
+
+ $("timerBar").style.width=pct+"%";
+}
+
+function toggleTimer(){
+ if(timerRunning){
+  timerRunning=false;
+  clearInterval(timerInterval);
+
+  $("timerStart").textContent="Resume";
+
+  return;
+ }
+
+ timerRunning=true;
+
+ $("timerStart").textContent="Pause";
+
+ timerInterval=setInterval(async()=>{
+
+  if(timerSeconds<=0){
+   clearInterval(timerInterval);
+
+   timerRunning=false;
+
+   data.focusMinutes+=25;
+
+   await saveAll();
+
+   renderDashboard();
+
+   toast("Focus session completed.");
+
+   setTimer(25);
+
+   return;
+  }
+
+  timerSeconds--;
+
+  updateTimer();
+
  },1000);
 }
 
 function resetTimer(){
- clearInterval(timer.interval);timer.running=false;
- timer.seconds=modeSeconds[timer.mode]||1500;
- updateTimerUI();
+ setTimer(25);
 }
 
-document.getElementById("dashPlay").onclick=startTimer;
-document.getElementById("focusPlay").onclick=startTimer;
-document.getElementById("dashReset").onclick=resetTimer;
-document.getElementById("focusReset").onclick=resetTimer;
-document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{
- if(b.dataset.mode==="custom"){
-  const mins=Number(prompt("Enter focus minutes","25"));
-  if(mins>0){timer.mode="focus";timer.seconds=Math.floor(mins*60);timer.running=false;clearInterval(timer.interval);updateTimerUI();}
- }else setTimerMode(b.dataset.mode);
-});
+function editProfile(){
+ const p=data.profile;
 
-function renderFocusTasks(){
- const tasks=state.tasks.filter(t=>!t.completed&&t.date<=todayKey()).slice(0,8);
- document.getElementById("focusTaskList").innerHTML=tasks.length?tasks.map(t=>`
- <div class="taskItem ${state.selectedFocusTask===t.id?"priorityHigh":""}">
-  <div class="taskMain"><div class="taskTitle">${escapeHTML(t.title)}</div>
-  <div class="taskMeta"><span class="badge">${t.subject}</span></div></div>
-  <button class="softBtn" onclick="selectFocusTask('${t.id}')">${state.selectedFocusTask===t.id?"Selected":"Select"}</button>
- </div>`).join(""):`<div class="empty"><strong>No available tasks</strong>Add a task first.</div>`;
+ $("profileName").value=p.name||"";
+ $("profileClass").value=p.className||"";
+ $("profileBoard").value=p.board||"";
+ $("profileRegion").value=p.region||"";
+ $("profileGoal").value=p.goal||"";
+
+ $("profileModal").classList.add("show");
 }
 
-window.selectFocusTask=async id=>{
- state.selectedFocusTask=id;
- await save();updateTimerUI();renderFocusTasks();
- showToast("Focus task selected");
-};
+async function saveProfile(){
+ data.profile={
+  ...data.profile,
+  name:$("profileName").value.trim(),
+  className:$("profileClass").value.trim(),
+  board:$("profileBoard").value.trim(),
+  region:$("profileRegion").value.trim(),
+  goal:$("profileGoal").value.trim(),
+  onboarded:true
+ };
 
-/* EXAMS */
-document.getElementById("addExamBtn").onclick=()=>document.getElementById("examModal").classList.add("show");
-document.getElementById("saveExamBtn").onclick=async()=>{
- const name=document.getElementById("examNameInput").value.trim();
- const date=document.getElementById("examDateInput").value;
- if(!name||!date)return showToast("Enter exam name and date");
- state.exams.push({id:uid(),name,date,subject:document.getElementById("examSubjectInput").value.trim()});
- document.getElementById("examNameInput").value="";
- document.getElementById("examDateInput").value="";
- document.getElementById("examSubjectInput").value="";
- document.getElementById("examModal").classList.remove("show");
- await save();showToast("Exam added");
-};
+ await saveAll();
 
-function renderExams(){
- const el=document.getElementById("examGrid");
- if(!state.exams.length){el.innerHTML=`<div class="empty"><strong>No exams added</strong>Add your exam dates to track preparation.</div>`;return}
- el.innerHTML=state.exams.sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{
-  const diff=Math.ceil((new Date(e.date+"T00:00:00")-new Date())/86400000);
-  return `<div class="examCard">
-   <div class="examTop"><div><div class="examName">${escapeHTML(e.name)}</div><small>${escapeHTML(e.subject||"Exam")} · ${e.date}</small></div><button class="softBtn" onclick="deleteExam('${e.id}')">×</button></div>
-   <div class="countdown">${diff<0?"Completed":diff===0?"Today":diff+" days"}</div>
-   <small>${diff<0?"Exam date has passed":diff===0?"Good luck for your exam":"until the exam"}</small>
-   <div class="miniProgress examProgress"><i style="width:${Math.max(5,Math.min(100,100-diff))}%"></i></div>
-  </div>`;
- }).join("");
-}
-window.deleteExam=async id=>{
- state.exams=state.exams.filter(e=>e.id!==id);await save();showToast("Exam removed");
-};
+ closeModal("profileModal");
 
-/* LIVE TRACKING */
-function renderLiveTimeline(){
- const hours=[];
- for(let h=6;h<=22;h+=2)hours.push(h);
- const active=state.tasks.filter(t=>t.date===todayKey()&&!t.completed&&t.start).sort((a,b)=>a.start.localeCompare(b.start));
- document.getElementById("liveTimeline").innerHTML=hours.map(h=>{
-  const hourTasks=active.filter(t=>Number(t.start.split(":")[0])>=h&&Number(t.start.split(":")[0])<h+2);
-  return `<div class="timeRow"><div class="timeLabel">${String(h).padStart(2,"0")}:00</div>
-  ${hourTasks.map(t=>`<div class="taskBar" style="border-color:${subjectColors[t.subject]||'#7567ff'}">${escapeHTML(t.title)}<small>${t.subject} · ${t.start}${t.end?" – "+t.end:""}</small></div>`).join("")}
-  </div>`;
- }).join("")||`<div class="empty">No scheduled tasks today.</div>`;
+ renderAll();
 
- const now=new Date();
- const activeTask=active.find(t=>t.start&&t.end&&now>=new Date(`${t.date}T${t.start}`)&&now<=new Date(`${t.date}T${t.end}`));
- document.getElementById("liveStatus").textContent=activeTask?`Now: ${activeTask.title}`:"No active task";
+ toast("Profile saved.");
 }
 
-/* STREAK */
-function updateStreak(){
- const today=todayKey();
- const s=state.streak||{lastDate:"",count:0};
- if(s.lastDate===today)return;
- const yesterday=dateKey(Date.now()-86400000);
- if(s.lastDate===yesterday)s.count=(s.count||0)+1;
- else s.count=1;
- s.lastDate=today;
- state.streak=s;
+function renderProfile(){
+ const p=data.profile;
+ const name=p.name||"Student";
+
+ $("avatar").textContent=name.slice(0,2).toUpperCase();
+
+ const fields=[
+  ["Name",name],
+  ["Class",p.className||"Not set"],
+  ["Board",p.board||"Not set"],
+  ["Region",p.region||"Not set"],
+  ["Main Goal",p.goal||"Not set"],
+  ["Storage","Local + IndexedDB"]
+ ];
+
+ $("profileInfo").innerHTML=fields.map(([a,b])=>`
+ <div class="info">
+  <small>${esc(a)}</small>
+  <b>${esc(b)}</b>
+ </div>
+ `).join("");
 }
 
-/* ANALYTICS */
-function dayFocus(key){
- return state.focusLogs.filter(l=>l.date===key).reduce((sum,l)=>sum+(Number(l.minutes)||0),0);
+function updateStorageInfo(){
+ $("storageInfo").textContent=
+ `LocalStorage active · IndexedDB mirror ${
+  db?"connected":"fallback mode"
+ } · ${data.tasks.length} tasks · ${data.exams.length} exams`;
 }
 
-function renderAnalytics(){
- const chart=document.getElementById("weeklyChart");
- const days=[];
- for(let i=6;i>=0;i--){
-  const d=new Date();d.setDate(d.getDate()-i);
-  days.push({label:d.toLocaleDateString("en",{weekday:"short"}),minutes:dayFocus(dateKey(d))});
- }
- const max=Math.max(25,...days.map(x=>x.minutes));
- chart.innerHTML=days.map(x=>`<div class="barWrap"><div class="bar" style="height:${Math.max(4,x.minutes/max*100)}%" title="${x.minutes} minutes"></div><span>${x.label}</span></div>`).join("");
- const total=state.tasks.length;
- const done=state.tasks.filter(t=>t.completed).length;
- const overdue=state.tasks.filter(isOverdue).length;
- const score=total?Math.round(Math.max(0,(done/total*100)-(overdue/Math.max(total,1)*15))):0;
- document.getElementById("analyticsScore").textContent=score+"%";
- document.getElementById("analyticsDone").textContent=done;
- document.getElementById("analyticsPending").textContent=total-done;
- document.getElementById("analyticsOverdue").textContent=overdue;
-
- const list=document.getElementById("distractionList");
- list.innerHTML=state.distractions.length?state.distractions.slice(-10).reverse().map(d=>`<div class="subjectRow"><span class="dot" style="background:var(--red)"></span><b>${escapeHTML(d.reason)}</b><span>${d.minutes} min</span></div>`).join(""):`<div class="empty" style="padding:20px">No distractions logged yet.</div>`;
-}
-
-document.getElementById("addDistraction").onclick=async()=>{
- const reason=prompt("What distracted you?");
- if(!reason)return;
- const minutes=Number(prompt("How many minutes?","5"))||0;
- state.distractions.push({id:uid(),reason,minutes,date:todayKey(),time:Date.now()});
- await save();showToast("Distraction logged");
-};
-
-/* DASHBOARD */
-function renderDashboard(){
- const todayTasks=state.tasks.filter(t=>t.date===todayKey());
- const done=todayTasks.filter(t=>t.completed).length;
- const total=todayTasks.length;
- const progress=total?Math.round(done/total*100):0;
- const focus=dayFocus(todayKey());
- const allDone=state.tasks.filter(t=>t.completed).length;
- const overdue=state.tasks.filter(isOverdue).length;
- const score=state.tasks.length?Math.round(Math.max(0,(allDone/state.tasks.length*100)-(overdue/state.tasks.length*15))):0;
-
- document.getElementById("todayFocus").textContent=focus>=60?`${Math.floor(focus/60)}h ${focus%60}m`:`${focus}m`;
- document.getElementById("completedStat").textContent=`${done}/${total}`;
- document.getElementById("streakStat").textContent=state.streak?.count||0;
- document.getElementById("scoreStat").textContent=score+"%";
- document.getElementById("progressText").textContent=progress+"%";
- document.getElementById("ringText").textContent=progress+"%";
- document.getElementById("mainProgress").style.width=progress+"%";
- document.getElementById("progressRing").style.background=`conic-gradient(var(--accent) ${progress*3.6}deg,var(--panel3) 0deg)`;
- document.getElementById("streakBig").textContent=state.streak?.count||0;
- document.getElementById("streakProgress").style.width=Math.min(100,(state.streak?.count||0)/30*100)+"%";
-
- const c=state.streak?.count||0;
- document.getElementById("levelText").textContent=c>=30?"Grand Master":c>=14?"Focused Learner":c>=7?"Consistent":c>=3?"Getting Started":"Beginner";
-
- const subjects={};
- state.tasks.filter(t=>t.date===todayKey()).forEach(t=>subjects[t.subject]=(subjects[t.subject]||0)+1);
- document.getElementById("subjectSummary").innerHTML=Object.keys(subjects).length?Object.entries(subjects).slice(0,5).map(([s,n])=>`
- <div class="subjectRow"><span class="dot" style="background:${subjectColors[s]||'#7567ff'}"></span><b>${escapeHTML(s)}</b><span>${n} task${n>1?"s":""}</span></div>`).join(""):`<div class="empty" style="padding:20px">No tasks today.</div>`;
-
- renderLiveTimeline();
-}
-
-/* BACKUP */
-document.getElementById("exportBackup").onclick=()=>{
- const backup={
-  app:"Study Planner",
-  version:1,
+function backup(){
+ const payload={
+  app:"StudyFlow",
+  version:20,
   exportedAt:new Date().toISOString(),
-  data:state
+  data:normalize(data)
  };
- const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
+
+ const blob=new Blob(
+  [JSON.stringify(payload,null,2)],
+  {type:"application/json"}
+ );
+
  const url=URL.createObjectURL(blob);
+
  const a=document.createElement("a");
- a.href=url;a.download=`study-planner-backup-${todayKey()}.json`;
- document.body.appendChild(a);a.click();a.remove();
- URL.revokeObjectURL(url);
- showToast("Backup exported");
-};
 
-document.getElementById("restoreBtn").onclick=()=>document.getElementById("restoreInput").click();
-document.getElementById("restoreInput").onchange=e=>{
- const file=e.target.files[0];
+ a.href=url;
+ a.download=`studyflow-backup-${today()}.json`;
+
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+ toast("Backup exported successfully.");
+}
+
+async function restore(e){
+ const file=e.target.files?.[0];
+
  if(!file)return;
- const reader=new FileReader();
- reader.onload=async()=>{
-  try{
-   const parsed=JSON.parse(reader.result);
-   const restored=parsed.data||parsed;
-   if(!restored||typeof restored!=="object")throw new Error();
-   state={
-    ...state,
-    ...restored,
-    profile:{...state.profile,...(restored.profile||{})},
-    settings:{...state.settings,...(restored.settings||{})},
-    streak:{...state.streak,...(restored.streak||{})}
-   };
-   state.tasks=Array.isArray(restored.tasks)?restored.tasks:[];
-   state.exams=Array.isArray(restored.exams)?restored.exams:[];
-   state.focusLogs=Array.isArray(restored.focusLogs)?restored.focusLogs:[];
-   state.distractions=Array.isArray(restored.distractions)?restored.distractions:[];
-   await save();
-   applyTheme();
-   showToast("Backup restored successfully");
-  }catch(err){
-   showToast("Invalid backup file");
-  }
-  e.target.value="";
- };
- reader.readAsText(file);
-};
 
-document.getElementById("clearData").onclick=async()=>{
- if(!confirm("This will delete all tasks, profile and planner data. Continue?"))return;
- state={
-  profile:{name:"",className:"",region:"",goal:"",goalDate:""},
-  tasks:[],exams:[],focusLogs:[],distractions:[],
-  settings:{theme:"dark"},streak:{lastDate:"",count:0},selectedFocusTask:null
- };
  try{
-  if(db){
-   const tx=db.transaction(STORE,"readwrite");
-   tx.objectStore(STORE).clear();
+  const text=await file.text();
+
+  const parsed=JSON.parse(text);
+
+  const incoming=
+   parsed.data||
+   parsed.state||
+   parsed;
+
+  if(!incoming||typeof incoming!=="object"){
+   throw new Error("Invalid backup");
   }
-  localStorage.removeItem(STORAGE_KEY);
+
+  data=normalize(incoming);
+
+  await saveAll();
+
+  applyTheme();
+  renderAll();
+
+  toast("Backup restored successfully.");
+
+ }catch(err){
+
+  console.error(err);
+
+  toast("Invalid StudyFlow backup file.");
+
+ }finally{
+
+  e.target.value="";
+ }
+}
+
+async function resetAll(){
+ if(!confirm("This will erase all planner data from this browser. Continue?")){
+  return;
+ }
+
+ data=clone(DEFAULT);
+
+ try{
+  localStorage.removeItem(KEY);
  }catch(e){}
- await save();applyTheme();showToast("All planner data cleared");
-};
 
-/* STORAGE STATUS */
-function updateStorageStatus(){
- const mode=db?"IndexedDB + LocalStorage backup":"LocalStorage fallback";
- document.getElementById("storageStatus").textContent=`Storage status: ${mode}. Your data is automatically saved after every change.`;
-}
+ await saveAll();
 
-/* GLOBAL RENDER */
-function renderAll(){
- applyTheme();
- renderProfile();
- renderTasks();
- renderCalendar();
- renderFocusTasks();
- renderExams();
- renderAnalytics();
- renderDashboard();
- updateStorageStatus();
-}
-
-/* CLOCK / DATE */
-function updateHeader(){
- const now=new Date();
- document.getElementById("todayText").textContent=now.toLocaleDateString("en-US",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-}
-setInterval(()=>{updateHeader();renderLiveTimeline()},60000);
-
-/* MODAL OUTSIDE CLICK */
-document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{
- if(e.target===m){m.classList.remove("show");editingTaskId=null}
-}));
-
-/* START */
-(async function(){
- updateHeader();
- await initStorage();
  applyTheme();
  renderAll();
- updateTimerUI();
- setTimeout(()=>document.getElementById("intro").classList.add("hide"),1100);
+
+ toast("Planner reset.");
+}
+
+function closeModal(id){
+ $(id).classList.remove("show");
+}
+
+document.querySelectorAll(".modal").forEach(m=>{
+ m.addEventListener("click",e=>{
+  if(e.target===m){
+   m.classList.remove("show");
+  }
+ });
+});
+
+function renderAll(){
+ fillSubjectSelects();
+ renderDashboard();
+ renderTasks();
+ renderCalendar();
+ renderSubjects();
+ renderExams();
+ renderRevision();
+ renderGoals();
+ renderLive();
+ renderProfile();
+ updateStorageInfo();
+}
+
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape"){
+  document.querySelectorAll(".modal.show").forEach(x=>
+   x.classList.remove("show")
+  );
+ }
+
+ if(
+  e.key.toLowerCase()==="n"&&
+  !["INPUT","TEXTAREA","SELECT"].includes(e.target.tagName)
+ ){
+  e.preventDefault();
+  openTask();
+ }
+});
+
+window.addEventListener("beforeunload",()=>{
+ try{
+  localStorage.setItem(KEY,JSON.stringify(data));
+ }catch(e){}
+
+ idbSave();
+});
+
+(async function boot(){
+
+ await initDB();
+
+ await loadAll();
+
+ if(data.focusDate!==today()){
+  data.focusDate=today();
+  data.focusMinutes=0;
+
+  await saveAll();
+ }
+
+ applyTheme();
+
+ renderAll();
+
+ updateClock();
+
+ updateTimer();
+
+ setInterval(updateClock,1000);
+
+ setInterval(()=>{
+  renderDashboard();
+  renderTasks();
+  renderCalendar();
+ },30000);
+
+ setTimeout(()=>{
+  $("intro").classList.add("hide");
+ },850);
+
+ setTimeout(()=>{
+  $("intro").remove();
+ },1600);
+
+ if(!data.profile.onboarded){
+  setTimeout(editProfile,1700);
+ }
+
 })();
 </script>
 
