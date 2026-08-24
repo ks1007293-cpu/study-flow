@@ -3,1540 +3,687 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="StudyFlow - Smart student planner with tasks, colorful calendar, exams, revision, goals, focus timer and backup.">
-<meta name="robots" content="index,follow">
-<meta name="theme-color" content="#7657ff">
-
-<title>StudyFlow | Smart Study Planner</title>
-
+<title>StudyFlow Pro | MSL Edition</title>
 <style>
 :root{
- --bg:#090d16;
- --bg2:#0f1523;
- --panel:#141c2e;
- --panel2:#1a243a;
- --panel3:#23304d;
- --line:#273552;
- --text:#f7f9fd;
- --muted:#8e9cb5;
- --purple:#7c5cff;
- --purple-glow:rgba(124,92,255,0.35);
- --blue:#38b6ff;
- --green:#10b981;
- --red:#f43f5e;
- --yellow:#fbbf24;
- --orange:#f97316;
- --radius:18px;
- --shadow:0 18px 45px rgba(0,0,0,.35);
+ --bg:#090d16; --bg2:#0f1523; --panel:#141c2e; --panel2:#1a243a; --panel3:#23304d;
+ --line:#273552; --text:#f7f9fd; --muted:#8e9cb5; --purple:#7c5cff;
+ --purple-glow:rgba(124,92,255,0.35); --blue:#38b6ff; --green:#10b981;
+ --red:#f43f5e; --yellow:#fbbf24; --radius:18px; --shadow:0 18px 45px rgba(0,0,0,.35);
 }
 
 body.light{
- --bg:#f4f7fc;
- --bg2:#e9eef7;
- --panel:#ffffff;
- --panel2:#f8fafd;
- --panel3:#edf2f9;
- --line:#d8e2ef;
- --text:#0f172a;
- --muted:#64748b;
- --purple-glow:rgba(124,92,255,0.18);
+ --bg:#f4f7fc; --bg2:#e9eef7; --panel:#ffffff; --panel2:#f8fafd; --panel3:#edf2f9;
+ --line:#d8e2ef; --text:#0f172a; --muted:#64748b; --purple-glow:rgba(124,92,255,0.18);
  --shadow:0 12px 35px rgba(15,23,42,.06);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 body{
- min-height:100vh;
- font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
- background:
-  radial-gradient(circle at top left,rgba(124,92,255,.12),transparent 28%),
-  radial-gradient(circle at bottom right,rgba(56,182,255,.08),transparent 32%),
-  var(--bg);
- color:var(--text);
- line-height:1.5;
+ font-family:Inter,system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.5;
+ background-image: radial-gradient(circle at 15% 15%, rgba(124,92,255,0.08), transparent 25%),
+                   radial-gradient(circle at 85% 85%, rgba(56,182,255,0.08), transparent 25%);
+ overflow-x:hidden;
 }
 
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:none;outline:none}
+button,input,select,textarea{font:inherit; background:none; border:none; outline:none; color:inherit}
+button{cursor:pointer}
 .hidden{display:none!important}
 .muted{color:var(--muted)}
 
-/* INTRO */
-#intro{
- position:fixed;
- inset:0;
- z-index:9999;
- display:grid;
- place-items:center;
- background:radial-gradient(circle at center,rgba(124,92,255,.25),transparent 40%),var(--bg);
- transition:.6s cubic-bezier(0.4,0,0.2,1);
+/* EPIC ONBOARDING SPLASH */
+#splash{
+ position:fixed; inset:0; z-index:99999; background:var(--bg2);
+ display:flex; flex-direction:column; align-items:center; justify-content:center;
+ transition: opacity 0.6s ease, transform 0.6s ease;
 }
-#intro.hide{opacity:0;pointer-events:none;transform:scale(1.04)}
-.introbox{text-align:center}
-.intro-logo{
- width:88px;
- height:88px;
- margin:auto;
- border-radius:26px;
- display:grid;
- place-items:center;
- font-size:32px;
- font-weight:900;
- background:linear-gradient(135deg,var(--purple),var(--blue));
- box-shadow:0 20px 50px var(--purple-glow);
- color:#fff;
+#splash.hide{opacity:0; transform:scale(1.05); pointer-events:none}
+.splash-card{
+ background:var(--panel); border:1px solid var(--line); border-radius:24px;
+ padding:40px; max-width:500px; width:90%; text-align:center; box-shadow:var(--shadow);
+ animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-.introbox h1{margin:18px 0 6px;font-size:36px;letter-spacing:-1px}
-.introbox p{color:var(--muted);font-size:15px}
+.splash-logo{
+ width:80px; height:80px; border-radius:20px; margin:0 auto 20px;
+ background:linear-gradient(135deg, var(--purple), var(--blue));
+ display:grid; place-items:center; font-size:32px; font-weight:900; color:#fff;
+ box-shadow:0 0 30px var(--purple-glow);
+}
+.splash-card h1{font-size:32px; margin-bottom:10px; letter-spacing:-1px}
+.splash-card p{color:var(--muted); font-size:15px; margin-bottom:25px}
+.feature-list{text-align:left; margin-bottom:30px; list-style:none; padding:0}
+.feature-list li{
+ background:var(--panel2); margin-bottom:10px; padding:12px 16px; border-radius:12px;
+ font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px; border:1px solid var(--line);
+}
+@keyframes slideUp{ from{opacity:0; transform:translateY(30px)} to{opacity:1; transform:translateY(0)} }
 
-.app{
- display:grid;
- grid-template-columns:260px minmax(0,1fr);
- min-height:100vh;
-}
+/* APP LAYOUT */
+.app{display:grid; grid-template-columns:260px minmax(0,1fr); min-height:100vh}
 
 /* SIDEBAR */
 .sidebar{
- position:sticky;
- top:0;
- height:100vh;
- overflow-y:auto;
- padding:20px 14px;
- background:rgba(15,21,35,.85);
- border-right:1px solid var(--line);
- backdrop-filter:blur(20px);
- z-index:200;
+ position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px;
+ background:rgba(15,21,35,.85); border-right:1px solid var(--line); backdrop-filter:blur(20px); z-index:200;
 }
 body.light .sidebar{background:rgba(255,255,255,.9)}
+.brand{display:flex; align-items:center; gap:12px; padding:4px 8px 24px}
+.brand-icon{width:42px; height:42px; border-radius:12px; display:grid; place-items:center; font-weight:900; background:linear-gradient(135deg,var(--purple),var(--blue)); color:#fff; font-size:18px}
+.nav-title{margin:20px 10px 8px; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase}
+.nav{width:100%; border-radius:12px; padding:11px 13px; margin:2px 0; text-align:left; font-weight:600; font-size:14px; display:flex; align-items:center; gap:10px; transition:.2s ease; color:var(--muted)}
+.nav:hover{background:var(--panel2); color:var(--text)}
+.nav.active{color:#fff; background:linear-gradient(135deg,var(--purple),#5e3cf7); box-shadow:0 8px 20px var(--purple-glow)}
 
-.brand{
- display:flex;
- align-items:center;
- gap:12px;
- padding:4px 8px 24px;
-}
-.brand-icon{
- width:42px;
- height:42px;
- border-radius:12px;
- display:grid;
- place-items:center;
- font-weight:900;
- background:linear-gradient(135deg,var(--purple),var(--blue));
- box-shadow:0 8px 24px var(--purple-glow);
- color:#fff;
- font-size:18px;
-}
-.brand strong{display:block;font-size:17px;letter-spacing:-.4px}
-.brand span{display:block;font-size:11px;color:var(--muted)}
-
-.nav-title{
- margin:20px 10px 8px;
- color:var(--muted);
- font-size:11px;
- font-weight:800;
- letter-spacing:1px;
- text-transform:uppercase;
-}
-
-.nav{
- width:100%;
- background:transparent;
- color:var(--muted);
- border-radius:12px;
- padding:11px 13px;
- margin:2px 0;
- text-align:left;
- font-weight:600;
- font-size:14px;
- display:flex;
- align-items:center;
- gap:10px;
- transition:.2s ease;
-}
-.nav:hover{
- background:var(--panel2);
- color:var(--text);
-}
-.nav.active{
- color:#fff;
- background:linear-gradient(135deg,var(--purple),#5e3cf7);
- box-shadow:0 8px 20px var(--purple-glow);
-}
-
-.storage-pill{
- margin:24px 6px 6px;
- padding:12px;
- background:var(--panel2);
- border:1px solid var(--line);
- border-radius:14px;
- font-size:12px;
-}
-.dotlive{
- color:var(--green);
- font-weight:700;
- display:flex;
- align-items:center;
- gap:6px;
- margin-bottom:2px;
-}
-.dotlive::before{
- content:'';
- width:7px;
- height:7px;
- border-radius:50%;
- background:var(--green);
- box-shadow:0 0 8px var(--green);
-}
-
-/* MAIN CONTENT */
-.main{min-width:0;width:100%}
-
+/* MAIN CONTENT & TOPBAR */
+.main{width:100%}
 .topbar{
- position:sticky;
- top:0;
- z-index:100;
- height:72px;
- padding:0 clamp(20px,3vw,40px);
- display:flex;
- align-items:center;
- justify-content:space-between;
- border-bottom:1px solid var(--line);
- background:rgba(9,13,22,.8);
- backdrop-filter:blur(20px);
+ position:sticky; top:0; z-index:100; height:72px; padding:0 clamp(20px,3vw,40px);
+ display:flex; align-items:center; justify-content:space-between;
+ border-bottom:1px solid var(--line); background:rgba(9,13,22,.8); backdrop-filter:blur(20px);
 }
 body.light .topbar{background:rgba(244,247,252,.85)}
+.content{max-width:1400px; margin:auto; padding:clamp(20px,3vw,36px)}
+.page{display:none} .page.active{display:block; animation:fadeIn .25s ease-out}
+@keyframes fadeIn{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} }
 
-.topdate small{display:block;color:var(--muted);font-size:11px;font-weight:600}
-.topdate b{font-size:16px}
-.top-actions{display:flex;align-items:center;gap:12px}
-
-.clock{
- padding:8px 14px;
- border-radius:10px;
- background:var(--panel2);
- border:1px solid var(--line);
- font-weight:700;
- font-size:13px;
- letter-spacing:.5px;
-}
-
-.content{
- width:100%;
- max-width:1400px;
- margin:auto;
- padding:clamp(20px,3vw,36px);
-}
-
-.page{display:none}
-.page.active{display:block;animation:fadeIn .25s ease-out}
-
-@keyframes fadeIn{
- from{opacity:0;transform:translateY(6px)}
- to{opacity:1;transform:none}
-}
-
-.hero-row,.between,.calendar-head,.head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:15px;
-}
-.eyebrow{color:var(--purple);font-size:11px;letter-spacing:1px;font-weight:800}
-h1{font-size:clamp(24px,2.5vw,34px);font-weight:800;letter-spacing:-.8px}
-h2{font-size:18px;font-weight:700;letter-spacing:-.4px}
-
-.btn{
- border:1px solid var(--line);
- background:var(--panel2);
- color:var(--text);
- padding:9px 16px;
- border-radius:11px;
- font-weight:600;
- font-size:13px;
- transition:.2s ease;
- display:inline-flex;
- align-items:center;
- gap:6px;
-}
-.btn:hover{border-color:var(--purple);transform:translateY(-1px)}
-.btn.primary{
- border:none;
- color:#fff;
- background:linear-gradient(135deg,var(--purple),#5b36ff);
- box-shadow:0 6px 18px var(--purple-glow);
-}
+/* TYPOGRAPHY & BUTTONS */
+.eyebrow{color:var(--purple); font-size:11px; letter-spacing:1px; font-weight:800; text-transform:uppercase}
+h1{font-size:clamp(24px,2.5vw,34px); font-weight:800; letter-spacing:-.8px; margin-bottom:5px}
+h2{font-size:18px; font-weight:700}
+.hero-row, .head{display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:20px}
+.btn{border:1px solid var(--line); background:var(--panel2); padding:9px 16px; border-radius:11px; font-weight:600; font-size:13px; transition:.2s ease; display:inline-flex; align-items:center; justify-content:center}
+.btn:hover{border-color:var(--purple); transform:translateY(-1px)}
+.btn.primary{border:none; color:#fff; background:linear-gradient(135deg,var(--purple),#5b36ff); box-shadow:0 6px 18px var(--purple-glow)}
 .btn.primary:hover{opacity:.95}
-.btn.red{
- border-color:rgba(244,63,94,.3);
- color:var(--red);
- background:rgba(244,63,94,.08);
-}
-.btn.red:hover{background:var(--red);color:#fff}
-.iconbtn{
- width:38px;
- height:38px;
- padding:0;
- display:grid;
- place-items:center;
- border-radius:10px;
- font-size:18px;
-}
-.mobile-menu{display:none}
-
-.card{
- background:var(--panel);
- border:1px solid var(--line);
- border-radius:var(--radius);
- padding:20px;
- box-shadow:var(--shadow);
+.iconbtn{width:40px; height:40px; padding:0; border-radius:12px; font-size:18px; position:relative}
+.badge{
+ position:absolute; top:-2px; right:-2px; background:var(--red); color:#fff; font-size:10px;
+ font-weight:bold; width:18px; height:18px; border-radius:50%; display:grid; place-items:center; border:2px solid var(--panel);
 }
 
-.stats{
- display:grid;
- grid-template-columns:repeat(4,minmax(0,1fr));
- gap:14px;
- margin:20px 0;
-}
-.stat{
- min-height:120px;
- display:flex;
- flex-direction:column;
- justify-content:space-between;
-}
-.stat small{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.5px}
-.stat-number{font-size:32px;font-weight:800;letter-spacing:-1px}
-.stat-line{
- height:5px;
- background:var(--panel3);
- border-radius:99px;
- overflow:hidden;
-}
-.stat-line i{
- display:block;
- height:100%;
- border-radius:99px;
- background:linear-gradient(90deg,var(--purple),var(--blue));
-}
+/* CARDS & DASHBOARD */
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
+.msl-dashboard{display:grid; grid-template-columns:auto minmax(0,1fr); gap:30px; align-items:center; margin-bottom:20px}
+.progress-ring-container{position:relative; width:160px; height:160px; display:grid; place-items:center}
+.progress-ring{width:100%; height:100%; border-radius:50%; background:conic-gradient(var(--purple) 0%, var(--panel2) 0%); transition: background 0.5s ease; display:grid; place-items:center; box-shadow:0 0 30px var(--purple-glow)}
+.progress-inner{width:130px; height:130px; background:var(--panel); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:2}
+.progress-inner h2{font-size:32px; margin:0; letter-spacing:-1px}
+.progress-inner span{font-size:11px; color:var(--muted); font-weight:700}
+.stats-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:15px; width:100%}
+.stat-box{background:var(--panel2); padding:16px; border-radius:14px; border:1px solid var(--line)}
+.stat-box small{font-size:11px; color:var(--muted); font-weight:800; letter-spacing:0.5px}
+.stat-box div{font-size:28px; font-weight:800; margin-top:5px; color:var(--text)}
+.grid-layout{display:grid; grid-template-columns:1fr 1fr; gap:20px}
 
-.grid2{
- display:grid;
- grid-template-columns:minmax(0,1.5fr) minmax(300px,.9fr);
- gap:16px;
-}
-
-/* TASKS */
-.toolbar{
- display:flex;
- gap:10px;
- flex-wrap:wrap;
- margin:18px 0;
-}
-.search{flex:1;min-width:200px}
-.input,select,textarea{
- width:100%;
- border:1px solid var(--line);
- outline:none;
- color:var(--text);
- background:var(--panel2);
- border-radius:11px;
- padding:10px 14px;
- font-size:13px;
- transition:.2s;
-}
-textarea{min-height:90px;resize:vertical}
-.input:focus,select:focus,textarea:focus{
- border-color:var(--purple);
- box-shadow:0 0 0 3px var(--purple-glow);
-}
-
-.task-list,.list{display:grid;gap:9px}
-.task{
- display:grid;
- grid-template-columns:auto minmax(0,1fr) auto;
- align-items:center;
- gap:14px;
- padding:14px 16px;
- background:var(--panel2);
- border:1px solid var(--line);
- border-radius:14px;
- transition:.2s ease;
-}
-.task:hover{border-color:var(--purple);transform:translateY(-1px)}
-.check{width:18px;height:18px;accent-color:var(--purple);cursor:pointer}
-.task.done{opacity:.55}
+/* TASKS, LISTS & NOTICES */
+.task-list{display:grid; gap:10px}
+.task{display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:14px; padding:14px 16px; background:var(--panel2); border:1px solid var(--line); border-radius:14px; transition:.2s ease}
+.task:hover{border-color:var(--purple)}
+.check{width:20px; height:20px; accent-color:var(--purple); cursor:pointer}
+.task.done{opacity:.5}
 .task.done .task-title{text-decoration:line-through}
-.task-title{font-weight:600;font-size:14px}
-.task-meta{
- color:var(--muted);
- font-size:11px;
- margin-top:4px;
- display:flex;
- gap:6px;
- flex-wrap:wrap;
- align-items:center;
-}
-.pill{
- display:inline-flex;
- align-items:center;
- gap:5px;
- padding:3px 8px;
- border-radius:99px;
- background:var(--panel3);
- font-size:11px;
- font-weight:600;
-}
-.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.task-title{font-weight:700; font-size:15px}
+.task-meta{display:flex; gap:8px; margin-top:6px; font-size:11px; color:var(--muted); flex-wrap:wrap; align-items:center}
+.pill{background:var(--panel3); padding:4px 8px; border-radius:6px; font-weight:700; display:inline-flex; align-items:center; gap:5px}
+.notice-card{background:var(--panel2); border-left:4px solid var(--yellow); padding:15px; border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between}
 
-.task-actions{display:flex;gap:6px}
-.small-btn{
- border:1px solid var(--line);
- background:var(--panel3);
- color:var(--text);
- padding:6px 10px;
- font-size:11px;
- font-weight:600;
- border-radius:8px;
- transition:.2s;
-}
-.small-btn:hover{border-color:var(--purple)}
+/* MSL ENHANCED CALENDAR */
+.cal-wrapper { width: 100%; overflow-x: auto; }
+.cal-grid { min-width: 800px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.cal-header { background: var(--panel2); padding: 12px; text-align: center; font-weight: 800; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.cal-day { background: var(--panel); min-height: 150px; padding: 8px; display: flex; flex-direction: column; gap: 6px; transition: 0.2s; }
+.cal-day:hover { background: var(--panel2); }
+.cal-day.muted-day { opacity: 0.4; background: var(--bg2); }
+.cal-day.today { box-shadow: inset 0 0 0 2px var(--purple); background: rgba(124,92,255,0.05); }
+.cal-date { font-weight: 800; font-size: 14px; margin-bottom: 6px; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; }
+.cal-day.today .cal-date { background: var(--purple); color: #fff; }
+.cal-event { font-size: 11px; padding: 6px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display:flex; align-items:center; gap:5px; }
+.cal-event.task { background: rgba(124, 92, 255, 0.15); color: #b39aff; border-left: 3px solid var(--purple); }
+.cal-event.exam { background: rgba(244, 63, 94, 0.15); color: #ff8b9f; border-left: 3px solid var(--red); }
+.cal-event.class { background: rgba(56, 182, 255, 0.15); color: #8bd2ff; border-left: 3px solid var(--blue); }
 
-/* CALENDAR */
-.calendar-wrap{width:100%;overflow-x:auto}
-.calendar{
- min-width:850px;
- display:grid;
- grid-template-columns:repeat(7,minmax(110px,1fr));
- border:1px solid var(--line);
- border-radius:14px;
- overflow:hidden;
- background:var(--line);
- gap:1px;
-}
-.weekday{
- background:var(--panel);
- color:var(--muted);
- padding:10px;
- text-align:center;
- font-size:11px;
- font-weight:700;
-}
-.day{min-height:130px;background:var(--panel);padding:8px}
-.day.muted-day{opacity:.4}
-.day.today{box-shadow:inset 0 0 0 2px var(--purple)}
-.day-number{
- width:26px;
- height:26px;
- border-radius:8px;
- display:grid;
- place-items:center;
- font-size:12px;
- font-weight:700;
- margin-bottom:5px;
-}
-.today .day-number{background:var(--purple);color:#fff}
-.event{
- padding:4px 6px;
- border-radius:6px;
- margin-top:4px;
- font-size:10px;
- font-weight:600;
- overflow:hidden;
- white-space:nowrap;
- text-overflow:ellipsis;
- color:#fff;
- cursor:pointer;
-}
-
-/* TIMELINE */
-.timeline{display:grid;gap:0}
-.timeline-item{
- display:grid;
- grid-template-columns:85px 16px minmax(0,1fr);
- gap:12px;
- padding:12px 0;
-}
-.timeline-time{color:var(--muted);font-size:12px;font-weight:700}
-.timeline-dot{
- width:11px;
- height:11px;
- border-radius:50%;
- margin-top:4px;
- background:var(--blue);
-}
-.timeline-card{border-bottom:1px solid var(--line);padding-bottom:12px}
-.live-now .timeline-dot{background:var(--green);box-shadow:0 0 0 4px rgba(16,185,129,.2)}
-.overdue .timeline-dot{background:var(--red);box-shadow:0 0 0 4px rgba(244,63,94,.2)}
-
-/* MODAL */
-.modal{
- position:fixed;
- inset:0;
- z-index:1000;
- display:none;
- place-items:center;
- padding:20px;
- background:rgba(0,0,0,.6);
- backdrop-filter:blur(8px);
-}
+/* FORMS & MODALS */
+.input, select, textarea{width:100%; border:1px solid var(--line); background:var(--panel2); border-radius:10px; padding:12px; font-size:14px; transition:.2s}
+.input:focus, select:focus{border-color:var(--purple); box-shadow:0 0 0 3px var(--purple-glow)}
+.modal{position:fixed; inset:0; z-index:1000; display:none; place-items:center; padding:20px; background:rgba(0,0,0,.7); backdrop-filter:blur(10px)}
 .modal.show{display:grid}
-.modalbox{
- width:min(600px,100%);
- max-height:90vh;
- overflow-y:auto;
- padding:24px;
- border-radius:20px;
- background:var(--panel);
- border:1px solid var(--line);
- box-shadow:var(--shadow);
-}
-.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.field.full{grid-column:1/-1}
-.field label{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.modalbox{width:min(500px,100%); background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow); animation:fadeIn 0.2s}
+.field{margin-bottom:15px}
+.field label{display:block; font-size:11px; font-weight:800; color:var(--muted); margin-bottom:6px}
 
-/* TOAST */
-.toast{
- position:fixed;
- right:20px;
- bottom:20px;
- z-index:2000;
- transform:translateY(150%);
- opacity:0;
- transition:.3s;
- background:var(--panel);
- border:1px solid var(--line);
- box-shadow:var(--shadow);
- border-radius:12px;
- padding:12px 18px;
- font-weight:600;
- font-size:13px;
-}
-.toast.show{transform:translateY(0);opacity:1}
+/* CONFETTI */
+.confetti{position:fixed; width:10px; height:10px; z-index:9999; animation:fall 2s linear forwards}
+@keyframes fall{ to{transform:translateY(100vh) rotate(720deg); opacity:0} }
 
 @media(max-width:850px){
  .app{display:block}
- .sidebar{
-  position:fixed;
-  left:-300px;
-  top:0;
-  width:260px;
-  transition:.3s;
- }
+ .sidebar{position:fixed; left:-300px; width:260px; transition:.3s}
  .sidebar.open{left:0}
- .mobile-menu{display:grid}
- .clock{display:none}
- .stats{grid-template-columns:repeat(2,1fr)}
- .grid2{grid-template-columns:1fr}
-}
-@media(max-width:550px){
- .stats{grid-template-columns:1fr}
- .form{grid-template-columns:1fr}
+ .grid-layout{grid-template-columns:1fr}
+ .msl-dashboard{grid-template-columns:1fr; justify-items:center; text-align:center}
 }
 </style>
 </head>
-
 <body>
 
-<div id="intro">
- <div class="introbox">
-  <div class="intro-logo">SF</div>
-  <h1>StudyFlow</h1>
-  <p>Smart Student Command Center</p>
+<!-- ONBOARDING SPLASH -->
+<div id="splash">
+ <div class="splash-card">
+  <div class="splash-logo">SF</div>
+  <h1>StudyFlow Pro</h1>
+  <p>Your Ultimate Academic Planner inspired by My Study Life.</p>
+  <ul class="feature-list">
+   <li>📅 <b>Smart Calendar:</b> View tasks, classes & exams together.</li>
+   <li>🔔 <b>Notifications:</b> Never miss a deadline with daily alerts.</li>
+   <li>📌 <b>Notice Board:</b> Pin important school/college announcements.</li>
+   <li>⏱️ <b>Focus Timer:</b> Built-in Pomodoro for deep work.</li>
+  </ul>
+  <button class="btn primary" style="width:100%; padding:14px; font-size:16px" onclick="enterApp()">Get Started Now</button>
  </div>
 </div>
 
 <div class="app">
-
-<aside class="sidebar" id="sidebar">
- <div class="brand">
-  <div class="brand-icon">SF</div>
-  <div>
-   <strong>StudyFlow</strong>
-   <span>Planner v2.0</span>
+ <!-- SIDEBAR -->
+ <aside class="sidebar" id="sidebar">
+  <div class="brand">
+   <div class="brand-icon">SF</div>
+   <div><strong>StudyFlow Pro</strong><span class="muted">MSL Edition</span></div>
   </div>
- </div>
+  <div class="nav-title">My Study Life</div>
+  <button class="nav active" data-page="dashboard">Dashboard</button>
+  <button class="nav" data-page="calendar">Calendar</button>
+  <button class="nav" data-page="tasks">Tasks & Homework</button>
+  <button class="nav" data-page="classes">Timetable / Classes</button>
+  <button class="nav" data-page="exams">Exams</button>
+  
+  <div class="nav-title">Productivity</div>
+  <button class="nav" data-page="notices">Notice Board</button>
+  <button class="nav" data-page="focus">Focus Timer</button>
+  
+  <div class="nav-title">Settings</div>
+  <button class="nav" onclick="toggleTheme()">Dark/Light Mode</button>
+ </aside>
 
- <div class="nav-title">Workspace</div>
- <button class="nav active" data-page="dashboard">Dashboard</button>
- <button class="nav" data-page="tasks">My Tasks</button>
- <button class="nav" data-page="calendar">Calendar</button>
- <button class="nav" data-page="subjects">Subjects</button>
- <button class="nav" data-page="exams">Exams & Tests</button>
- <button class="nav" data-page="revision">Revision Queue</button>
- <button class="nav" data-page="goals">Goals Tracker</button>
-
- <div class="nav-title">Tools & Settings</div>
- <button class="nav" data-page="live">Live Tracking</button>
- <button class="nav" data-page="focus">Focus Timer</button>
- <button class="nav" data-page="profile">Profile & Data</button>
- <button class="nav" onclick="toggleTheme()">Toggle Theme</button>
-
- <div class="storage-pill">
-  <div class="dotlive">Storage Mirroring</div>
-  <div class="muted">LocalStorage + IndexedDB</div>
- </div>
-</aside>
-
-<main class="main">
-<header class="topbar">
- <div style="display:flex;align-items:center;gap:12px">
-  <button class="btn iconbtn mobile-menu" onclick="toggleSidebar()">☰</button>
-  <div class="topdate">
-   <small id="topDate">Date</small>
-   <b id="topGreeting">Hello</b>
-  </div>
- </div>
-
- <div class="top-actions">
-  <div class="clock" id="clock">00:00:00</div>
-  <button class="btn primary" onclick="openTask()">+ Add Task</button>
- </div>
-</header>
-
-<div class="content">
-
-<!-- DASHBOARD -->
-<section id="dashboard" class="page active">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">COMMAND CENTER</div>
-   <h1 id="welcomeTitle">Welcome Back</h1>
-   <p class="muted">Here is your daily study overview.</p>
-  </div>
- </div>
-
- <div class="stats">
-  <div class="card stat">
-   <small>TOTAL TASKS</small>
-   <div class="stat-number" id="totalStat">0</div>
-   <div class="stat-line"><i id="totalLine" style="width:100%"></i></div>
-  </div>
-  <div class="card stat">
-   <small>COMPLETED</small>
-   <div class="stat-number" id="doneStat">0</div>
-   <div class="stat-line"><i id="doneLine"></i></div>
-  </div>
-  <div class="card stat">
-   <small>FOCUS TODAY</small>
-   <div class="stat-number" id="focusStat">0m</div>
-   <div class="stat-line"><i id="focusLine"></i></div>
-  </div>
-  <div class="card stat">
-   <small>OVERDUE</small>
-   <div class="stat-number" id="overdueStat">0</div>
-   <div class="stat-line"><i id="overdueLine"></i></div>
-  </div>
- </div>
-
- <div class="grid2">
-  <div class="card">
-   <div class="head">
-    <h2>Today's Tasks</h2>
-    <button class="btn" onclick="showPage('tasks')">View All</button>
+ <main class="main">
+  <!-- HEADER -->
+  <header class="topbar">
+   <div style="display:flex; align-items:center; gap:10px">
+    <button class="btn iconbtn" style="display:none" id="menuBtn" onclick="toggleSidebar()">☰</button>
+    <b id="topGreeting">Hello, Student!</b>
    </div>
-   <div class="task-list" id="todayTasks" style="margin-top:14px"></div>
-  </div>
+   <div style="display:flex; align-items:center; gap:12px">
+    <button class="btn iconbtn" onclick="showPage('notices')" title="Notifications">
+     🔔<span id="notifBadge" class="badge hidden">0</span>
+    </button>
+    <button class="btn primary" onclick="openTaskModal()">+ Add Task</button>
+   </div>
+  </header>
 
-  <div class="card">
-   <div class="eyebrow">SMART STUDY ADVICE</div>
-   <h2 style="margin:5px 0 10px">Next Best Step</h2>
-   <p class="muted" id="smartText">Add your tasks to get insights.</p>
+  <div class="content">
    
-   <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+   <!-- DASHBOARD -->
+   <section id="dashboard" class="page active">
+    <div class="hero-row">
+     <div><div class="eyebrow">OVERVIEW</div><h1>Dashboard</h1></div>
+    </div>
+    <div class="card msl-dashboard">
+     <div class="progress-ring-container">
+      <div class="progress-ring" id="taskRing">
+       <div class="progress-inner">
+        <h2 id="ringText">0%</h2>
+        <span>COMPLETED</span>
+       </div>
+      </div>
+     </div>
+     <div class="stats-grid">
+      <div class="stat-box"><small>PENDING TASKS</small><div id="dashPending">0</div></div>
+      <div class="stat-box"><small>CLASSES TODAY</small><div id="dashClasses">0</div></div>
+      <div class="stat-box"><small>UPCOMING EXAMS</small><div id="dashExams">0</div></div>
+     </div>
+    </div>
+    <div class="grid-layout">
+     <div class="card">
+      <div class="head"><h2>Today's Tasks</h2><button class="btn" onclick="showPage('tasks')">All Tasks</button></div>
+      <div class="task-list" id="todayTasksList"></div>
+     </div>
+     <div class="card">
+      <div class="head"><h2>Today's Classes</h2><button class="btn" onclick="showPage('classes')">Timetable</button></div>
+      <div class="task-list" id="todayClassesList"></div>
+     </div>
+    </div>
+   </section>
 
-   <div class="eyebrow">TARGET GOAL</div>
-   <h3 id="goalText" style="margin:4px 0 8px">Set your study target</h3>
-   <div class="stat-line" style="height:8px"><i id="goalProgress"></i></div>
-   <p class="muted" id="goalMeta" style="font-size:12px;margin-top:6px"></p>
+   <!-- CALENDAR PAGE -->
+   <section id="calendar" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">MONTHLY VIEW</div><h1 id="calMonthTitle">Calendar</h1></div>
+     <div style="display:flex; gap:8px;">
+      <button class="btn" onclick="changeMonth(-1)">Prev</button>
+      <button class="btn primary" onclick="todayMonth()">Today</button>
+      <button class="btn" onclick="changeMonth(1)">Next</button>
+     </div>
+    </div>
+    <div class="card" style="padding: 10px;">
+      <div class="cal-wrapper">
+        <div class="cal-grid" id="calendarGrid"></div>
+      </div>
+    </div>
+   </section>
+
+   <!-- TASKS PAGE -->
+   <section id="tasks" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">MANAGE</div><h1>All Tasks</h1></div>
+     <button class="btn primary" onclick="openTaskModal()">+ Add Task</button>
+    </div>
+    <div class="card"><div class="task-list" id="allTasksList"></div></div>
+   </section>
+
+   <!-- CLASSES PAGE -->
+   <section id="classes" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">SCHEDULE</div><h1>Timetable</h1></div>
+     <button class="btn primary" onclick="openClassModal()">+ Add Class</button>
+    </div>
+    <div class="card"><div class="task-list" id="allClassesList"></div></div>
+   </section>
+
+   <!-- EXAMS PAGE -->
+   <section id="exams" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">DEADLINES</div><h1>Exams</h1></div>
+     <button class="btn primary" onclick="openExamModal()">+ Add Exam</button>
+    </div>
+    <div class="card"><div class="task-list" id="allExamsList"></div></div>
+   </section>
+
+   <!-- NOTICES PAGE -->
+   <section id="notices" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">UPDATES & ALERTS</div><h1>Notice Board</h1></div>
+     <button class="btn primary" onclick="openNoticeModal()">+ Add Notice</button>
+    </div>
+    <div class="card" style="min-height:300px">
+     <div id="noticeList"></div>
+    </div>
+   </section>
+
+   <!-- FOCUS TIMER -->
+   <section id="focus" class="page">
+     <div class="hero-row"><div><div class="eyebrow">POMODORO</div><h1>Focus Timer</h1></div></div>
+     <div class="card" style="text-align:center; padding:60px 20px">
+       <h1 style="font-size:80px; font-weight:900; font-variant-numeric:tabular-nums;" id="timerDisplay">25:00</h1>
+       <div style="margin-top:20px; display:flex; gap:10px; justify-content:center">
+         <button class="btn primary" onclick="toggleTimer()" id="timerBtn">Start Focus</button>
+         <button class="btn" onclick="resetTimer()">Reset</button>
+       </div>
+     </div>
+   </section>
+
   </div>
- </div>
-</section>
-
-<!-- TASKS -->
-<section id="tasks" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">TASK PLANNER</div>
-   <h1>My Tasks</h1>
-  </div>
-  <button class="btn primary" onclick="openTask()">+ Add Task</button>
- </div>
-
- <div class="toolbar">
-  <input class="input search" id="taskSearch" placeholder="Search tasks..." oninput="renderTasks()">
-  <select id="taskFilter" onchange="renderTasks()" style="max-width:180px">
-   <option value="all">All Tasks</option>
-   <option value="active">Active</option>
-   <option value="done">Completed</option>
-   <option value="overdue">Overdue</option>
-  </select>
- </div>
-
- <div class="card">
-  <div class="task-list" id="taskList"></div>
- </div>
-</section>
-
-<!-- CALENDAR -->
-<section id="calendar" class="page">
- <div class="calendar-head">
-  <div>
-   <div class="eyebrow">CALENDAR</div>
-   <h1 id="monthTitle">Calendar</h1>
-  </div>
-  <div style="display:flex;gap:6px">
-   <button class="btn" onclick="changeMonth(-1)">Prev</button>
-   <button class="btn" onclick="todayMonth()">Today</button>
-   <button class="btn" onclick="changeMonth(1)">Next</button>
-  </div>
- </div>
-
- <div class="card" style="margin-top:18px">
-  <div class="calendar-wrap">
-   <div class="calendar" id="calendarGrid"></div>
-  </div>
- </div>
-</section>
-
-<!-- SUBJECTS -->
-<section id="subjects" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">CURRICULUM</div>
-   <h1>Subjects</h1>
-  </div>
-  <button class="btn primary" onclick="openSubject()">+ Add Subject</button>
- </div>
- <div class="card" style="margin-top:18px">
-  <div class="list" id="subjectList"></div>
- </div>
-</section>
-
-<!-- EXAMS -->
-<section id="exams" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">TIMETABLE</div>
-   <h1>Exams & Deadlines</h1>
-  </div>
-  <button class="btn primary" onclick="openExam()">+ Add Exam</button>
- </div>
- <div class="card" style="margin-top:18px">
-  <div class="list" id="examList"></div>
- </div>
-</section>
-
-<!-- REVISION -->
-<section id="revision" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">SPACED REPETITION</div>
-   <h1>Revision Queue</h1>
-  </div>
- </div>
- <div class="card" style="margin-top:18px">
-  <div class="list" id="revisionList"></div>
- </div>
-</section>
-
-<!-- GOALS -->
-<section id="goals" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">TARGETS</div>
-   <h1>Goals</h1>
-  </div>
-  <button class="btn primary" onclick="openGoal()">+ Add Goal</button>
- </div>
- <div class="card" style="margin-top:18px">
-  <div class="list" id="goalList"></div>
- </div>
-</section>
-
-<!-- LIVE -->
-<section id="live" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">REAL-TIME</div>
-   <h1>Live Task Tracker</h1>
-  </div>
- </div>
- <div class="card" style="margin-top:18px">
-  <div class="timeline" id="liveList"></div>
- </div>
-</section>
-
-<!-- FOCUS -->
-<section id="focus" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">POMODORO</div>
-   <h1>Focus Timer</h1>
-  </div>
- </div>
- <div class="card" style="margin-top:18px;text-align:center;padding:40px 20px">
-  <div style="font-size:clamp(56px,8vw,90px);font-weight:800;letter-spacing:-2px" id="timer">25:00</div>
-  <div class="stat-line" style="max-width:500px;margin:15px auto;height:8px"><i id="timerBar" style="width:100%"></i></div>
-  <div style="display:flex;justify-content:center;gap:8px;margin-top:20px;flex-wrap:wrap">
-   <button class="btn" onclick="setTimer(25)">25m Study</button>
-   <button class="btn" onclick="setTimer(50)">50m Deep Work</button>
-   <button class="btn" onclick="setTimer(5)">5m Break</button>
-   <button class="btn primary" id="timerStart" onclick="toggleTimer()">Start</button>
-   <button class="btn red" onclick="resetTimer()">Reset</button>
-  </div>
- </div>
-</section>
-
-<!-- PROFILE & BACKUP -->
-<section id="profile" class="page">
- <div class="hero-row">
-  <div>
-   <div class="eyebrow">SETTINGS & BACKUP</div>
-   <h1>Profile & Storage</h1>
-  </div>
-  <button class="btn primary" onclick="editProfile()">Edit Profile</button>
- </div>
-
- <div class="card" style="margin-top:18px">
-  <div class="form" id="profileDisplay"></div>
- </div>
-
- <div class="card" style="margin-top:18px">
-  <h2>Backup & Restore</h2>
-  <p class="muted" style="margin:6px 0 16px">Export all your data locally as a JSON backup file or restore previously saved data.</p>
-  <div style="display:flex;gap:8px;flex-wrap:wrap">
-   <button class="btn primary" onclick="backup()">Export JSON</button>
-   <button class="btn" onclick="$('restoreFile').click()">Restore JSON</button>
-   <button class="btn red" onclick="resetAll()">Reset All Data</button>
-   <input id="restoreFile" class="hidden" type="file" accept=".json" onchange="restore(event)">
-  </div>
- </div>
-</section>
-
-</div>
-</main>
+ </main>
 </div>
 
-<!-- TASK MODAL -->
+<!-- MODALS -->
+<!-- Task Modal -->
 <div class="modal" id="taskModal">
  <div class="modalbox">
-  <div class="head" style="margin-bottom:14px">
-   <h2 id="taskModalTitle">Add Task</h2>
-   <button class="btn iconbtn" onclick="closeModal('taskModal')">×</button>
-  </div>
-  <div class="form">
-   <div class="field full">
-    <label>TASK NAME</label>
-    <input class="input" id="taskName" placeholder="Chapter 1 Revision">
-   </div>
-   <div class="field">
-    <label>SUBJECT</label>
-    <select id="taskSubject"></select>
-   </div>
-   <div class="field">
-    <label>DATE</label>
-    <input class="input" type="date" id="taskDate">
-   </div>
-   <div class="field">
-    <label>START TIME</label>
-    <input class="input" type="time" id="taskStart">
-   </div>
-   <div class="field">
-    <label>END TIME</label>
-    <input class="input" type="time" id="taskEnd">
-   </div>
-   <div class="field">
-    <label>TYPE</label>
-    <select id="taskType">
-     <option value="study">Study</option>
-     <option value="revision">Revision</option>
-     <option value="assignment">Assignment</option>
-     <option value="test">Test</option>
-    </select>
-   </div>
-   <div class="field">
-    <label>PRIORITY</label>
-    <select id="taskPriority">
-     <option value="normal">Normal</option>
-     <option value="high">High</option>
-     <option value="low">Low</option>
-    </select>
-   </div>
-   <div class="field full">
-    <label>NOTES</label>
-    <textarea id="taskNotes" placeholder="Additional details..."></textarea>
-   </div>
-  </div>
-  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
-   <button class="btn" onclick="closeModal('taskModal')">Cancel</button>
-   <button class="btn primary" onclick="saveTask()">Save Task</button>
-  </div>
+  <div class="head"><h2>New Task</h2><button class="btn iconbtn" onclick="closeModal('taskModal')">×</button></div>
+  <div class="field"><label>TASK TITLE</label><input class="input" id="taskTitle" placeholder="E.g., Complete Math Assignment"></div>
+  <div class="field"><label>SUBJECT</label><input class="input" id="taskSubj" placeholder="E.g., Mathematics"></div>
+  <div class="field"><label>DUE DATE</label><input type="date" class="input" id="taskDate"></div>
+  <button class="btn primary" style="width:100%" onclick="saveTask()">Save Task</button>
  </div>
 </div>
 
-<!-- SUBJECT MODAL -->
-<div class="modal" id="subjectModal">
+<!-- Class Modal -->
+<div class="modal" id="classModal">
  <div class="modalbox">
-  <div class="head" style="margin-bottom:14px">
-   <h2>Add Subject</h2>
-   <button class="btn iconbtn" onclick="closeModal('subjectModal')">×</button>
+  <div class="head"><h2>New Class</h2><button class="btn iconbtn" onclick="closeModal('classModal')">×</button></div>
+  <div class="field"><label>SUBJECT / MODULE</label><input class="input" id="classTitle" placeholder="E.g., Physics 101"></div>
+  <div class="field">
+   <label>DAY OF WEEK</label>
+   <select class="input" id="classDay">
+    <option value="Monday">Monday</option><option value="Tuesday">Tuesday</option>
+    <option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option>
+    <option value="Friday">Friday</option><option value="Saturday">Saturday</option>
+    <option value="Sunday">Sunday</option>
+   </select>
   </div>
-  <div class="form">
-   <div class="field full">
-    <label>SUBJECT NAME</label>
-    <input class="input" id="subjectName" placeholder="Physics">
-   </div>
-   <div class="field full">
-    <label>COLOR TAG</label>
-    <input class="input" id="subjectColor" type="color" value="#7c5cff">
-   </div>
-  </div>
-  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
-   <button class="btn" onclick="closeModal('subjectModal')">Cancel</button>
-   <button class="btn primary" onclick="saveSubject()">Save</button>
-  </div>
+  <button class="btn primary" style="width:100%" onclick="saveClass()">Save Class</button>
  </div>
 </div>
 
-<!-- EXAM MODAL -->
+<!-- Exam Modal -->
 <div class="modal" id="examModal">
  <div class="modalbox">
-  <div class="head" style="margin-bottom:14px">
-   <h2>Add Exam</h2>
-   <button class="btn iconbtn" onclick="closeModal('examModal')">×</button>
-  </div>
-  <div class="form">
-   <div class="field full">
-    <label>EXAM TITLE</label>
-    <input class="input" id="examName" placeholder="Final Term Examination">
-   </div>
-   <div class="field">
-    <label>SUBJECT</label>
-    <select id="examSubject"></select>
-   </div>
-   <div class="field">
-    <label>DATE</label>
-    <input class="input" type="date" id="examDate">
-   </div>
-  </div>
-  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
-   <button class="btn" onclick="closeModal('examModal')">Cancel</button>
-   <button class="btn primary" onclick="saveExam()">Save</button>
-  </div>
+  <div class="head"><h2>New Exam</h2><button class="btn iconbtn" onclick="closeModal('examModal')">×</button></div>
+  <div class="field"><label>EXAM TITLE</label><input class="input" id="examTitle" placeholder="E.g., Midterm Physics"></div>
+  <div class="field"><label>DATE</label><input type="date" class="input" id="examDate"></div>
+  <button class="btn primary" style="width:100%" onclick="saveExam()">Save Exam</button>
  </div>
 </div>
 
-<!-- GOAL MODAL -->
-<div class="modal" id="goalModal">
+<!-- Notice Modal -->
+<div class="modal" id="noticeModal">
  <div class="modalbox">
-  <div class="head" style="margin-bottom:14px">
-   <h2>Add Goal</h2>
-   <button class="btn iconbtn" onclick="closeModal('goalModal')">×</button>
-  </div>
-  <div class="form">
-   <div class="field full">
-    <label>GOAL</label>
-    <input class="input" id="goalName" placeholder="Complete 10 Mock Tests">
-   </div>
-   <div class="field full">
-    <label>TARGET DATE</label>
-    <input class="input" type="date" id="goalDate">
-   </div>
-  </div>
-  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
-   <button class="btn" onclick="closeModal('goalModal')">Cancel</button>
-   <button class="btn primary" onclick="saveGoal()">Save</button>
-  </div>
+  <div class="head"><h2>Post a Notice</h2><button class="btn iconbtn" onclick="closeModal('noticeModal')">×</button></div>
+  <div class="field"><label>NOTICE TITLE</label><input class="input" id="noticeTitle" placeholder="E.g., School Trip Tomorrow"></div>
+  <div class="field"><label>DETAILS</label><textarea class="input" id="noticeDetails" rows="3" placeholder="Add extra details here..."></textarea></div>
+  <button class="btn primary" style="width:100%" onclick="saveNotice()">Post Notice</button>
  </div>
 </div>
-
-<!-- PROFILE MODAL -->
-<div class="modal" id="profileModal">
- <div class="modalbox">
-  <div class="head" style="margin-bottom:14px">
-   <h2>Edit Profile</h2>
-   <button class="btn iconbtn" onclick="closeModal('profileModal')">×</button>
-  </div>
-  <div class="form">
-   <div class="field">
-    <label>YOUR NAME</label>
-    <input class="input" id="profileName" placeholder="Student Name">
-   </div>
-   <div class="field">
-    <label>GRADE / CLASS</label>
-    <input class="input" id="profileClass" placeholder="Class 12">
-   </div>
-   <div class="field full">
-    <label>MAIN TARGET</label>
-    <input class="input" id="profileGoal" placeholder="Target 95% Marks">
-   </div>
-  </div>
-  <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
-   <button class="btn" onclick="closeModal('profileModal')">Cancel</button>
-   <button class="btn primary" onclick="saveProfile()">Save Profile</button>
-  </div>
- </div>
-</div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-const $=id=>document.getElementById(id);
-const KEY="studyflow_data_v21";
-const DB_NAME="StudyFlowDatabase";
-const STORE="state_store";
+// Data & Save Logic
+const STORAGE_KEY = "studyflow_pro_v3";
+let data = { tasks: [], classes: [], exams: [], notices: [], theme: "dark", seenSplash: false };
+let currentCalDate = new Date(); 
 
-let db=null;
-let cal=new Date();
-let editingTask=null;
-let timerSeconds=25*60;
-let defaultTimerDuration=25*60;
-let timerRunning=false;
-let timerInterval=null;
+try {
+ const saved = localStorage.getItem(STORAGE_KEY);
+ if (saved) data = JSON.parse(saved);
+} catch(e) {}
 
-const DEFAULT={
- profile:{name:"Student",className:"",goal:"",onboarded:false},
- subjects:[
-  {id:"math",name:"Mathematics",color:"#7c5cff"},
-  {id:"phy",name:"Physics",color:"#38b6ff"},
-  {id:"chem",name:"Chemistry",color:"#10b981"}
- ],
- tasks:[],
- exams:[],
- goals:[],
- focusMinutes:0,
- focusDate:"",
- theme:"dark"
-};
+if(window.innerWidth <= 850) document.getElementById('menuBtn').style.display = 'block';
 
-let data=JSON.parse(JSON.stringify(DEFAULT));
-
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function today(){return new Date().toISOString().split("T")[0]}
-function esc(v){
- return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+function saveAll() {
+ localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+ renderUI();
 }
 
-function normalize(x){
- if(!x||typeof x!=="object")return JSON.parse(JSON.stringify(DEFAULT));
- return {
-  profile:{...DEFAULT.profile,...(x.profile||{})},
-  subjects:Array.isArray(x.subjects)&&x.subjects.length?x.subjects:DEFAULT.subjects,
-  tasks:Array.isArray(x.tasks)?x.tasks:[],
-  exams:Array.isArray(x.exams)?x.exams:[],
-  goals:Array.isArray(x.goals)?x.goals:[],
-  focusMinutes:Number(x.focusMinutes)||0,
-  focusDate:x.focusDate||today(),
-  theme:x.theme==="light"?"light":"dark"
- };
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,'0') + "-" + String(d.getDate()).padStart(2,'0');
+}
+function currentDayName() { return new Date().toLocaleDateString('en-US', {weekday: 'long'}); }
+function getId() { return Date.now().toString(36); }
+
+// Onboarding & Notifications Setup
+function enterApp() {
+  document.getElementById('splash').classList.add('hide');
+  data.seenSplash = true;
+  saveAll();
+  
+  // Request Browser Notifications
+  if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission();
+  }
 }
 
-/* STORAGE */
-async function initDB(){
- return new Promise(res=>{
-  const req=indexedDB.open(DB_NAME,1);
-  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE))req.result.createObjectStore(STORE)};
-  req.onsuccess=()=>{db=req.result;res(true)};
-  req.onerror=()=>res(false);
- });
-}
-async function idbSave(){
- if(!db)return;
- try{
-  const tx=db.transaction(STORE,"readwrite");
-  tx.objectStore(STORE).put(data,"state");
- }catch(e){}
-}
-async function idbLoad(){
- if(!db)return null;
- return new Promise(res=>{
-  try{
-   const tx=db.transaction(STORE,"readonly");
-   const req=tx.objectStore(STORE).get("state");
-   req.onsuccess=()=>res(req.result||null);
-   req.onerror=()=>res(null);
-  }catch(e){res(null)}
- });
-}
-async function saveAll(){
- data=normalize(data);
- localStorage.setItem(KEY,JSON.stringify(data));
- await idbSave();
-}
-async function loadAll(){
- const idb=await idbLoad();
- const local=JSON.parse(localStorage.getItem(KEY)||"null");
- data=normalize(idb||local||DEFAULT);
- await saveAll();
+// Show intro only if new user
+if(!data.seenSplash) {
+  document.getElementById('splash').classList.remove('hide');
+} else {
+  document.getElementById('splash').style.display = 'none';
 }
 
-/* APP NAVIGATION & THEME */
-function applyTheme(){
- document.body.classList.toggle("light",data.theme==="light");
+function checkNotifications() {
+  const today = todayStr();
+  const dayName = currentDayName();
+  let alertsCount = 0;
+  
+  const pendingTasks = data.tasks.filter(t => t.date === today && !t.done).length;
+  const examsToday = data.exams.filter(e => e.date === today).length;
+  
+  alertsCount = pendingTasks + examsToday;
+  
+  const badge = document.getElementById('notifBadge');
+  if(alertsCount > 0) {
+    badge.textContent = alertsCount;
+    badge.classList.remove('hidden');
+    // Browser notification (triggers once per load)
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification("StudyFlow Alerts", { body: `You have ${pendingTasks} tasks and ${examsToday} exams today!` });
+    }
+  } else {
+    badge.classList.add('hidden');
+  }
 }
-function toggleTheme(){
- data.theme=data.theme==="dark"?"light":"dark";
- applyTheme();
+
+// Navigation
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav[data-page]').forEach(n => n.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  const navBtn = document.querySelector(`.nav[data-page="${pageId}"]`);
+  if(navBtn) navBtn.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+document.querySelectorAll('.nav[data-page]').forEach(btn => {
+ btn.onclick = () => showPage(btn.dataset.page);
+});
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+function toggleTheme() {
+ data.theme = data.theme === 'dark' ? 'light' : 'dark';
+ document.body.className = data.theme;
  saveAll();
 }
-function showPage(id){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- document.querySelectorAll(".nav[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
- $(id).classList.add("active");
- $("sidebar").classList.remove("open");
- window.scrollTo({top:0,behavior:"smooth"});
-}
-document.querySelectorAll(".nav[data-page]").forEach(b=>{b.onclick=()=>showPage(b.dataset.page)});
-function toggleSidebar(){$("sidebar").classList.toggle("open")}
+document.body.className = data.theme;
 
-function toast(msg){
- const t=$("toast");
- t.textContent=msg;
- t.classList.add("show");
- clearTimeout(toast._t);
- toast._t=setTimeout(()=>t.classList.remove("show"),2800);
-}
+// Modals
+function openTaskModal() { document.getElementById('taskDate').value = todayStr(); document.getElementById('taskModal').classList.add('show'); }
+function openClassModal() { document.getElementById('classDay').value = currentDayName(); document.getElementById('classModal').classList.add('show'); }
+function openExamModal() { document.getElementById('examDate').value = todayStr(); document.getElementById('examModal').classList.add('show'); }
+function openNoticeModal() { document.getElementById('noticeModal').classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-function updateClock(){
- const n=new Date();
- $("clock").textContent=n.toLocaleTimeString();
- $("topDate").textContent=n.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric",year:"numeric"});
- const h=n.getHours();
- $("topGreeting").textContent=h<12?"Good Morning 🌅":h<17?"Good Afternoon ☀️":"Good Evening 🌙";
+// Saving Logic
+function saveTask() {
+ const title = document.getElementById('taskTitle').value.trim();
+ if(!title) return;
+ data.tasks.push({ id: getId(), title, subj: document.getElementById('taskSubj').value || 'General', date: document.getElementById('taskDate').value, done: false });
+ document.getElementById('taskTitle').value = "";
+ closeModal('taskModal'); saveAll();
 }
 
-function taskStatus(t){
- if(t.done)return "done";
- if(!t.date)return "upcoming";
- const now=new Date();
- const start=new Date(`${t.date}T${t.start||"00:00"}`);
- const end=new Date(`${t.date}T${t.end||"23:59"}`);
- if(now>end)return "overdue";
- if(now>=start&&now<=end)return "live";
- return "upcoming";
+function saveClass() {
+ const title = document.getElementById('classTitle').value.trim();
+ if(!title) return;
+ data.classes.push({ id: getId(), title, day: document.getElementById('classDay').value });
+ document.getElementById('classTitle').value = "";
+ closeModal('classModal'); saveAll();
 }
 
-function subject(id){
- return data.subjects.find(s=>s.id===id)||{id:"",name:"General",color:"#7c5cff"};
+function saveExam() {
+ const title = document.getElementById('examTitle').value.trim();
+ if(!title) return;
+ data.exams.push({ id: getId(), title, date: document.getElementById('examDate').value });
+ document.getElementById('examTitle').value = "";
+ closeModal('examModal'); saveAll();
 }
 
-/* DASHBOARD & TASKS */
-function renderDashboard(){
- const total=data.tasks.length;
- const done=data.tasks.filter(t=>t.done).length;
- const overdue=data.tasks.filter(t=>taskStatus(t)==="overdue").length;
-
- $("totalStat").textContent=total;
- $("doneStat").textContent=done;
- $("focusStat").textContent=data.focusMinutes+"m";
- $("overdueStat").textContent=overdue;
-
- const pct=total?Math.round((done/total)*100):0;
- $("doneLine").style.width=pct+"%";
- $("overdueLine").style.width=Math.min(100,overdue*25)+"%";
- $("focusLine").style.width=Math.min(100,(data.focusMinutes/120)*100)+"%";
-
- $("welcomeTitle").textContent=`Welcome back, ${data.profile.name||"Student"}`;
-
- const todays=data.tasks.filter(t=>t.date===today());
- $("todayTasks").innerHTML=todays.length?todays.map(taskHTML).join(""):`<p class="muted">No study sessions scheduled for today.</p>`;
-
- let advice="Plan your upcoming sessions to stay consistent!";
- if(overdue)advice=`⚠️ You have ${overdue} overdue task(s). Finish or reschedule them first.`;
- else if(todays.length)advice=`You have ${todays.filter(t=>!t.done).length} active task(s) today. Stay focused!`;
- $("smartText").textContent=advice;
-
- $("goalText").textContent=data.profile.goal||"Set your primary target";
- $("goalProgress").style.width=pct+"%";
- $("goalMeta").textContent=`${pct}% tasks completed overall`;
+function saveNotice() {
+ const title = document.getElementById('noticeTitle').value.trim();
+ const desc = document.getElementById('noticeDetails').value.trim();
+ if(!title) return;
+ if(!data.notices) data.notices = [];
+ data.notices.push({ id: getId(), title, desc, date: todayStr() });
+ document.getElementById('noticeTitle').value = "";
+ document.getElementById('noticeDetails').value = "";
+ closeModal('noticeModal'); saveAll();
 }
 
-function taskHTML(t){
- const s=subject(t.subject);
- const st=taskStatus(t);
- return `
- <div class="task ${t.done?"done":""}">
-  <input class="check" type="checkbox" ${t.done?"checked":""} onchange="toggleTask('${t.id}')">
-  <div>
-   <div class="task-title">${esc(t.name)}</div>
-   <div class="task-meta">
-    <span class="pill"><span class="dot" style="background:${s.color}"></span>${esc(s.name)}</span>
-    <span class="pill">${t.date||"No date"}</span>
-    ${t.start?`<span class="pill">${esc(t.start)} - ${esc(t.end||"")}</span>`:""}
-    <span class="pill" style="text-transform:uppercase">${st}</span>
-   </div>
-  </div>
-  <div class="task-actions">
-   <button class="small-btn" onclick="openTask('${t.id}')">Edit</button>
-   <button class="small-btn" onclick="deleteTask('${t.id}')">Delete</button>
-  </div>
- </div>`;
-}
-
-function renderTasks(){
- const q=$("taskSearch").value.trim().toLowerCase();
- const filter=$("taskFilter").value;
- let list=[...data.tasks];
-
- if(q)list=list.filter(t=>t.name.toLowerCase().includes(q));
- if(filter==="active")list=list.filter(t=>!t.done&&taskStatus(t)!=="overdue");
- if(filter==="done")list=list.filter(t=>t.done);
- if(filter==="overdue")list=list.filter(t=>taskStatus(t)==="overdue");
-
- list.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
- $("taskList").innerHTML=list.length?list.map(taskHTML).join(""):`<p class="muted">No matching tasks found.</p>`;
-}
-
-function openTask(id=null){
- editingTask=id;
- fillSubjectSelects();
- $("taskModalTitle").textContent=id?"Edit Task":"Add Task";
- const t=id?data.tasks.find(x=>x.id===id):null;
- $("taskName").value=t?.name||"";
- $("taskSubject").value=t?.subject||data.subjects[0]?.id||"";
- $("taskDate").value=t?.date||today();
- $("taskStart").value=t?.start||"";
- $("taskEnd").value=t?.end||"";
- $("taskType").value=t?.type||"study";
- $("taskPriority").value=t?.priority||"normal";
- $("taskNotes").value=t?.notes||"";
- $("taskModal").classList.add("show");
-}
-
-async function saveTask(){
- const name=$("taskName").value.trim();
- if(!name)return toast("Task name is required!");
-
- const payload={
-  id:editingTask||uid(),
-  name,
-  subject:$("taskSubject").value,
-  date:$("taskDate").value,
-  start:$("taskStart").value,
-  end:$("taskEnd").value,
-  type:$("taskType").value,
-  priority:$("taskPriority").value,
-  notes:$("taskNotes").value.trim(),
-  done:editingTask?data.tasks.find(t=>t.id===editingTask)?.done||false:false
- };
-
- if(editingTask){
-  const idx=data.tasks.findIndex(t=>t.id===editingTask);
-  data.tasks[idx]=payload;
- }else{
-  data.tasks.push(payload);
+function toggleTask(id) {
+ const t = data.tasks.find(x => x.id === id);
+ if(t) {
+  t.done = !t.done;
+  if(t.done) fireConfetti(); 
+  saveAll();
  }
-
- await saveAll();
- closeModal("taskModal");
- renderAll();
- toast(editingTask?"Task updated":"Task created");
- editingTask=null;
 }
 
-async function toggleTask(id){
- const t=data.tasks.find(x=>x.id===id);
- if(!t)return;
- t.done=!t.done;
- await saveAll();
- renderAll();
+function deleteItem(type, id) {
+ if(!confirm("Are you sure?")) return;
+ data[type] = data[type].filter(x => x.id !== id);
+ saveAll();
 }
 
-async function deleteTask(id){
- if(!confirm("Are you sure you want to delete this task?"))return;
- data.tasks=data.tasks.filter(t=>t.id!==id);
- await saveAll();
- renderAll();
- toast("Task removed");
+// Confetti
+function fireConfetti() {
+ const colors = ['#7c5cff', '#38b6ff', '#10b981', '#fbbf24'];
+ for(let i=0; i<40; i++) {
+  const c = document.createElement('div');
+  c.className = 'confetti';
+  c.style.left = Math.random() * 100 + 'vw';
+  c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  c.style.animationDuration = (Math.random() * 1 + 1) + 's';
+  document.body.appendChild(c);
+  setTimeout(() => c.remove(), 2000);
+ }
 }
 
-/* SUBJECTS */
-function fillSubjectSelects(){
- const opts=data.subjects.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
- $("taskSubject").innerHTML=opts;
- $("examSubject").innerHTML=opts;
-}
-function renderSubjects(){
- $("subjectList").innerHTML=data.subjects.map(s=>`
- <div class="task">
-  <div class="dot" style="background:${s.color};width:14px;height:14px"></div>
-  <div>
-   <div class="task-title">${esc(s.name)}</div>
-   <div class="task-meta"><span class="pill">${data.tasks.filter(t=>t.subject===s.id).length} linked tasks</span></div>
-  </div>
-  <div class="task-actions">
-   ${data.subjects.length>1?`<button class="small-btn" onclick="deleteSubject('${s.id}')">Delete</button>`:""}
-  </div>
- </div>`).join("");
-}
-function openSubject(){
- $("subjectName").value="";
- $("subjectColor").value="#7c5cff";
- $("subjectModal").classList.add("show");
-}
-async function saveSubject(){
- const name=$("subjectName").value.trim();
- if(!name)return toast("Subject name required!");
- data.subjects.push({id:uid(),name,color:$("subjectColor").value});
- await saveAll();
- closeModal("subjectModal");
- renderAll();
- toast("Subject added");
-}
-async function deleteSubject(id){
- if(!confirm("Delete this subject? Linked tasks will default to general."))return;
- data.subjects=data.subjects.filter(s=>s.id!==id);
- await saveAll();
- renderAll();
+// MSL Calendar Rendering (Robust)
+function renderCalendar() {
+  const year = currentCalDate.getFullYear();
+  const month = currentCalDate.getMonth();
+  
+  document.getElementById('calMonthTitle').textContent = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let html = days.map(d => `<div class="cal-header">${d}</div>`).join("");
+
+  const firstDay = new Date(year, month, 1).getDay(); 
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const prevDays = new Date(year, month, 0).getDate();
+
+  for(let i = firstDay - 1; i >= 0; i--) html += getCalDayHTML(new Date(year, month - 1, prevDays - i), true);
+  for(let i = 1; i <= daysInMonth; i++) html += getCalDayHTML(new Date(year, month, i), false);
+  
+  const totalCells = firstDay + daysInMonth;
+  const extra = (7 - (totalCells % 7)) % 7;
+  for(let i = 1; i <= extra; i++) html += getCalDayHTML(new Date(year, month + 1, i), true);
+
+  document.getElementById('calendarGrid').innerHTML = html;
 }
 
-/* CALENDAR */
-function renderCalendar(){
- const year=cal.getFullYear();
- const month=cal.getMonth();
- $("monthTitle").textContent=new Date(year,month,1).toLocaleDateString(undefined,{month:"long",year:"numeric"});
- const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
- let html=days.map(d=>`<div class="weekday">${d}</div>`).join("");
+function getCalDayHTML(dateObj, isMuted) {
+  const isoDate = dateObj.getFullYear() + "-" + String(dateObj.getMonth()+1).padStart(2,'0') + "-" + String(dateObj.getDate()).padStart(2,'0');
+  const dayOfWeekName = dateObj.toLocaleDateString('en-US', {weekday: 'long'});
+  const isToday = isoDate === todayStr();
+  
+  const dayTasks = data.tasks.filter(t => t.date === isoDate && !t.done);
+  const dayExams = data.exams.filter(e => e.date === isoDate);
+  const dayClasses = data.classes.filter(c => c.day === dayOfWeekName);
 
- const firstDayIndex=(new Date(year,month,1).getDay()+6)%7;
- const totalDays=new Date(year,month+1,0).getDate();
- const prevDays=new Date(year,month,0).getDate();
+  let eventsHTML = "";
+  dayExams.forEach(e => { eventsHTML += `<div class="cal-event exam" title="Exam: ${e.title}">📝 ${e.title}</div>`; });
+  dayTasks.slice(0, 3).forEach(t => { eventsHTML += `<div class="cal-event task" title="Task: ${t.title}">✔ ${t.title}</div>`; });
+  if (dayTasks.length > 3) eventsHTML += `<div class="cal-event" style="color:var(--muted); justify-content:center">+${dayTasks.length - 3} More</div>`;
+  dayClasses.forEach(c => { eventsHTML += `<div class="cal-event class" title="Class: ${c.title}">🕒 ${c.title}</div>`; });
 
- for(let i=firstDayIndex-1;i>=0;i--)html+=dayBox(new Date(year,month-1,prevDays-i),true);
- for(let i=1;i<=totalDays;i++)html+=dayBox(new Date(year,month,i),false);
- const extra=(7-(firstDayIndex+totalDays)%7)%7;
- for(let i=1;i<=extra;i++)html+=dayBox(new Date(year,month+1,i),true);
-
- $("calendarGrid").innerHTML=html;
-}
-
-function dayBox(date,muted){
- const iso=date.toISOString().split("T")[0];
- const tasks=data.tasks.filter(t=>t.date===iso);
- return `
- <div class="day ${muted?"muted-day":""} ${iso===today()?"today":""}">
-  <div class="day-number">${date.getDate()}</div>
-  ${tasks.slice(0,3).map(t=>{
-   const s=subject(t.subject);
-   return `<div class="event" style="background:${s.color}" onclick="openTask('${t.id}')">${esc(t.name)}</div>`;
-  }).join("")}
-  ${tasks.length>3?`<div class="muted" style="font-size:10px">+${tasks.length-3} more</div>`:""}
- </div>`;
-}
-function changeMonth(d){cal=new Date(cal.getFullYear(),cal.getMonth()+d,1);renderCalendar()}
-function todayMonth(){cal=new Date();renderCalendar()}
-
-/* EXAMS, REVISION & GOALS */
-function renderExams(){
- const exams=[...data.exams].sort((a,b)=>(a.date||"").localeCompare(b.date||""));
- $("examList").innerHTML=exams.length?exams.map(e=>{
-  const s=subject(e.subject);
-  const diff=e.date?Math.ceil((new Date(e.date)-new Date(today()))/(1000*60*60*24)):0;
   return `
-  <div class="task">
-   <div class="dot" style="background:${s.color}"></div>
+    <div class="cal-day ${isMuted ? 'muted-day' : ''} ${isToday ? 'today' : ''}">
+      <div class="cal-date">${dateObj.getDate()}</div>
+      ${eventsHTML}
+    </div>
+  `;
+}
+
+function changeMonth(step) {
+  currentCalDate = new Date(currentCalDate.getFullYear(), currentCalDate.getMonth() + step, 1);
+  renderCalendar();
+}
+function todayMonth() {
+  currentCalDate = new Date();
+  renderCalendar();
+}
+
+// Global UI Render
+function renderUI() {
+ const today = todayStr();
+ const dayName = currentDayName();
+ 
+ const todayTasks = data.tasks.filter(t => t.date === today);
+ const pendingTotal = data.tasks.filter(t => !t.done).length;
+ const doneToday = todayTasks.filter(t => t.done).length;
+ 
+ const progressPct = todayTasks.length ? Math.round((doneToday / todayTasks.length) * 100) : (data.tasks.length ? 0 : 100);
+ document.getElementById('taskRing').style.background = `conic-gradient(var(--purple) ${progressPct}%, var(--panel2) ${progressPct}%)`;
+ document.getElementById('ringText').textContent = progressPct + '%';
+
+ document.getElementById('dashPending').textContent = pendingTotal;
+ document.getElementById('dashClasses').textContent = data.classes.filter(c => c.day === dayName).length;
+ document.getElementById('dashExams').textContent = data.exams.length;
+
+ const renderTaskHTML = (t) => `
+  <div class="task ${t.done ? 'done' : ''}">
+   <input type="checkbox" class="check" ${t.done ? 'checked' : ''} onchange="toggleTask('${t.id}')">
    <div>
-    <div class="task-title">${esc(e.name)}</div>
-    <div class="task-meta"><span class="pill">${esc(s.name)}</span><span class="pill">${e.date}</span></div>
+    <div class="task-title">${t.title}</div>
+    <div class="task-meta"><span class="pill">${t.subj}</span><span class="pill">${t.date}</span></div>
    </div>
-   <div style="display:flex;align-items:center;gap:8px">
-    <span class="pill" style="font-weight:700">${diff>=0?diff+" days left":"Passed"}</span>
-    <button class="small-btn" onclick="deleteExam('${e.id}')">Delete</button>
-   </div>
+   <button class="btn" style="padding:5px 10px; font-size:11px" onclick="deleteItem('tasks', '${t.id}')">Del</button>
   </div>`;
- }).join(""):`<p class="muted">No exams scheduled.</p>`;
-}
-function openExam(){fillSubjectSelects();$("examName").value="";$("examDate").value=today();$("examModal").classList.add("show")}
-async function saveExam(){
- const name=$("examName").value.trim();
- if(!name)return toast("Exam title required");
- data.exams.push({id:uid(),name,subject:$("examSubject").value,date:$("examDate").value});
- await saveAll();
- closeModal("examModal");
- renderAll();
- toast("Exam saved");
-}
-async function deleteExam(id){data.exams=data.exams.filter(e=>e.id!==id);await saveAll();renderAll()}
 
-function renderRevision(){
- const rev=data.tasks.filter(t=>t.type==="revision");
- $("revisionList").innerHTML=rev.length?rev.map(taskHTML).join(""):`<p class="muted">No revision tasks queued.</p>`;
-}
+ const renderClassHTML = (c) => `
+  <div class="task">
+   <div style="width:12px; height:12px; border-radius:50%; background:var(--blue)"></div>
+   <div>
+    <div class="task-title">${c.title}</div>
+    <div class="task-meta"><span class="pill">Every ${c.day}</span></div>
+   </div>
+   <button class="btn" style="padding:5px 10px; font-size:11px" onclick="deleteItem('classes', '${c.id}')">Del</button>
+  </div>`;
 
-function renderGoals(){
- $("goalList").innerHTML=data.goals.length?data.goals.map(g=>`
- <div class="task">
-  <div></div>
-  <div>
-   <div class="task-title">${esc(g.name)}</div>
-   <div class="task-meta"><span class="pill">Target: ${g.date||"None"}</span></div>
+ const renderExamHTML = (e) => `
+  <div class="task">
+   <div style="width:12px; height:12px; border-radius:50%; background:var(--red)"></div>
+   <div>
+    <div class="task-title">${e.title}</div>
+    <div class="task-meta"><span class="pill">Date: ${e.date}</span></div>
+   </div>
+   <button class="btn" style="padding:5px 10px; font-size:11px" onclick="deleteItem('exams', '${e.id}')">Del</button>
+  </div>`;
+  
+ const renderNoticeHTML = (n) => `
+  <div class="notice-card">
+   <div>
+    <h3 style="margin-bottom:5px; font-size:16px">${n.title}</h3>
+    <p class="muted" style="font-size:13px">${n.desc}</p>
+    <div style="font-size:11px; margin-top:8px; font-weight:700">Posted: ${n.date}</div>
+   </div>
+   <button class="btn" style="padding:5px 10px; font-size:11px; height:max-content" onclick="deleteItem('notices', '${n.id}')">Del</button>
   </div>
-  <button class="small-btn" onclick="deleteGoal('${g.id}')">Delete</button>
- </div>`).join(""):`<p class="muted">No specific goals added.</p>`;
-}
-function openGoal(){$("goalName").value="";$("goalDate").value="";$("goalModal").classList.add("show")}
-async function saveGoal(){
- const name=$("goalName").value.trim();
- if(!name)return toast("Goal title required");
- data.goals.push({id:uid(),name,date:$("goalDate").value});
- await saveAll();
- closeModal("goalModal");
- renderAll();
-}
-async function deleteGoal(id){data.goals=data.goals.filter(g=>g.id!==id);await saveAll();renderAll()}
+ `;
 
-/* LIVE TRACKING */
-function renderLive(){
- const list=data.tasks.filter(t=>t.date===today()).sort((a,b)=>(a.start||"").localeCompare(b.start||""));
- $("liveList").innerHTML=list.length?list.map(t=>{
-  const st=taskStatus(t);
-  const s=subject(t.subject);
-  return `
-  <div class="timeline-item ${st==="live"?"live-now":""} ${st==="overdue"?"overdue":""}">
-   <div class="timeline-time">${t.start||"Anytime"}</div>
-   <div class="timeline-dot"></div>
-   <div class="timeline-card">
-    <div class="task-title">${esc(t.name)}</div>
-    <div class="task-meta"><span class="pill"><span class="dot" style="background:${s.color}"></span>${esc(s.name)}</span><span class="pill">${st}</span></div>
-   </div>
-  </div>`;
- }).join(""):`<p class="muted">No timeline items for today.</p>`;
-}
+ document.getElementById('todayTasksList').innerHTML = todayTasks.length ? todayTasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks today.</p>';
+ document.getElementById('allTasksList').innerHTML = data.tasks.length ? data.tasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks added yet.</p>';
+ 
+ const todayClasses = data.classes.filter(c => c.day === dayName);
+ document.getElementById('todayClassesList').innerHTML = todayClasses.length ? todayClasses.map(renderClassHTML).join('') : '<p class="muted">No classes today!</p>';
+ document.getElementById('allClassesList').innerHTML = data.classes.length ? data.classes.map(renderClassHTML).join('') : '<p class="muted">No classes added.</p>';
+ 
+ document.getElementById('allExamsList').innerHTML = data.exams.length ? data.exams.map(renderExamHTML).join('') : '<p class="muted">No upcoming exams.</p>';
 
-/* POMODORO TIMER */
-function setTimer(min){
- timerRunning=false;
- clearInterval(timerInterval);
- defaultTimerDuration=min*60;
- timerSeconds=defaultTimerDuration;
- updateTimer();
- $("timerStart").textContent="Start";
-}
-function updateTimer(){
- const m=Math.floor(timerSeconds/60);
- const s=timerSeconds%60;
- $("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
- $("timerBar").style.width=`${(timerSeconds/defaultTimerDuration)*100}%`;
-}
-function toggleTimer(){
- if(timerRunning){
-  timerRunning=false;
-  clearInterval(timerInterval);
-  $("timerStart").textContent="Resume";
-  return;
- }
- timerRunning=true;
- $("timerStart").textContent="Pause";
- timerInterval=setInterval(async()=>{
-  if(timerSeconds<=0){
-   clearInterval(timerInterval);
-   timerRunning=false;
-   data.focusMinutes+=Math.round(defaultTimerDuration/60);
-   await saveAll();
-   renderDashboard();
-   toast("Focus session complete! 🎉");
-   setTimer(25);
-   return;
-  }
-  timerSeconds--;
-  updateTimer();
- },1000);
-}
-function resetTimer(){setTimer(25)}
+ document.getElementById('noticeList').innerHTML = (data.notices && data.notices.length) ? data.notices.map(renderNoticeHTML).reverse().join('') : '<p class="muted">No notices pinned.</p>';
 
-/* PROFILE & BACKUP */
-function editProfile(){
- $("profileName").value=data.profile.name||"";
- $("profileClass").value=data.profile.className||"";
- $("profileGoal").value=data.profile.goal||"";
- $("profileModal").classList.add("show");
-}
-async function saveProfile(){
- data.profile.name=$("profileName").value.trim()||"Student";
- data.profile.className=$("profileClass").value.trim();
- data.profile.goal=$("profileGoal").value.trim();
- data.profile.onboarded=true;
- await saveAll();
- closeModal("profileModal");
- renderAll();
- toast("Profile saved");
-}
-function renderProfile(){
- $("profileDisplay").innerHTML=`
- <div class="field"><label>STUDENT NAME</label><b>${esc(data.profile.name||"Student")}</b></div>
- <div class="field"><label>GRADE / CLASS</label><b>${esc(data.profile.className||"Not set")}</b></div>
- <div class="field full"><label>PRIMARY TARGET</label><b>${esc(data.profile.goal||"Not set")}</b></div>`;
-}
-
-function backup(){
- const blob=new Blob([JSON.stringify({app:"StudyFlow",data},null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
- a.href=url;
- a.download=`studyflow-backup-${today()}.json`;
- a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
- toast("Backup downloaded!");
-}
-async function restore(e){
- const f=e.target.files?.[0];
- if(!f)return;
- try{
-  const json=JSON.parse(await f.text());
-  data=normalize(json.data||json);
-  await saveAll();
-  applyTheme();
-  renderAll();
-  toast("Data restored successfully!");
- }catch(err){toast("Invalid backup file");}
- e.target.value="";
-}
-async function resetAll(){
- if(!confirm("This will erase all study planner data permanently. Proceed?"))return;
- data=JSON.parse(JSON.stringify(DEFAULT));
- localStorage.removeItem(KEY);
- await saveAll();
- applyTheme();
- renderAll();
- toast("Planner reset completely");
-}
-
-function closeModal(id){$(id).classList.remove("show")}
-document.querySelectorAll(".modal").forEach(m=>{m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")})});
-
-function renderAll(){
- fillSubjectSelects();
- renderDashboard();
- renderTasks();
  renderCalendar();
- renderSubjects();
- renderExams();
- renderRevision();
- renderGoals();
- renderLive();
- renderProfile();
+ checkNotifications();
 }
 
-/* BOOT */
-(async function init(){
- await initDB();
- await loadAll();
- if(data.focusDate!==today()){
-  data.focusDate=today();
-  data.focusMinutes=0;
-  await saveAll();
+// Timer
+let time = 25 * 60, timerInt = null, isRunning = false;
+function updateTimerText() {
+ let m = Math.floor(time / 60), s = time % 60;
+ document.getElementById('timerDisplay').textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+function toggleTimer() {
+ if(isRunning) { clearInterval(timerInt); isRunning = false; document.getElementById('timerBtn').textContent = 'Resume Focus'; }
+ else {
+  isRunning = true; document.getElementById('timerBtn').textContent = 'Pause';
+  timerInt = setInterval(() => {
+   if(time > 0) { time--; updateTimerText(); }
+   else { clearInterval(timerInt); alert("Focus session complete!"); resetTimer(); }
+  }, 1000);
  }
- applyTheme();
- renderAll();
- updateClock();
- updateTimer();
- setInterval(updateClock,1000);
- setInterval(renderLive,60000);
- setTimeout(()=>{
-  $("intro").classList.add("hide");
-  setTimeout(()=>$("intro").remove(),600);
- },700);
-})();
+}
+function resetTimer() { clearInterval(timerInt); isRunning = false; time = 25 * 60; updateTimerText(); document.getElementById('timerBtn').textContent = 'Start Focus'; }
+
+// Init
+window.onload = () => { renderUI(); };
 </script>
 </body>
 </html>
