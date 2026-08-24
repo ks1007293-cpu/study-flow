@@ -337,19 +337,19 @@ h2{font-size:18px; font-weight:700}
      <button class="btn primary" onclick="openClassModal()">+ Add Class</button>
     </div>
 
-    <!-- NEW: PW MASTER TIMETABLE UPLOAD -->
+    <!-- NEW: TIMETABLE UPLOAD -->
     <div class="card" style="margin-bottom: 20px; border-left: 4px solid var(--blue);">
      <div class="head" style="margin-bottom: 10px;">
-      <h2 style="font-size: 16px;">📸 PW Master Timetable</h2>
+      <h2 style="font-size: 16px;"> Timetable</h2>
       <div style="display:flex; gap:8px;">
-       <button class="btn" onclick="document.getElementById('pwTimetableUpload').click()">Upload Photo</button>
-       <button class="btn red" onclick="deletePWTimetable()">Remove</button>
+       <button class="btn" onclick="document.getElementById('TimetableUpload').click()">Upload pdf/photo</button>
+       <button class="btn red" onclick="deleteTimetable()">Remove</button>
       </div>
-      <input type="file" id="pwTimetableUpload" class="hidden" accept="image/*" onchange="savePWTimetable(event)">
+      <input type="file" id="TimetableUpload" class="hidden" accept="image/*" onchange="saveTimetable(event)">
      </div>
      
-     <div id="pwTimetableDisplay" style="width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 1px solid var(--line); margin-top:10px;">
-      <img id="pwTimetableImg" src="" style="width: 100%; height: auto; display: block; object-fit: contain;">
+     <div id="TimetableDisplay" style="width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 1px solid var(--line); margin-top:10px;">
+      <img id="TimetableImg" src="" style="width: 100%; height: auto; display: block; object-fit: contain;">
      </div>
      <p class="muted" id="pwNoImageText" style="font-size: 12px; margin-top: 5px;">Upload your Physics Wallah schedule screenshot here.</p>
     </div>
