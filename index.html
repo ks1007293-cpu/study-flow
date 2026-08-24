@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StudyFlow Pro | Class 10 Edition</title>
+<title>StudyFlow Pro | Class 10 PW Edition</title>
 <style>
 :root{
  --bg:#090d16; --bg2:#0f1523; --panel:#141c2e; --panel2:#1a243a; --panel3:#23304d;
@@ -224,7 +224,7 @@ h2{font-size:18px; font-weight:700}
   <button class="nav active" data-page="dashboard">Dashboard</button>
   <button class="nav" data-page="calendar">Calendar</button>
   <button class="nav" data-page="tasks">Tasks & Homework</button>
-  <button class="nav" data-page="library">Library / PDFs</button> <!-- CHANGED -->
+  <button class="nav" data-page="library">Library / PDFs</button>
   <button class="nav" data-page="classes">Timetable / Classes</button>
   <button class="nav" data-page="exams">Exams</button>
   
@@ -318,7 +318,7 @@ h2{font-size:18px; font-weight:700}
     <div class="card"><div class="task-list" id="allTasksList"></div></div>
    </section>
 
-   <!-- LIBRARY & PDF PAGE (NEW) -->
+   <!-- LIBRARY & PDF PAGE -->
    <section id="library" class="page">
     <div class="hero-row">
      <div><div class="eyebrow">STUDY MATERIAL</div><h1>Library & PDFs</h1></div>
@@ -477,7 +477,7 @@ h2{font-size:18px; font-weight:700}
  </div>
 </div>
 
-<!-- Library Modal (NEW) -->
+<!-- Library Modal -->
 <div class="modal" id="libraryModal">
  <div class="modalbox">
   <div class="head"><h2>Add Study Material</h2><button class="btn iconbtn" onclick="closeModal('libraryModal')">×</button></div>
@@ -556,7 +556,7 @@ const STORAGE_KEY = "studyflow_pro_v8_premium";
 const DB_NAME = "StudyFlowDB_v8";
 const STORE = "planner_state";
 let db = null;
-let editingTaskId = null; // Track task being edited
+let editingTaskId = null; 
 
 const defaultSubjects = [
   { id: "s1", name: "Mathematics", color: "#7c5cff" },
@@ -614,12 +614,21 @@ async function loadData() {
   
   if (loaded) {
     data = { ...data, ...loaded }; 
+    // Handle specific overwrite for big data (pwTimetable) from indexedDB
+    if(idbData && idbData.pwTimetable) data.pwTimetable = idbData.pwTimetable;
+
     if(!data.profile || !data.profile.className) data.profile = { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" };
     if(!data.subjects || data.subjects.length === 0) data.subjects = JSON.parse(JSON.stringify(defaultSubjects));
     if(!data.library) data.library = [];
   }
 }
-async function saveAll() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); await idbSave(); renderUI(); }
+async function saveAll() { 
+  // Omit pwTimetable from localStorage to prevent QuotaExceededError
+  const dataForLocal = { ...data, pwTimetable: null };
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(dataForLocal)); } catch(e) { console.warn("LocalStorage Full"); }
+  await idbSave(); 
+  renderUI(); 
+}
 
 function todayStr() {
   const d = new Date();
@@ -815,11 +824,16 @@ function saveProfile() {
 function savePWTimetable(event) {
   const file = event.target.files[0];
   if(!file) return;
-  if(file.size > 5 * 1024 * 1024) return alert("Image is too large! Please upload under 5MB.");
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = async function(e) {
     data.pwTimetable = e.target.result;
-    saveAll(); 
+    
+    // Fast DOM update
+    document.getElementById('pwTimetableImg').src = data.pwTimetable;
+    document.getElementById('pwTimetableDisplay').style.display = 'block';
+    document.getElementById('pwNoImageText').style.display = 'none';
+    
+    await saveAll(); 
   };
   reader.readAsDataURL(file);
 }
@@ -829,6 +843,9 @@ function deletePWTimetable() {
   if(!confirm("Remove the timetable image?")) return;
   data.pwTimetable = null;
   document.getElementById('pwTimetableUpload').value = ""; 
+  
+  document.getElementById('pwTimetableDisplay').style.display = 'none';
+  document.getElementById('pwNoImageText').style.display = 'block';
   saveAll();
 }
 
@@ -1102,7 +1119,7 @@ function renderUI() {
   <div class="field full"><label>PRIMARY TARGET</label><div style="font-size:18px; font-weight:700; color:var(--purple)">${data.profile.goal}</div></div>
  `;
 
- // PW Master Timetable Render
+ // PW Timetable UI Update
  const pwDisplay = document.getElementById('pwTimetableDisplay');
  const pwImg = document.getElementById('pwTimetableImg');
  const pwNoText = document.getElementById('pwNoImageText');
