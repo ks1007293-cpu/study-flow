@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StudyFlow Pro | Ultimate MSL</title>
+<title>StudyFlow Pro | Premium Edition</title>
 <style>
 :root{
  --bg:#090d16; --bg2:#0f1523; --panel:#141c2e; --panel2:#1a243a; --panel3:#23304d;
@@ -31,32 +31,37 @@ button{cursor:pointer}
 .hidden{display:none!important}
 .muted{color:var(--muted)}
 
-/* ONBOARDING SPLASH */
-#splash{
- position:fixed; inset:0; z-index:99999; background:var(--bg2);
- display:flex; flex-direction:column; align-items:center; justify-content:center;
- transition: opacity 0.6s ease, transform 0.6s ease;
+/* EPIC ONBOARDING SPLASH ANIMATION */
+#splash {
+ position: fixed; inset: 0; z-index: 99999; background: var(--bg);
+ display: flex; flex-direction: column; align-items: center; justify-content: center;
+ transition: opacity 0.8s ease; overflow: hidden;
 }
-#splash.hide{opacity:0; transform:scale(1.05); pointer-events:none}
-.splash-card{
- background:var(--panel); border:1px solid var(--line); border-radius:24px;
- padding:40px; max-width:500px; width:90%; text-align:center; box-shadow:var(--shadow);
- animation: slideUp 0.8s forwards;
+.splash-content {
+ text-align: center; z-index: 2; display: flex; flex-direction: column; align-items: center;
 }
-.splash-logo{
- width:80px; height:80px; border-radius:20px; margin:0 auto 20px;
- background:linear-gradient(135deg, var(--purple), var(--blue));
- display:grid; place-items:center; font-size:32px; font-weight:900; color:#fff;
- box-shadow:0 0 30px var(--purple-glow);
+.splash-logo {
+ width: 90px; height: 90px; border-radius: 24px;
+ background: linear-gradient(135deg, var(--purple), var(--blue));
+ display: grid; place-items: center; font-size: 38px; font-weight: 900; color: #fff;
+ box-shadow: 0 0 40px var(--purple-glow); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.splash-card h1{font-size:32px; margin-bottom:10px; letter-spacing:-1px}
-.splash-card p{color:var(--muted); font-size:15px; margin-bottom:25px}
-.feature-list{text-align:left; margin-bottom:30px; list-style:none; padding:0}
-.feature-list li{
- background:var(--panel2); margin-bottom:10px; padding:12px 16px; border-radius:12px;
- font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px; border:1px solid var(--line);
+.splash-title {
+ font-size: 42px; font-weight: 900; margin-top: 20px; letter-spacing: -1.5px;
+ opacity: 0; transform: translateY(20px); transition: all 0.6s ease;
+ background: linear-gradient(to right, #fff, var(--muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
-@keyframes slideUp{ from{opacity:0; transform:translateY(30px)} to{opacity:1; transform:translateY(0)} }
+.open-btn {
+ margin-top: 30px; padding: 16px 32px; font-size: 18px; font-weight: 800; border-radius: 14px;
+ background: linear-gradient(135deg, var(--purple), var(--blue)); color: #fff;
+ box-shadow: 0 10px 30px var(--purple-glow); transition: 0.3s;
+}
+.open-btn:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(56,182,255,0.5); }
+.color-fill {
+ position: absolute; width: 10px; height: 10px; border-radius: 50%;
+ background: radial-gradient(circle, var(--purple), var(--blue));
+ opacity: 0; transform: scale(1); z-index: 1; transition: transform 1.2s ease-in-out, opacity 0.5s ease;
+}
 
 /* APP LAYOUT */
 .app{display:grid; grid-template-columns:260px minmax(0,1fr); min-height:100vh}
@@ -73,6 +78,13 @@ body.light .sidebar{background:rgba(255,255,255,.9)}
 .nav{width:100%; border-radius:12px; padding:11px 13px; margin:2px 0; text-align:left; font-weight:600; font-size:14px; display:flex; align-items:center; gap:10px; transition:.2s ease; color:var(--muted)}
 .nav:hover{background:var(--panel2); color:var(--text)}
 .nav.active{color:#fff; background:linear-gradient(135deg,var(--purple),#5e3cf7); box-shadow:0 8px 20px var(--purple-glow)}
+
+/* STORAGE INDICATOR */
+.storage-pill {
+ margin: 20px 10px 10px; padding: 10px; background: var(--panel2); border: 1px solid var(--line);
+ border-radius: 12px; font-size: 11px; color: var(--muted);
+}
+.dot-green { display: inline-block; width: 8px; height: 8px; background: var(--green); border-radius: 50%; margin-right: 5px; box-shadow: 0 0 8px var(--green); }
 
 /* MAIN CONTENT & TOPBAR */
 .main{width:100%}
@@ -103,6 +115,16 @@ h2{font-size:18px; font-weight:700}
  font-weight:bold; width:18px; height:18px; border-radius:50%; display:grid; place-items:center; border:2px solid var(--panel);
 }
 
+/* PREMIUM ACTION BUTTONS */
+.action-btn {
+ width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+ background: var(--panel3); color: var(--muted); transition: 0.2s ease;
+ border: 1px solid transparent; cursor: pointer;
+}
+.action-btn:hover { background: var(--panel2); color: var(--purple); border-color: var(--purple); transform: translateY(-2px); box-shadow: 0 4px 12px var(--purple-glow); }
+.action-btn.delete:hover { color: var(--red); border-color: var(--red); background: rgba(244,63,94,0.1); box-shadow: 0 4px 12px rgba(244,63,94,0.2); }
+.action-btn svg { width: 16px; height: 16px; stroke-width: 2.2px; }
+
 /* CARDS & DASHBOARD */
 .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
 .msl-dashboard{display:grid; grid-template-columns:auto minmax(0,1fr); gap:30px; align-items:center; margin-bottom:20px}
@@ -117,18 +139,19 @@ h2{font-size:18px; font-weight:700}
 .stat-box div{font-size:28px; font-weight:800; margin-top:5px; color:var(--text)}
 .grid-layout{display:grid; grid-template-columns:1fr 1fr; gap:20px}
 
-/* TASKS, LISTS & NOTICES */
+/* TASKS & LISTS */
 .task-list{display:grid; gap:10px}
 .task{display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:14px; padding:14px 16px; background:var(--panel2); border:1px solid var(--line); border-radius:14px; transition:.2s ease}
-.task:hover{border-color:var(--purple)}
+.task:hover{border-color:var(--purple); transform: translateX(2px);}
 .check{width:20px; height:20px; accent-color:var(--purple); cursor:pointer}
 .task.done{opacity:.5}
 .task.done .task-title{text-decoration:line-through}
 .task-title{font-weight:700; font-size:15px}
 .task-meta{display:flex; gap:8px; margin-top:6px; font-size:11px; color:var(--muted); flex-wrap:wrap; align-items:center}
 .pill{background:var(--panel3); padding:4px 8px; border-radius:6px; font-weight:700; display:inline-flex; align-items:center; gap:5px}
+.type-icon { font-size:13px; margin-right:4px; }
 .dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
-.notice-card{background:var(--panel2); border-left:4px solid var(--yellow); padding:15px; border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between}
+.notice-card{background:var(--panel2); border-left:4px solid var(--yellow); padding:15px; border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items: flex-start;}
 
 /* LIVE TRACKING TIMELINE */
 .timeline{display:grid;gap:0;}
@@ -153,7 +176,7 @@ h2{font-size:18px; font-weight:700}
 
 /* FORMS & MODALS */
 .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:15px;}
-.input, select, textarea{width:100%; border:1px solid var(--line); background:var(--panel2); border-radius:10px; padding:12px; font-size:14px; transition:.2s}
+.input, select, textarea{width:100%; border:1px solid var(--line); background:var(--panel2); border-radius:10px; padding:12px; font-size:14px; transition:.2s; color: var(--text);}
 .input:focus, select:focus{border-color:var(--purple); box-shadow:0 0 0 3px var(--purple-glow)}
 .modal{position:fixed; inset:0; z-index:1000; display:none; place-items:center; padding:20px; background:rgba(0,0,0,.7); backdrop-filter:blur(10px)}
 .modal.show{display:grid}
@@ -179,19 +202,13 @@ h2{font-size:18px; font-weight:700}
 </head>
 <body>
 
-<!-- ONBOARDING SPLASH -->
+<!-- EPIC ONBOARDING SPLASH -->
 <div id="splash">
- <div class="splash-card">
-  <div class="splash-logo">SF</div>
-  <h1>StudyFlow Pro</h1>
-  <p>The Ultimate Academic Planner. All Features Restored.</p>
-  <ul class="feature-list">
-   <li>📅 <b>Smart Calendar:</b> Tasks, Classes & Exams in one view.</li>
-   <li>⏱️ <b>Live Tracking:</b> Timeline based on start & end times.</li>
-   <li>📚 <b>Subjects:</b> Color-coded curriculums and tags.</li>
-   <li>💾 <b>Backup & Restore:</b> Safe data management & Profile settings.</li>
-  </ul>
-  <button class="btn primary" style="width:100%; padding:14px; font-size:16px" onclick="enterApp()">Get Started Now</button>
+ <div class="color-fill" id="colorFill"></div>
+ <div class="splash-content">
+  <div class="splash-logo" id="splashLogo">SF</div>
+  <div class="splash-title" id="splashTitle">StudyFlow Pro</div>
+  <button class="open-btn" id="openBtn" onclick="openStudyFlow()">Open Our Web 🚀</button>
  </div>
 </div>
 
@@ -200,8 +217,9 @@ h2{font-size:18px; font-weight:700}
  <aside class="sidebar" id="sidebar">
   <div class="brand">
    <div class="brand-icon">SF</div>
-   <div><strong>StudyFlow Pro</strong><span class="muted">Ultimate Edition</span></div>
+   <div><strong>StudyFlow Pro</strong><span class="muted">Class 10 Edition</span></div>
   </div>
+  
   <div class="nav-title">My Workspace</div>
   <button class="nav active" data-page="dashboard">Dashboard</button>
   <button class="nav" data-page="calendar">Calendar</button>
@@ -218,6 +236,11 @@ h2{font-size:18px; font-weight:700}
   <div class="nav-title">Settings & Data</div>
   <button class="nav" data-page="profile">Profile & Backup</button>
   <button class="nav" onclick="toggleTheme()">Dark/Light Mode</button>
+
+  <div class="storage-pill">
+   <div style="font-weight:bold; margin-bottom:3px; color:var(--text)"><span class="dot-green"></span>Dual Storage Active</div>
+   <div style="line-height:1.3">IndexedDB + LocalStorage<br>Your data is completely safe.</div>
+  </div>
  </aside>
 
  <main class="main">
@@ -394,17 +417,33 @@ h2{font-size:18px; font-weight:700}
 <!-- Task Modal -->
 <div class="modal" id="taskModal">
  <div class="modalbox">
-  <div class="head"><h2>New Task</h2><button class="btn iconbtn" onclick="closeModal('taskModal')">×</button></div>
+  <div class="head"><h2 id="taskModalTitle">New Task</h2><button class="btn iconbtn" onclick="closeModal('taskModal')">×</button></div>
+  
   <div class="field"><label>TASK TITLE</label><input class="input" id="taskTitle" placeholder="E.g., Revise Chapter 1"></div>
-  <div class="field">
+  
+  <div class="form-grid">
+   <div class="field">
     <label>SUBJECT</label>
     <select class="input" id="taskSubjSelect"></select>
+   </div>
+   <div class="field">
+    <label>TASK TYPE</label>
+    <select class="input" id="taskTypeSelect">
+     <option value="practice">Practice / Homework</option>
+     <option value="revision">Revision</option>
+     <option value="class">Class / Lecture</option>
+     <option value="test">Test / Exam Prep</option>
+    </select>
+   </div>
   </div>
+
   <div class="field"><label>DUE DATE</label><input type="date" class="input" id="taskDate"></div>
+  
   <div class="form-grid">
    <div class="field"><label>START TIME</label><input type="time" class="input" id="taskStart"></div>
    <div class="field"><label>END TIME</label><input type="time" class="input" id="taskEnd"></div>
   </div>
+  
   <button class="btn primary" style="width:100%; margin-top:10px" onclick="saveTask()">Save Task</button>
  </div>
 </div>
@@ -462,45 +501,80 @@ h2{font-size:18px; font-weight:700}
  <div class="modalbox">
   <div class="head"><h2>Edit Profile</h2><button class="btn iconbtn" onclick="closeModal('profileModal')">×</button></div>
   <div class="field"><label>YOUR NAME</label><input class="input" id="profileName" placeholder="E.g., Rahul"></div>
-  <div class="field"><label>CLASS / GRADE</label><input class="input" id="profileClass" placeholder="E.g., 12th Science"></div>
+  <div class="field"><label>CLASS / GRADE</label><input class="input" id="profileClass" placeholder="E.g., Class 10"></div>
   <div class="field"><label>MAIN TARGET</label><input class="input" id="profileGoal" placeholder="E.g., Score 95% in Boards"></div>
   <button class="btn primary" style="width:100%" onclick="saveProfile()">Save Profile</button>
  </div>
 </div>
 
 <script>
-// Logic & Storage (v6 Ultimate)
-const STORAGE_KEY = "studyflow_pro_v6";
+// Logic & DUAL STORAGE (IndexedDB + LocalStorage)
+const STORAGE_KEY = "studyflow_pro_v8_premium";
+const DB_NAME = "StudyFlowDB_v8";
+const STORE = "planner_state";
+let db = null;
+let editingTaskId = null; // Track task being edited
+
 const defaultSubjects = [
   { id: "s1", name: "Mathematics", color: "#7c5cff" },
   { id: "s2", name: "Science", color: "#38b6ff" },
-  { id: "s3", name: "English", color: "#10b981" }
+  { id: "s3", name: "English", color: "#10b981" },
+  { id: "s4", name: "Social Studies", color: "#f97316" }
 ];
 
 let data = { 
   tasks: [], classes: [], exams: [], notices: [], 
   subjects: JSON.parse(JSON.stringify(defaultSubjects)),
-  profile: { name: "Student", className: "", goal: "" },
+  profile: { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" },
   theme: "dark", seenSplash: false 
 };
 let currentCalDate = new Date(); 
 
-try {
- const saved = localStorage.getItem(STORAGE_KEY);
- if (saved) {
-    const parsed = JSON.parse(saved);
-    data = { ...data, ...parsed }; 
-    if(!data.profile) data.profile = { name: "Student", className: "", goal: "" };
-    if(!data.subjects || data.subjects.length === 0) data.subjects = JSON.parse(JSON.stringify(defaultSubjects));
- }
-} catch(e) {}
+// Premium SVG Icons
+const icons = {
+  edit: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`,
+  delete: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`
+};
 
 if(window.innerWidth <= 850) document.getElementById('menuBtn').style.display = 'block';
 
-function saveAll() {
- localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
- renderUI();
+// INITIALIZE INDEXEDDB
+async function initDB() {
+ return new Promise(resolve => {
+  const req = indexedDB.open(DB_NAME, 1);
+  req.onupgradeneeded = () => { if(!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE); };
+  req.onsuccess = () => { db = req.result; resolve(true); };
+  req.onerror = () => resolve(false);
+ });
 }
+async function idbSave() {
+ if(!db) return;
+ try { const tx = db.transaction(STORE, "readwrite"); tx.objectStore(STORE).put(data, "state"); } catch(e){}
+}
+async function idbLoad() {
+ if(!db) return null;
+ return new Promise(resolve => {
+  try {
+   const tx = db.transaction(STORE, "readonly");
+   const req = tx.objectStore(STORE).get("state");
+   req.onsuccess = () => resolve(req.result || null);
+   req.onerror = () => resolve(null);
+  } catch(e) { resolve(null); }
+ });
+}
+
+async function loadData() {
+  const local = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+  const idbData = await idbLoad();
+  let loaded = idbData || local;
+  
+  if (loaded) {
+    data = { ...data, ...loaded }; 
+    if(!data.profile || !data.profile.className) data.profile = { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" };
+    if(!data.subjects || data.subjects.length === 0) data.subjects = JSON.parse(JSON.stringify(defaultSubjects));
+  }
+}
+async function saveAll() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); await idbSave(); renderUI(); }
 
 function todayStr() {
   const d = new Date();
@@ -509,15 +583,41 @@ function todayStr() {
 function currentDayName() { return new Date().toLocaleDateString('en-US', {weekday: 'long'}); }
 function getId() { return Date.now().toString(36); }
 
-// Onboarding
-function enterApp() {
-  document.getElementById('splash').classList.add('hide');
-  data.seenSplash = true;
-  saveAll();
+// EPIC ONBOARDING ANIMATION
+function openStudyFlow() {
+  document.getElementById('openBtn').style.display = 'none';
+  document.getElementById('splashTitle').style.opacity = '1';
+  document.getElementById('splashTitle').style.transform = 'translateY(0)';
+  document.getElementById('splashLogo').style.transform = 'scale(1.2)';
+  
+  const fill = document.getElementById('colorFill');
+  fill.style.opacity = '1';
+  fill.style.transform = 'scale(250)';
+  
+  setTimeout(() => {
+    document.getElementById('splash').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('hide');
+      document.getElementById('splash').style.display = 'none';
+      data.seenSplash = true;
+      saveAll();
+    }, 800);
+  }, 1200);
+
   if ("Notification" in window && Notification.permission !== "granted") Notification.requestPermission();
 }
-if(!data.seenSplash) { document.getElementById('splash').classList.remove('hide'); } 
-else { document.getElementById('splash').style.display = 'none'; }
+
+async function bootApp() {
+  await initDB();
+  await loadData();
+  
+  if(!data.seenSplash) { document.getElementById('splash').classList.remove('hide'); } 
+  else { document.getElementById('splash').style.display = 'none'; }
+
+  document.body.className = data.theme;
+  renderUI();
+  setInterval(renderLive, 60000); 
+}
 
 function checkNotifications() {
   const today = todayStr();
@@ -541,22 +641,33 @@ function showPage(pageId) {
   if(navBtn) navBtn.classList.add('active');
   document.getElementById('sidebar').classList.remove('open');
 }
-
-document.querySelectorAll('.nav[data-page]').forEach(btn => {
- btn.onclick = () => showPage(btn.dataset.page);
-});
+document.querySelectorAll('.nav[data-page]').forEach(btn => { btn.onclick = () => showPage(btn.dataset.page); });
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 function toggleTheme() { data.theme = data.theme === 'dark' ? 'light' : 'dark'; document.body.className = data.theme; saveAll(); }
-document.body.className = data.theme;
 
 // Modals
-function openTaskModal() { 
-  document.getElementById('taskDate').value = todayStr();
-  document.getElementById('taskStart').value = "";
-  document.getElementById('taskEnd').value = "";
-  
+function openTaskModal(taskId = null) { 
   const select = document.getElementById('taskSubjSelect');
   select.innerHTML = data.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+
+  if(taskId) {
+    editingTaskId = taskId;
+    const t = data.tasks.find(x => x.id === taskId);
+    document.getElementById('taskTitle').value = t.title;
+    document.getElementById('taskSubjSelect').value = t.subjId;
+    document.getElementById('taskTypeSelect').value = t.type || 'practice';
+    document.getElementById('taskDate').value = t.date;
+    document.getElementById('taskStart').value = t.start || "";
+    document.getElementById('taskEnd').value = t.end || "";
+    document.getElementById('taskModalTitle').textContent = "Edit Task";
+  } else {
+    editingTaskId = null;
+    document.getElementById('taskTitle').value = "";
+    document.getElementById('taskDate').value = todayStr();
+    document.getElementById('taskStart').value = "";
+    document.getElementById('taskEnd').value = "";
+    document.getElementById('taskModalTitle').textContent = "New Task";
+  }
   
   document.getElementById('taskModal').classList.add('show'); 
 }
@@ -576,15 +687,26 @@ function closeModal(id) { document.getElementById(id).classList.remove('show'); 
 function saveTask() {
  const title = document.getElementById('taskTitle').value.trim();
  if(!title) return;
- data.tasks.push({ 
-  id: getId(), title, 
+ 
+ const newTaskObj = { 
+  id: editingTaskId || getId(), 
+  title, 
   subjId: document.getElementById('taskSubjSelect').value, 
+  type: document.getElementById('taskTypeSelect').value,
   date: document.getElementById('taskDate').value, 
   start: document.getElementById('taskStart').value,
   end: document.getElementById('taskEnd').value,
   done: false 
- });
- document.getElementById('taskTitle').value = "";
+ };
+
+ if(editingTaskId) {
+   const idx = data.tasks.findIndex(x => x.id === editingTaskId);
+   newTaskObj.done = data.tasks[idx].done; // Keep done status
+   data.tasks[idx] = newTaskObj;
+ } else {
+   data.tasks.push(newTaskObj);
+ }
+
  closeModal('taskModal'); saveAll();
 }
 
@@ -624,7 +746,7 @@ function saveNotice() {
 
 function saveProfile() {
   data.profile.name = document.getElementById('profileName').value.trim() || 'Student';
-  data.profile.className = document.getElementById('profileClass').value.trim();
+  data.profile.className = document.getElementById('profileClass').value.trim() || 'Class 10';
   data.profile.goal = document.getElementById('profileGoal').value.trim();
   closeModal('profileModal'); saveAll();
 }
@@ -635,7 +757,7 @@ function backupData() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `studyflow-backup-${todayStr()}.json`;
+  a.download = `studyflow-premium-${todayStr()}.json`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
@@ -658,7 +780,7 @@ function resetData() {
   data = { 
     tasks: [], classes: [], exams: [], notices: [], 
     subjects: JSON.parse(JSON.stringify(defaultSubjects)), 
-    profile: { name: "Student", className: "", goal: "" }, theme: "dark", seenSplash: true 
+    profile: { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" }, theme: "dark", seenSplash: true 
   };
   saveAll();
 }
@@ -673,7 +795,14 @@ function deleteItem(type, id) {
  data[type] = data[type].filter(x => x.id !== id);
  saveAll();
 }
+
 function getSubject(id) { return data.subjects.find(s => s.id === id) || { name: 'General', color: '#7c5cff' }; }
+function getTaskIcon(type) {
+  if(type === 'test') return '📝';
+  if(type === 'revision') return '🔄';
+  if(type === 'class') return '🎓';
+  return '✔️';
+}
 function getTaskStatus(t) {
   if(t.done) return "done";
   if(!t.date) return "upcoming";
@@ -732,11 +861,14 @@ function getCalDayHTML(dateObj, isMuted) {
   const dayClasses = data.classes.filter(c => c.day === dayOfWeekName);
 
   let eventsHTML = "";
-  dayExams.forEach(e => { eventsHTML += `<div class="cal-event exam" style="background:rgba(244,63,94,0.15); color:#ff8b9f; border-left:3px solid var(--red);">📝 ${e.title}</div>`; });
+  dayExams.forEach(e => { eventsHTML += `<div class="cal-event exam" style="background:rgba(244,63,94,0.15); color:#ff8b9f; border-left:3px solid var(--red);">🚨 ${e.title}</div>`; });
+  
   dayTasks.slice(0, 3).forEach(t => { 
     const s = getSubject(t.subjId);
-    eventsHTML += `<div class="cal-event task" style="background:rgba(124,92,255,0.15); border-left:3px solid ${s.color}; color:${s.color}">✔ ${t.title}</div>`; 
+    const icon = getTaskIcon(t.type);
+    eventsHTML += `<div class="cal-event task" style="background:rgba(124,92,255,0.15); border-left:3px solid ${s.color}; color:${s.color}">${icon} ${t.title}</div>`; 
   });
+  
   if (dayTasks.length > 3) eventsHTML += `<div class="cal-event" style="color:var(--muted); justify-content:center">+${dayTasks.length - 3} More</div>`;
   dayClasses.forEach(c => { eventsHTML += `<div class="cal-event class" style="background:rgba(56,182,255,0.15); color:#8bd2ff; border-left:3px solid var(--blue);">🕒 ${c.title}</div>`; });
 
@@ -778,20 +910,23 @@ function renderUI() {
  
  document.getElementById('topGreeting').textContent = `Hello, ${data.profile.name}!`;
 
- // Dashboard Logic
+ // Dashboard
  const todayTasks = data.tasks.filter(t => t.date === today);
  const pendingTotal = data.tasks.filter(t => !t.done).length;
  const doneToday = todayTasks.filter(t => t.done).length;
- 
  const progressPct = todayTasks.length ? Math.round((doneToday / todayTasks.length) * 100) : (data.tasks.length ? 0 : 100);
+ 
  document.getElementById('taskRing').style.background = `conic-gradient(var(--purple) ${progressPct}%, var(--panel2) ${progressPct}%)`;
  document.getElementById('ringText').textContent = progressPct + '%';
  document.getElementById('dashPending').textContent = pendingTotal;
  document.getElementById('dashClasses').textContent = data.classes.filter(c => c.day === dayName).length;
  document.getElementById('dashExams').textContent = data.exams.length;
 
+ // Card Renderers with Premium Action Buttons
  const renderTaskHTML = (t) => {
   const subj = getSubject(t.subjId);
+  const icon = getTaskIcon(t.type);
+  const typeText = t.type ? t.type.toUpperCase() : 'TASK';
   return `
   <div class="task ${t.done ? 'done' : ''}">
    <input type="checkbox" class="check" ${t.done ? 'checked' : ''} onchange="toggleTask('${t.id}')">
@@ -799,11 +934,15 @@ function renderUI() {
     <div class="task-title">${t.title}</div>
     <div class="task-meta">
      <span class="pill"><span class="dot" style="background:${subj.color}"></span>${subj.name}</span>
+     <span class="pill"><span class="type-icon">${icon}</span>${typeText}</span>
      <span class="pill">${t.date}</span>
      ${t.start ? `<span class="pill">${t.start} - ${t.end||'TBA'}</span>` : ''}
     </div>
    </div>
-   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('tasks', '${t.id}')">Del</button>
+   <div style="display:flex; gap:6px;">
+     <button class="action-btn" onclick="openTaskModal('${t.id}')" title="Edit Task">${icons.edit}</button>
+     <button class="action-btn delete" onclick="deleteItem('tasks', '${t.id}')" title="Delete Task">${icons.delete}</button>
+   </div>
   </div>`;
  };
 
@@ -814,7 +953,7 @@ function renderUI() {
     <div class="task-title">${s.name}</div>
     <div class="task-meta"><span class="pill">${data.tasks.filter(t => t.subjId === s.id).length} linked tasks</span></div>
    </div>
-   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('subjects', '${s.id}')">Del</button>
+   <button class="action-btn delete" onclick="deleteItem('subjects', '${s.id}')" title="Delete Subject">${icons.delete}</button>
   </div>`;
 
  const renderClassHTML = (c) => `
@@ -824,7 +963,7 @@ function renderUI() {
     <div class="task-title">${c.title}</div>
     <div class="task-meta"><span class="pill">Every ${c.day}</span></div>
    </div>
-   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('classes', '${c.id}')">Del</button>
+   <button class="action-btn delete" onclick="deleteItem('classes', '${c.id}')" title="Delete Class">${icons.delete}</button>
   </div>`;
 
  const renderExamHTML = (e) => `
@@ -834,7 +973,7 @@ function renderUI() {
     <div class="task-title">${e.title}</div>
     <div class="task-meta"><span class="pill">Date: ${e.date}</span></div>
    </div>
-   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('exams', '${e.id}')">Del</button>
+   <button class="action-btn delete" onclick="deleteItem('exams', '${e.id}')" title="Delete Exam">${icons.delete}</button>
   </div>`;
   
  const renderNoticeHTML = (n) => `
@@ -844,7 +983,7 @@ function renderUI() {
     <p class="muted" style="font-size:13px">${n.desc}</p>
     <div style="font-size:11px; margin-top:8px; font-weight:700">Posted: ${n.date}</div>
    </div>
-   <button class="btn red" style="padding:5px 10px; font-size:11px; height:max-content; border:none" onclick="deleteItem('notices', '${n.id}')">Del</button>
+   <button class="action-btn delete" onclick="deleteItem('notices', '${n.id}')" title="Delete Notice">${icons.delete}</button>
   </div>`;
 
  document.getElementById('todayTasksList').innerHTML = todayTasks.length ? todayTasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks today.</p>';
@@ -859,8 +998,8 @@ function renderUI() {
 
  document.getElementById('profileDisplay').innerHTML = `
   <div class="field"><label>STUDENT NAME</label><div style="font-size:18px; font-weight:700">${data.profile.name}</div></div>
-  <div class="field"><label>GRADE / CLASS</label><div style="font-size:18px; font-weight:700">${data.profile.className || 'Not set'}</div></div>
-  <div class="field full"><label>PRIMARY TARGET</label><div style="font-size:18px; font-weight:700; color:var(--purple)">${data.profile.goal || 'Not set'}</div></div>
+  <div class="field"><label>GRADE / CLASS</label><div style="font-size:18px; font-weight:700">${data.profile.className}</div></div>
+  <div class="field full"><label>PRIMARY TARGET</label><div style="font-size:18px; font-weight:700; color:var(--purple)">${data.profile.goal}</div></div>
  `;
 
  renderCalendar();
@@ -886,11 +1025,8 @@ function toggleTimer() {
 }
 function resetTimer() { clearInterval(timerInt); isRunning = false; time = 25 * 60; updateTimerText(); document.getElementById('timerBtn').textContent = 'Start Focus'; }
 
-// Init Loop
-window.onload = () => { 
-  renderUI(); 
-  setInterval(renderLive, 60000); // live tracking
-};
+// Init Boot
+window.onload = bootApp;
 </script>
 </body>
 </html>
