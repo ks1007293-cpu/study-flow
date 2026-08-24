@@ -91,10 +91,12 @@ body.light .topbar{background:rgba(244,247,252,.85)}
 h1{font-size:clamp(24px,2.5vw,34px); font-weight:800; letter-spacing:-.8px; margin-bottom:5px}
 h2{font-size:18px; font-weight:700}
 .hero-row, .head{display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:20px}
-.btn{border:1px solid var(--line); background:var(--panel2); padding:9px 16px; border-radius:11px; font-weight:600; font-size:13px; transition:.2s ease; display:inline-flex; align-items:center; justify-content:center}
+.btn{border:1px solid var(--line); background:var(--panel2); padding:9px 16px; border-radius:11px; font-weight:600; font-size:13px; transition:.2s ease; display:inline-flex; align-items:center; justify-content:center; gap:5px;}
 .btn:hover{border-color:var(--purple); transform:translateY(-1px)}
 .btn.primary{border:none; color:#fff; background:linear-gradient(135deg,var(--purple),#5b36ff); box-shadow:0 6px 18px var(--purple-glow)}
 .btn.primary:hover{opacity:.95}
+.btn.red{background:rgba(244,63,94,.1); color:var(--red); border-color:rgba(244,63,94,.3)}
+.btn.red:hover{background:var(--red); color:#fff}
 .iconbtn{width:40px; height:40px; padding:0; border-radius:12px; font-size:18px; position:relative}
 .badge{
  position:absolute; top:-2px; right:-2px; background:var(--red); color:#fff; font-size:10px;
@@ -143,12 +145,14 @@ h2{font-size:18px; font-weight:700}
 .cal-event.class { background: rgba(56, 182, 255, 0.15); color: #8bd2ff; border-left: 3px solid var(--blue); }
 
 /* FORMS & MODALS */
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:15px;}
 .input, select, textarea{width:100%; border:1px solid var(--line); background:var(--panel2); border-radius:10px; padding:12px; font-size:14px; transition:.2s}
 .input:focus, select:focus{border-color:var(--purple); box-shadow:0 0 0 3px var(--purple-glow)}
 .modal{position:fixed; inset:0; z-index:1000; display:none; place-items:center; padding:20px; background:rgba(0,0,0,.7); backdrop-filter:blur(10px)}
 .modal.show{display:grid}
 .modalbox{width:min(500px,100%); background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow); animation:fadeIn 0.2s}
 .field{margin-bottom:15px}
+.field.full{grid-column: 1 / -1;}
 .field label{display:block; font-size:11px; font-weight:800; color:var(--muted); margin-bottom:6px}
 
 /* CONFETTI */
@@ -161,6 +165,7 @@ h2{font-size:18px; font-weight:700}
  .sidebar.open{left:0}
  .grid-layout{grid-template-columns:1fr}
  .msl-dashboard{grid-template-columns:1fr; justify-items:center; text-align:center}
+ .form-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -176,7 +181,7 @@ h2{font-size:18px; font-weight:700}
    <li>📅 <b>Smart Calendar:</b> View tasks, classes & exams together.</li>
    <li>🔔 <b>Notifications:</b> Never miss a deadline with daily alerts.</li>
    <li>📌 <b>Notice Board:</b> Pin important school/college announcements.</li>
-   <li>⏱️ <b>Focus Timer:</b> Built-in Pomodoro for deep work.</li>
+   <li>💾 <b>Backup & Profile:</b> Keep your data secure and personalized.</li>
   </ul>
   <button class="btn primary" style="width:100%; padding:14px; font-size:16px" onclick="enterApp()">Get Started Now</button>
  </div>
@@ -200,7 +205,8 @@ h2{font-size:18px; font-weight:700}
   <button class="nav" data-page="notices">Notice Board</button>
   <button class="nav" data-page="focus">Focus Timer</button>
   
-  <div class="nav-title">Settings</div>
+  <div class="nav-title">Settings & Data</div>
+  <button class="nav" data-page="profile">Profile & Backup</button>
   <button class="nav" onclick="toggleTheme()">Dark/Light Mode</button>
  </aside>
 
@@ -320,6 +326,32 @@ h2{font-size:18px; font-weight:700}
      </div>
    </section>
 
+   <!-- PROFILE & BACKUP PAGE -->
+   <section id="profile" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">SETTINGS</div><h1>Profile & Backup</h1></div>
+     <button class="btn primary" onclick="openProfileModal()">Edit Profile</button>
+    </div>
+    
+    <div class="card" style="margin-bottom: 20px;">
+     <h2>Your Profile</h2>
+     <div class="form-grid" id="profileDisplay" style="margin-top: 15px;">
+      <!-- Filled via JS -->
+     </div>
+    </div>
+
+    <div class="card">
+     <h2>Data Management</h2>
+     <p class="muted" style="margin:8px 0 16px">Export your tasks, classes, and settings securely as a JSON file, or restore them anytime.</p>
+     <div style="display:flex; gap:10px; flex-wrap:wrap">
+      <button class="btn primary" onclick="backupData()">💾 Export Backup</button>
+      <button class="btn" onclick="document.getElementById('restoreFile').click()">📂 Restore Backup</button>
+      <button class="btn red" onclick="resetData()">⚠️ Reset All Data</button>
+      <input id="restoreFile" class="hidden" type="file" accept=".json" onchange="restoreData(event)">
+     </div>
+    </div>
+   </section>
+
   </div>
  </main>
 </div>
@@ -374,15 +406,34 @@ h2{font-size:18px; font-weight:700}
  </div>
 </div>
 
+<!-- Profile Modal -->
+<div class="modal" id="profileModal">
+ <div class="modalbox">
+  <div class="head"><h2>Edit Profile</h2><button class="btn iconbtn" onclick="closeModal('profileModal')">×</button></div>
+  <div class="field"><label>YOUR NAME</label><input class="input" id="profileName" placeholder="E.g., Rahul"></div>
+  <div class="field"><label>CLASS / GRADE</label><input class="input" id="profileClass" placeholder="E.g., 12th Science"></div>
+  <div class="field"><label>MAIN TARGET</label><input class="input" id="profileGoal" placeholder="E.g., Score 95% in Boards"></div>
+  <button class="btn primary" style="width:100%" onclick="saveProfile()">Save Profile</button>
+ </div>
+</div>
+
 <script>
 // Data & Save Logic
-const STORAGE_KEY = "studyflow_pro_v3";
-let data = { tasks: [], classes: [], exams: [], notices: [], theme: "dark", seenSplash: false };
+const STORAGE_KEY = "studyflow_pro_v4";
+let data = { 
+  tasks: [], classes: [], exams: [], notices: [], 
+  profile: { name: "Student", className: "", goal: "" },
+  theme: "dark", seenSplash: false 
+};
 let currentCalDate = new Date(); 
 
 try {
  const saved = localStorage.getItem(STORAGE_KEY);
- if (saved) data = JSON.parse(saved);
+ if (saved) {
+    const parsed = JSON.parse(saved);
+    data = { ...data, ...parsed }; // Merge to ensure profile obj exists
+    if(!data.profile) data.profile = { name: "Student", className: "", goal: "" };
+ }
 } catch(e) {}
 
 if(window.innerWidth <= 850) document.getElementById('menuBtn').style.display = 'block';
@@ -405,13 +456,11 @@ function enterApp() {
   data.seenSplash = true;
   saveAll();
   
-  // Request Browser Notifications
   if ("Notification" in window && Notification.permission !== "granted") {
     Notification.requestPermission();
   }
 }
 
-// Show intro only if new user
 if(!data.seenSplash) {
   document.getElementById('splash').classList.remove('hide');
 } else {
@@ -420,7 +469,6 @@ if(!data.seenSplash) {
 
 function checkNotifications() {
   const today = todayStr();
-  const dayName = currentDayName();
   let alertsCount = 0;
   
   const pendingTasks = data.tasks.filter(t => t.date === today && !t.done).length;
@@ -432,7 +480,6 @@ function checkNotifications() {
   if(alertsCount > 0) {
     badge.textContent = alertsCount;
     badge.classList.remove('hidden');
-    // Browser notification (triggers once per load)
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification("StudyFlow Alerts", { body: `You have ${pendingTasks} tasks and ${examsToday} exams today!` });
     }
@@ -468,9 +515,15 @@ function openTaskModal() { document.getElementById('taskDate').value = todayStr(
 function openClassModal() { document.getElementById('classDay').value = currentDayName(); document.getElementById('classModal').classList.add('show'); }
 function openExamModal() { document.getElementById('examDate').value = todayStr(); document.getElementById('examModal').classList.add('show'); }
 function openNoticeModal() { document.getElementById('noticeModal').classList.add('show'); }
+function openProfileModal() {
+  document.getElementById('profileName').value = data.profile.name || '';
+  document.getElementById('profileClass').value = data.profile.className || '';
+  document.getElementById('profileGoal').value = data.profile.goal || '';
+  document.getElementById('profileModal').classList.add('show');
+}
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-// Saving Logic
+// Saving Logic (Tasks, Classes, Exams, Notices, Profile)
 function saveTask() {
  const title = document.getElementById('taskTitle').value.trim();
  if(!title) return;
@@ -499,11 +552,52 @@ function saveNotice() {
  const title = document.getElementById('noticeTitle').value.trim();
  const desc = document.getElementById('noticeDetails').value.trim();
  if(!title) return;
- if(!data.notices) data.notices = [];
  data.notices.push({ id: getId(), title, desc, date: todayStr() });
  document.getElementById('noticeTitle').value = "";
  document.getElementById('noticeDetails').value = "";
  closeModal('noticeModal'); saveAll();
+}
+
+function saveProfile() {
+  data.profile.name = document.getElementById('profileName').value.trim() || 'Student';
+  data.profile.className = document.getElementById('profileClass').value.trim();
+  data.profile.goal = document.getElementById('profileGoal').value.trim();
+  closeModal('profileModal'); saveAll();
+}
+
+// Backup & Restore Logic
+function backupData() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `studyflow-backup-${todayStr()}.json`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  alert("Backup Downloaded Successfully!");
+}
+
+async function restoreData(e) {
+  const file = e.target.files?.[0];
+  if(!file) return;
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    data = { ...data, ...parsed }; // Merge to preserve defaults
+    if(!data.profile) data.profile = { name: "Student", className: "", goal: "" };
+    saveAll();
+    alert("Data Restored Successfully!");
+  } catch(err) {
+    alert("Error: Invalid Backup File!");
+  }
+  e.target.value = "";
+}
+
+function resetData() {
+  if(!confirm("Are you sure you want to permanently delete ALL data?")) return;
+  data = { tasks: [], classes: [], exams: [], notices: [], profile: { name: "Student", className: "", goal: "" }, theme: "dark", seenSplash: true };
+  saveAll();
+  alert("All data has been reset.");
 }
 
 function toggleTask(id) {
@@ -535,7 +629,7 @@ function fireConfetti() {
  }
 }
 
-// MSL Calendar Rendering (Robust)
+// MSL Calendar Rendering
 function renderCalendar() {
   const year = currentCalDate.getFullYear();
   const month = currentCalDate.getMonth();
@@ -596,6 +690,10 @@ function renderUI() {
  const today = todayStr();
  const dayName = currentDayName();
  
+ // Greeting update
+ document.getElementById('topGreeting').textContent = `Hello, ${data.profile.name}!`;
+
+ // Dashboard Logic
  const todayTasks = data.tasks.filter(t => t.date === today);
  const pendingTotal = data.tasks.filter(t => !t.done).length;
  const doneToday = todayTasks.filter(t => t.done).length;
@@ -608,6 +706,7 @@ function renderUI() {
  document.getElementById('dashClasses').textContent = data.classes.filter(c => c.day === dayName).length;
  document.getElementById('dashExams').textContent = data.exams.length;
 
+ // Helpers for rendering cards
  const renderTaskHTML = (t) => `
   <div class="task ${t.done ? 'done' : ''}">
    <input type="checkbox" class="check" ${t.done ? 'checked' : ''} onchange="toggleTask('${t.id}')">
@@ -615,7 +714,7 @@ function renderUI() {
     <div class="task-title">${t.title}</div>
     <div class="task-meta"><span class="pill">${t.subj}</span><span class="pill">${t.date}</span></div>
    </div>
-   <button class="btn" style="padding:5px 10px; font-size:11px" onclick="deleteItem('tasks', '${t.id}')">Del</button>
+   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('tasks', '${t.id}')">Del</button>
   </div>`;
 
  const renderClassHTML = (c) => `
@@ -625,7 +724,7 @@ function renderUI() {
     <div class="task-title">${c.title}</div>
     <div class="task-meta"><span class="pill">Every ${c.day}</span></div>
    </div>
-   <button class="btn" style="padding:5px 10px; font-size:11px" onclick="deleteItem('classes', '${c.id}')">Del</button>
+   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('classes', '${c.id}')">Del</button>
   </div>`;
 
  const renderExamHTML = (e) => `
@@ -635,7 +734,7 @@ function renderUI() {
     <div class="task-title">${e.title}</div>
     <div class="task-meta"><span class="pill">Date: ${e.date}</span></div>
    </div>
-   <button class="btn" style="padding:5px 10px; font-size:11px" onclick="deleteItem('exams', '${e.id}')">Del</button>
+   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('exams', '${e.id}')">Del</button>
   </div>`;
   
  const renderNoticeHTML = (n) => `
@@ -645,10 +744,10 @@ function renderUI() {
     <p class="muted" style="font-size:13px">${n.desc}</p>
     <div style="font-size:11px; margin-top:8px; font-weight:700">Posted: ${n.date}</div>
    </div>
-   <button class="btn" style="padding:5px 10px; font-size:11px; height:max-content" onclick="deleteItem('notices', '${n.id}')">Del</button>
-  </div>
- `;
+   <button class="btn red" style="padding:5px 10px; font-size:11px; height:max-content; border:none" onclick="deleteItem('notices', '${n.id}')">Del</button>
+  </div>`;
 
+ // Apply to Lists
  document.getElementById('todayTasksList').innerHTML = todayTasks.length ? todayTasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks today.</p>';
  document.getElementById('allTasksList').innerHTML = data.tasks.length ? data.tasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks added yet.</p>';
  
@@ -659,6 +758,13 @@ function renderUI() {
  document.getElementById('allExamsList').innerHTML = data.exams.length ? data.exams.map(renderExamHTML).join('') : '<p class="muted">No upcoming exams.</p>';
 
  document.getElementById('noticeList').innerHTML = (data.notices && data.notices.length) ? data.notices.map(renderNoticeHTML).reverse().join('') : '<p class="muted">No notices pinned.</p>';
+
+ // Profile Tab Render
+ document.getElementById('profileDisplay').innerHTML = `
+  <div class="field"><label>STUDENT NAME</label><div style="font-size:18px; font-weight:700">${data.profile.name}</div></div>
+  <div class="field"><label>GRADE / CLASS</label><div style="font-size:18px; font-weight:700">${data.profile.className || 'Not set'}</div></div>
+  <div class="field full"><label>PRIMARY TARGET</label><div style="font-size:18px; font-weight:700; color:var(--purple)">${data.profile.goal || 'Not set'}</div></div>
+ `;
 
  renderCalendar();
  checkNotifications();
