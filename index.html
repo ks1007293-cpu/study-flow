@@ -330,11 +330,30 @@ h2{font-size:18px; font-weight:700}
    </section>
 
    <!-- CLASSES PAGE -->
+   <!-- CLASSES PAGE -->
    <section id="classes" class="page">
     <div class="hero-row">
      <div><div class="eyebrow">SCHEDULE</div><h1>Timetable</h1></div>
      <button class="btn primary" onclick="openClassModal()">+ Add Class</button>
     </div>
+
+    <!-- NEW: PW MASTER TIMETABLE UPLOAD -->
+    <div class="card" style="margin-bottom: 20px; border-left: 4px solid var(--blue);">
+     <div class="head" style="margin-bottom: 10px;">
+      <h2 style="font-size: 16px;">📸 PW Master Timetable</h2>
+      <div style="display:flex; gap:8px;">
+       <button class="btn" onclick="document.getElementById('pwTimetableUpload').click()">Upload Photo</button>
+       <button class="btn red" onclick="deletePWTimetable()">Remove</button>
+      </div>
+      <input type="file" id="pwTimetableUpload" class="hidden" accept="image/*" onchange="savePWTimetable(event)">
+     </div>
+     
+     <div id="pwTimetableDisplay" style="width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 1px solid var(--line); margin-top:10px;">
+      <img id="pwTimetableImg" src="" style="width: 100%; height: auto; display: block; object-fit: contain;">
+     </div>
+     <p class="muted" id="pwNoImageText" style="font-size: 12px; margin-top: 5px;">Upload your Physics Wallah schedule screenshot here.</p>
+    </div>
+
     <div class="card"><div class="task-list" id="allClassesList"></div></div>
    </section>
 
