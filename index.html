@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StudyFlow Pro | MSL Edition</title>
+<title>StudyFlow Pro | Ultimate MSL</title>
 <style>
 :root{
  --bg:#090d16; --bg2:#0f1523; --panel:#141c2e; --panel2:#1a243a; --panel3:#23304d;
@@ -31,7 +31,7 @@ button{cursor:pointer}
 .hidden{display:none!important}
 .muted{color:var(--muted)}
 
-/* EPIC ONBOARDING SPLASH */
+/* ONBOARDING SPLASH */
 #splash{
  position:fixed; inset:0; z-index:99999; background:var(--bg2);
  display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -41,7 +41,7 @@ button{cursor:pointer}
 .splash-card{
  background:var(--panel); border:1px solid var(--line); border-radius:24px;
  padding:40px; max-width:500px; width:90%; text-align:center; box-shadow:var(--shadow);
- animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+ animation: slideUp 0.8s forwards;
 }
 .splash-logo{
  width:80px; height:80px; border-radius:20px; margin:0 auto 20px;
@@ -127,7 +127,17 @@ h2{font-size:18px; font-weight:700}
 .task-title{font-weight:700; font-size:15px}
 .task-meta{display:flex; gap:8px; margin-top:6px; font-size:11px; color:var(--muted); flex-wrap:wrap; align-items:center}
 .pill{background:var(--panel3); padding:4px 8px; border-radius:6px; font-weight:700; display:inline-flex; align-items:center; gap:5px}
+.dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
 .notice-card{background:var(--panel2); border-left:4px solid var(--yellow); padding:15px; border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between}
+
+/* LIVE TRACKING TIMELINE */
+.timeline{display:grid;gap:0;}
+.timeline-item{display:grid;grid-template-columns:85px 16px minmax(0,1fr);gap:14px;padding:12px 0;}
+.timeline-time{color:var(--muted);font-size:12px;font-weight:800;text-align:right;}
+.timeline-dot{width:13px;height:13px;border-radius:50%;margin-top:3px;background:var(--blue);box-shadow:0 0 0 4px rgba(53,169,255,.1);}
+.timeline-card{border-bottom:1px solid var(--line);padding-bottom:12px;}
+.live-now .timeline-dot{background:var(--green);box-shadow:0 0 0 6px rgba(36,214,156,.15);}
+.overdue .timeline-dot{background:var(--red);box-shadow:0 0 0 4px rgba(244,63,94,.15);}
 
 /* MSL ENHANCED CALENDAR */
 .cal-wrapper { width: 100%; overflow-x: auto; }
@@ -140,9 +150,6 @@ h2{font-size:18px; font-weight:700}
 .cal-date { font-weight: 800; font-size: 14px; margin-bottom: 6px; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; }
 .cal-day.today .cal-date { background: var(--purple); color: #fff; }
 .cal-event { font-size: 11px; padding: 6px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display:flex; align-items:center; gap:5px; }
-.cal-event.task { background: rgba(124, 92, 255, 0.15); color: #b39aff; border-left: 3px solid var(--purple); }
-.cal-event.exam { background: rgba(244, 63, 94, 0.15); color: #ff8b9f; border-left: 3px solid var(--red); }
-.cal-event.class { background: rgba(56, 182, 255, 0.15); color: #8bd2ff; border-left: 3px solid var(--blue); }
 
 /* FORMS & MODALS */
 .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:15px;}
@@ -150,7 +157,7 @@ h2{font-size:18px; font-weight:700}
 .input:focus, select:focus{border-color:var(--purple); box-shadow:0 0 0 3px var(--purple-glow)}
 .modal{position:fixed; inset:0; z-index:1000; display:none; place-items:center; padding:20px; background:rgba(0,0,0,.7); backdrop-filter:blur(10px)}
 .modal.show{display:grid}
-.modalbox{width:min(500px,100%); background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow); animation:fadeIn 0.2s}
+.modalbox{width:min(550px,100%); background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow); animation:fadeIn 0.2s; max-height: 90vh; overflow-y: auto;}
 .field{margin-bottom:15px}
 .field.full{grid-column: 1 / -1;}
 .field label{display:block; font-size:11px; font-weight:800; color:var(--muted); margin-bottom:6px}
@@ -166,6 +173,7 @@ h2{font-size:18px; font-weight:700}
  .grid-layout{grid-template-columns:1fr}
  .msl-dashboard{grid-template-columns:1fr; justify-items:center; text-align:center}
  .form-grid{grid-template-columns:1fr;}
+ .timeline-item{grid-template-columns:70px 14px minmax(0,1fr);}
 }
 </style>
 </head>
@@ -176,12 +184,12 @@ h2{font-size:18px; font-weight:700}
  <div class="splash-card">
   <div class="splash-logo">SF</div>
   <h1>StudyFlow Pro</h1>
-  <p>Your Ultimate Academic Planner inspired by My Study Life.</p>
+  <p>The Ultimate Academic Planner. All Features Restored.</p>
   <ul class="feature-list">
-   <li>📅 <b>Smart Calendar:</b> View tasks, classes & exams together.</li>
-   <li>🔔 <b>Notifications:</b> Never miss a deadline with daily alerts.</li>
-   <li>📌 <b>Notice Board:</b> Pin important school/college announcements.</li>
-   <li>💾 <b>Backup & Profile:</b> Keep your data secure and personalized.</li>
+   <li>📅 <b>Smart Calendar:</b> Tasks, Classes & Exams in one view.</li>
+   <li>⏱️ <b>Live Tracking:</b> Timeline based on start & end times.</li>
+   <li>📚 <b>Subjects:</b> Color-coded curriculums and tags.</li>
+   <li>💾 <b>Backup & Restore:</b> Safe data management & Profile settings.</li>
   </ul>
   <button class="btn primary" style="width:100%; padding:14px; font-size:16px" onclick="enterApp()">Get Started Now</button>
  </div>
@@ -192,16 +200,18 @@ h2{font-size:18px; font-weight:700}
  <aside class="sidebar" id="sidebar">
   <div class="brand">
    <div class="brand-icon">SF</div>
-   <div><strong>StudyFlow Pro</strong><span class="muted">MSL Edition</span></div>
+   <div><strong>StudyFlow Pro</strong><span class="muted">Ultimate Edition</span></div>
   </div>
-  <div class="nav-title">My Study Life</div>
+  <div class="nav-title">My Workspace</div>
   <button class="nav active" data-page="dashboard">Dashboard</button>
   <button class="nav" data-page="calendar">Calendar</button>
   <button class="nav" data-page="tasks">Tasks & Homework</button>
+  <button class="nav" data-page="subjects">Subjects / Library</button>
   <button class="nav" data-page="classes">Timetable / Classes</button>
   <button class="nav" data-page="exams">Exams</button>
   
-  <div class="nav-title">Productivity</div>
+  <div class="nav-title">Tools & Live</div>
+  <button class="nav" data-page="live">Live Tracking</button>
   <button class="nav" data-page="notices">Notice Board</button>
   <button class="nav" data-page="focus">Focus Timer</button>
   
@@ -285,6 +295,17 @@ h2{font-size:18px; font-weight:700}
     <div class="card"><div class="task-list" id="allTasksList"></div></div>
    </section>
 
+   <!-- SUBJECTS PAGE -->
+   <section id="subjects" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">CURRICULUM</div><h1>Subjects</h1></div>
+     <button class="btn primary" onclick="openSubjectModal()">+ Add Subject</button>
+    </div>
+    <div class="card">
+     <div class="task-list" id="subjectList"></div>
+    </div>
+   </section>
+
    <!-- CLASSES PAGE -->
    <section id="classes" class="page">
     <div class="hero-row">
@@ -301,6 +322,20 @@ h2{font-size:18px; font-weight:700}
      <button class="btn primary" onclick="openExamModal()">+ Add Exam</button>
     </div>
     <div class="card"><div class="task-list" id="allExamsList"></div></div>
+   </section>
+
+   <!-- LIVE TRACKING PAGE -->
+   <section id="live" class="page">
+    <div class="hero-row">
+     <div><div class="eyebrow">REAL-TIME</div><h1>Live Task Tracking</h1></div>
+    </div>
+    <div class="card">
+     <div class="head">
+      <h2 style="margin:0">Today's Timeline</h2>
+      <span class="muted" id="liveNowClock"></span>
+     </div>
+     <div class="timeline" id="liveList" style="margin-top:20px"></div>
+    </div>
    </section>
 
    <!-- NOTICES PAGE -->
@@ -335,14 +370,12 @@ h2{font-size:18px; font-weight:700}
     
     <div class="card" style="margin-bottom: 20px;">
      <h2>Your Profile</h2>
-     <div class="form-grid" id="profileDisplay" style="margin-top: 15px;">
-      <!-- Filled via JS -->
-     </div>
+     <div class="form-grid" id="profileDisplay" style="margin-top: 15px;"></div>
     </div>
 
     <div class="card">
      <h2>Data Management</h2>
-     <p class="muted" style="margin:8px 0 16px">Export your tasks, classes, and settings securely as a JSON file, or restore them anytime.</p>
+     <p class="muted" style="margin:8px 0 16px">Export your tasks, classes, subjects, and settings securely as a JSON file, or restore them anytime.</p>
      <div style="display:flex; gap:10px; flex-wrap:wrap">
       <button class="btn primary" onclick="backupData()">💾 Export Backup</button>
       <button class="btn" onclick="document.getElementById('restoreFile').click()">📂 Restore Backup</button>
@@ -357,14 +390,32 @@ h2{font-size:18px; font-weight:700}
 </div>
 
 <!-- MODALS -->
+
 <!-- Task Modal -->
 <div class="modal" id="taskModal">
  <div class="modalbox">
   <div class="head"><h2>New Task</h2><button class="btn iconbtn" onclick="closeModal('taskModal')">×</button></div>
-  <div class="field"><label>TASK TITLE</label><input class="input" id="taskTitle" placeholder="E.g., Complete Math Assignment"></div>
-  <div class="field"><label>SUBJECT</label><input class="input" id="taskSubj" placeholder="E.g., Mathematics"></div>
+  <div class="field"><label>TASK TITLE</label><input class="input" id="taskTitle" placeholder="E.g., Revise Chapter 1"></div>
+  <div class="field">
+    <label>SUBJECT</label>
+    <select class="input" id="taskSubjSelect"></select>
+  </div>
   <div class="field"><label>DUE DATE</label><input type="date" class="input" id="taskDate"></div>
-  <button class="btn primary" style="width:100%" onclick="saveTask()">Save Task</button>
+  <div class="form-grid">
+   <div class="field"><label>START TIME</label><input type="time" class="input" id="taskStart"></div>
+   <div class="field"><label>END TIME</label><input type="time" class="input" id="taskEnd"></div>
+  </div>
+  <button class="btn primary" style="width:100%; margin-top:10px" onclick="saveTask()">Save Task</button>
+ </div>
+</div>
+
+<!-- Subject Modal -->
+<div class="modal" id="subjectModal">
+ <div class="modalbox">
+  <div class="head"><h2>Add Subject</h2><button class="btn iconbtn" onclick="closeModal('subjectModal')">×</button></div>
+  <div class="field"><label>SUBJECT NAME</label><input class="input" id="subjectName" placeholder="E.g., Physics"></div>
+  <div class="field"><label>COLOR TAG</label><input type="color" class="input" id="subjectColor" value="#7c5cff" style="height:50px; padding:5px"></div>
+  <button class="btn primary" style="width:100%" onclick="saveSubject()">Save Subject</button>
  </div>
 </div>
 
@@ -418,10 +469,17 @@ h2{font-size:18px; font-weight:700}
 </div>
 
 <script>
-// Data & Save Logic
-const STORAGE_KEY = "studyflow_pro_v4";
+// Logic & Storage (v6 Ultimate)
+const STORAGE_KEY = "studyflow_pro_v6";
+const defaultSubjects = [
+  { id: "s1", name: "Mathematics", color: "#7c5cff" },
+  { id: "s2", name: "Science", color: "#38b6ff" },
+  { id: "s3", name: "English", color: "#10b981" }
+];
+
 let data = { 
   tasks: [], classes: [], exams: [], notices: [], 
+  subjects: JSON.parse(JSON.stringify(defaultSubjects)),
   profile: { name: "Student", className: "", goal: "" },
   theme: "dark", seenSplash: false 
 };
@@ -431,8 +489,9 @@ try {
  const saved = localStorage.getItem(STORAGE_KEY);
  if (saved) {
     const parsed = JSON.parse(saved);
-    data = { ...data, ...parsed }; // Merge to ensure profile obj exists
+    data = { ...data, ...parsed }; 
     if(!data.profile) data.profile = { name: "Student", className: "", goal: "" };
+    if(!data.subjects || data.subjects.length === 0) data.subjects = JSON.parse(JSON.stringify(defaultSubjects));
  }
 } catch(e) {}
 
@@ -450,42 +509,27 @@ function todayStr() {
 function currentDayName() { return new Date().toLocaleDateString('en-US', {weekday: 'long'}); }
 function getId() { return Date.now().toString(36); }
 
-// Onboarding & Notifications Setup
+// Onboarding
 function enterApp() {
   document.getElementById('splash').classList.add('hide');
   data.seenSplash = true;
   saveAll();
-  
-  if ("Notification" in window && Notification.permission !== "granted") {
-    Notification.requestPermission();
-  }
+  if ("Notification" in window && Notification.permission !== "granted") Notification.requestPermission();
 }
-
-if(!data.seenSplash) {
-  document.getElementById('splash').classList.remove('hide');
-} else {
-  document.getElementById('splash').style.display = 'none';
-}
+if(!data.seenSplash) { document.getElementById('splash').classList.remove('hide'); } 
+else { document.getElementById('splash').style.display = 'none'; }
 
 function checkNotifications() {
   const today = todayStr();
-  let alertsCount = 0;
-  
   const pendingTasks = data.tasks.filter(t => t.date === today && !t.done).length;
   const examsToday = data.exams.filter(e => e.date === today).length;
-  
-  alertsCount = pendingTasks + examsToday;
+  const alertsCount = pendingTasks + examsToday;
   
   const badge = document.getElementById('notifBadge');
   if(alertsCount > 0) {
     badge.textContent = alertsCount;
     badge.classList.remove('hidden');
-    if ("Notification" in window && Notification.permission === "granted") {
-      new Notification("StudyFlow Alerts", { body: `You have ${pendingTasks} tasks and ${examsToday} exams today!` });
-    }
-  } else {
-    badge.classList.add('hidden');
-  }
+  } else { badge.classList.add('hidden'); }
 }
 
 // Navigation
@@ -501,20 +545,25 @@ function showPage(pageId) {
 document.querySelectorAll('.nav[data-page]').forEach(btn => {
  btn.onclick = () => showPage(btn.dataset.page);
 });
-
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
-function toggleTheme() {
- data.theme = data.theme === 'dark' ? 'light' : 'dark';
- document.body.className = data.theme;
- saveAll();
-}
+function toggleTheme() { data.theme = data.theme === 'dark' ? 'light' : 'dark'; document.body.className = data.theme; saveAll(); }
 document.body.className = data.theme;
 
 // Modals
-function openTaskModal() { document.getElementById('taskDate').value = todayStr(); document.getElementById('taskModal').classList.add('show'); }
+function openTaskModal() { 
+  document.getElementById('taskDate').value = todayStr();
+  document.getElementById('taskStart').value = "";
+  document.getElementById('taskEnd').value = "";
+  
+  const select = document.getElementById('taskSubjSelect');
+  select.innerHTML = data.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+  
+  document.getElementById('taskModal').classList.add('show'); 
+}
 function openClassModal() { document.getElementById('classDay').value = currentDayName(); document.getElementById('classModal').classList.add('show'); }
 function openExamModal() { document.getElementById('examDate').value = todayStr(); document.getElementById('examModal').classList.add('show'); }
 function openNoticeModal() { document.getElementById('noticeModal').classList.add('show'); }
+function openSubjectModal() { document.getElementById('subjectModal').classList.add('show'); }
 function openProfileModal() {
   document.getElementById('profileName').value = data.profile.name || '';
   document.getElementById('profileClass').value = data.profile.className || '';
@@ -523,13 +572,28 @@ function openProfileModal() {
 }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-// Saving Logic (Tasks, Classes, Exams, Notices, Profile)
+// Save Functions
 function saveTask() {
  const title = document.getElementById('taskTitle').value.trim();
  if(!title) return;
- data.tasks.push({ id: getId(), title, subj: document.getElementById('taskSubj').value || 'General', date: document.getElementById('taskDate').value, done: false });
+ data.tasks.push({ 
+  id: getId(), title, 
+  subjId: document.getElementById('taskSubjSelect').value, 
+  date: document.getElementById('taskDate').value, 
+  start: document.getElementById('taskStart').value,
+  end: document.getElementById('taskEnd').value,
+  done: false 
+ });
  document.getElementById('taskTitle').value = "";
  closeModal('taskModal'); saveAll();
+}
+
+function saveSubject() {
+  const name = document.getElementById('subjectName').value.trim();
+  if(!name) return;
+  data.subjects.push({ id: getId(), name, color: document.getElementById('subjectColor').value });
+  document.getElementById('subjectName').value = "";
+  closeModal('subjectModal'); saveAll();
 }
 
 function saveClass() {
@@ -565,7 +629,7 @@ function saveProfile() {
   closeModal('profileModal'); saveAll();
 }
 
-// Backup & Restore Logic
+// Backup & Restore
 function backupData() {
   const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
   const url = URL.createObjectURL(blob);
@@ -574,7 +638,6 @@ function backupData() {
   a.download = `studyflow-backup-${todayStr()}.json`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  alert("Backup Downloaded Successfully!");
 }
 
 async function restoreData(e) {
@@ -583,36 +646,43 @@ async function restoreData(e) {
   try {
     const text = await file.text();
     const parsed = JSON.parse(text);
-    data = { ...data, ...parsed }; // Merge to preserve defaults
-    if(!data.profile) data.profile = { name: "Student", className: "", goal: "" };
+    data = { ...data, ...parsed }; 
     saveAll();
     alert("Data Restored Successfully!");
-  } catch(err) {
-    alert("Error: Invalid Backup File!");
-  }
+  } catch(err) { alert("Error: Invalid Backup File!"); }
   e.target.value = "";
 }
 
 function resetData() {
   if(!confirm("Are you sure you want to permanently delete ALL data?")) return;
-  data = { tasks: [], classes: [], exams: [], notices: [], profile: { name: "Student", className: "", goal: "" }, theme: "dark", seenSplash: true };
+  data = { 
+    tasks: [], classes: [], exams: [], notices: [], 
+    subjects: JSON.parse(JSON.stringify(defaultSubjects)), 
+    profile: { name: "Student", className: "", goal: "" }, theme: "dark", seenSplash: true 
+  };
   saveAll();
-  alert("All data has been reset.");
 }
 
+// Interactions
 function toggleTask(id) {
  const t = data.tasks.find(x => x.id === id);
- if(t) {
-  t.done = !t.done;
-  if(t.done) fireConfetti(); 
-  saveAll();
- }
+ if(t) { t.done = !t.done; if(t.done) fireConfetti(); saveAll(); }
 }
-
 function deleteItem(type, id) {
  if(!confirm("Are you sure?")) return;
  data[type] = data[type].filter(x => x.id !== id);
  saveAll();
+}
+function getSubject(id) { return data.subjects.find(s => s.id === id) || { name: 'General', color: '#7c5cff' }; }
+function getTaskStatus(t) {
+  if(t.done) return "done";
+  if(!t.date) return "upcoming";
+  const now = new Date();
+  const start = new Date(`${t.date}T${t.start || "00:00"}`);
+  const end = new Date(`${t.date}T${t.end || "23:59"}`);
+  if(now > end) return "overdue";
+  if(now >= start && now <= end) return "live";
+  return "upcoming";
 }
 
 // Confetti
@@ -629,11 +699,10 @@ function fireConfetti() {
  }
 }
 
-// MSL Calendar Rendering
+// Calendar
 function renderCalendar() {
   const year = currentCalDate.getFullYear();
   const month = currentCalDate.getMonth();
-  
   document.getElementById('calMonthTitle').textContent = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -663,34 +732,50 @@ function getCalDayHTML(dateObj, isMuted) {
   const dayClasses = data.classes.filter(c => c.day === dayOfWeekName);
 
   let eventsHTML = "";
-  dayExams.forEach(e => { eventsHTML += `<div class="cal-event exam" title="Exam: ${e.title}">📝 ${e.title}</div>`; });
-  dayTasks.slice(0, 3).forEach(t => { eventsHTML += `<div class="cal-event task" title="Task: ${t.title}">✔ ${t.title}</div>`; });
+  dayExams.forEach(e => { eventsHTML += `<div class="cal-event exam" style="background:rgba(244,63,94,0.15); color:#ff8b9f; border-left:3px solid var(--red);">📝 ${e.title}</div>`; });
+  dayTasks.slice(0, 3).forEach(t => { 
+    const s = getSubject(t.subjId);
+    eventsHTML += `<div class="cal-event task" style="background:rgba(124,92,255,0.15); border-left:3px solid ${s.color}; color:${s.color}">✔ ${t.title}</div>`; 
+  });
   if (dayTasks.length > 3) eventsHTML += `<div class="cal-event" style="color:var(--muted); justify-content:center">+${dayTasks.length - 3} More</div>`;
-  dayClasses.forEach(c => { eventsHTML += `<div class="cal-event class" title="Class: ${c.title}">🕒 ${c.title}</div>`; });
+  dayClasses.forEach(c => { eventsHTML += `<div class="cal-event class" style="background:rgba(56,182,255,0.15); color:#8bd2ff; border-left:3px solid var(--blue);">🕒 ${c.title}</div>`; });
 
-  return `
-    <div class="cal-day ${isMuted ? 'muted-day' : ''} ${isToday ? 'today' : ''}">
-      <div class="cal-date">${dateObj.getDate()}</div>
-      ${eventsHTML}
-    </div>
-  `;
+  return `<div class="cal-day ${isMuted ? 'muted-day' : ''} ${isToday ? 'today' : ''}"><div class="cal-date">${dateObj.getDate()}</div>${eventsHTML}</div>`;
+}
+function changeMonth(step) { currentCalDate = new Date(currentCalDate.getFullYear(), currentCalDate.getMonth() + step, 1); renderCalendar(); }
+function todayMonth() { currentCalDate = new Date(); renderCalendar(); }
+
+// Live Tracking
+function renderLive() {
+  document.getElementById('liveNowClock').textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  const list = data.tasks.filter(t => t.date === todayStr()).sort((a,b) => (a.start || "").localeCompare(b.start || ""));
+  
+  const html = list.length ? list.map(t => {
+    const st = getTaskStatus(t);
+    const s = getSubject(t.subjId);
+    return `
+    <div class="timeline-item ${st==='live'?'live-now':''} ${st==='overdue'?'overdue':''}">
+     <div class="timeline-time">${t.start || "--:--"}</div>
+     <div class="timeline-dot" style="${st==='live' ? 'background:'+s.color : ''}"></div>
+     <div class="timeline-card">
+      <div class="task-title" style="${t.done?'text-decoration:line-through; opacity:0.5':''}">${t.title}</div>
+      <div class="task-meta">
+       <span class="pill"><span class="dot" style="background:${s.color}"></span>${s.name}</span>
+       <span class="pill" style="text-transform:uppercase">${st}</span>
+       ${t.end ? `<span class="pill">Ends ${t.end}</span>` : ''}
+      </div>
+     </div>
+    </div>`;
+  }).join('') : '<p class="muted">No tasks scheduled for today timeline.</p>';
+  
+  document.getElementById('liveList').innerHTML = html;
 }
 
-function changeMonth(step) {
-  currentCalDate = new Date(currentCalDate.getFullYear(), currentCalDate.getMonth() + step, 1);
-  renderCalendar();
-}
-function todayMonth() {
-  currentCalDate = new Date();
-  renderCalendar();
-}
-
-// Global UI Render
+// UI Render
 function renderUI() {
  const today = todayStr();
  const dayName = currentDayName();
  
- // Greeting update
  document.getElementById('topGreeting').textContent = `Hello, ${data.profile.name}!`;
 
  // Dashboard Logic
@@ -701,20 +786,35 @@ function renderUI() {
  const progressPct = todayTasks.length ? Math.round((doneToday / todayTasks.length) * 100) : (data.tasks.length ? 0 : 100);
  document.getElementById('taskRing').style.background = `conic-gradient(var(--purple) ${progressPct}%, var(--panel2) ${progressPct}%)`;
  document.getElementById('ringText').textContent = progressPct + '%';
-
  document.getElementById('dashPending').textContent = pendingTotal;
  document.getElementById('dashClasses').textContent = data.classes.filter(c => c.day === dayName).length;
  document.getElementById('dashExams').textContent = data.exams.length;
 
- // Helpers for rendering cards
- const renderTaskHTML = (t) => `
+ const renderTaskHTML = (t) => {
+  const subj = getSubject(t.subjId);
+  return `
   <div class="task ${t.done ? 'done' : ''}">
    <input type="checkbox" class="check" ${t.done ? 'checked' : ''} onchange="toggleTask('${t.id}')">
    <div>
     <div class="task-title">${t.title}</div>
-    <div class="task-meta"><span class="pill">${t.subj}</span><span class="pill">${t.date}</span></div>
+    <div class="task-meta">
+     <span class="pill"><span class="dot" style="background:${subj.color}"></span>${subj.name}</span>
+     <span class="pill">${t.date}</span>
+     ${t.start ? `<span class="pill">${t.start} - ${t.end||'TBA'}</span>` : ''}
+    </div>
    </div>
    <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('tasks', '${t.id}')">Del</button>
+  </div>`;
+ };
+
+ const renderSubjHTML = (s) => `
+  <div class="task">
+   <div style="width:16px; height:16px; border-radius:50%; background:${s.color}"></div>
+   <div>
+    <div class="task-title">${s.name}</div>
+    <div class="task-meta"><span class="pill">${data.tasks.filter(t => t.subjId === s.id).length} linked tasks</span></div>
+   </div>
+   <button class="btn red" style="padding:5px 10px; font-size:11px; border:none" onclick="deleteItem('subjects', '${s.id}')">Del</button>
   </div>`;
 
  const renderClassHTML = (c) => `
@@ -747,19 +847,16 @@ function renderUI() {
    <button class="btn red" style="padding:5px 10px; font-size:11px; height:max-content; border:none" onclick="deleteItem('notices', '${n.id}')">Del</button>
   </div>`;
 
- // Apply to Lists
  document.getElementById('todayTasksList').innerHTML = todayTasks.length ? todayTasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks today.</p>';
- document.getElementById('allTasksList').innerHTML = data.tasks.length ? data.tasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks added yet.</p>';
+ document.getElementById('allTasksList').innerHTML = data.tasks.length ? data.tasks.map(renderTaskHTML).sort((a,b)=>(a.date||'').localeCompare(b.date||'')).join('') : '<p class="muted">No tasks added yet.</p>';
+ document.getElementById('subjectList').innerHTML = data.subjects.length ? data.subjects.map(renderSubjHTML).join('') : '<p class="muted">No subjects added.</p>';
  
  const todayClasses = data.classes.filter(c => c.day === dayName);
  document.getElementById('todayClassesList').innerHTML = todayClasses.length ? todayClasses.map(renderClassHTML).join('') : '<p class="muted">No classes today!</p>';
  document.getElementById('allClassesList').innerHTML = data.classes.length ? data.classes.map(renderClassHTML).join('') : '<p class="muted">No classes added.</p>';
- 
  document.getElementById('allExamsList').innerHTML = data.exams.length ? data.exams.map(renderExamHTML).join('') : '<p class="muted">No upcoming exams.</p>';
-
  document.getElementById('noticeList').innerHTML = (data.notices && data.notices.length) ? data.notices.map(renderNoticeHTML).reverse().join('') : '<p class="muted">No notices pinned.</p>';
 
- // Profile Tab Render
  document.getElementById('profileDisplay').innerHTML = `
   <div class="field"><label>STUDENT NAME</label><div style="font-size:18px; font-weight:700">${data.profile.name}</div></div>
   <div class="field"><label>GRADE / CLASS</label><div style="font-size:18px; font-weight:700">${data.profile.className || 'Not set'}</div></div>
@@ -767,6 +864,7 @@ function renderUI() {
  `;
 
  renderCalendar();
+ renderLive();
  checkNotifications();
 }
 
@@ -788,8 +886,11 @@ function toggleTimer() {
 }
 function resetTimer() { clearInterval(timerInt); isRunning = false; time = 25 * 60; updateTimerText(); document.getElementById('timerBtn').textContent = 'Start Focus'; }
 
-// Init
-window.onload = () => { renderUI(); };
+// Init Loop
+window.onload = () => { 
+  renderUI(); 
+  setInterval(renderLive, 60000); // live tracking
+};
 </script>
 </body>
 </html>
