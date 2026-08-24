@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>StudyFlow Pro | Premium Edition</title>
+<title>StudyFlow Pro | Class 10 Edition</title>
 <style>
 :root{
  --bg:#090d16; --bg2:#0f1523; --panel:#141c2e; --panel2:#1a243a; --panel3:#23304d;
@@ -224,7 +224,7 @@ h2{font-size:18px; font-weight:700}
   <button class="nav active" data-page="dashboard">Dashboard</button>
   <button class="nav" data-page="calendar">Calendar</button>
   <button class="nav" data-page="tasks">Tasks & Homework</button>
-  <button class="nav" data-page="subjects">Subjects / Library</button>
+  <button class="nav" data-page="library">Library / PDFs</button> <!-- CHANGED -->
   <button class="nav" data-page="classes">Timetable / Classes</button>
   <button class="nav" data-page="exams">Exams</button>
   
@@ -318,38 +318,48 @@ h2{font-size:18px; font-weight:700}
     <div class="card"><div class="task-list" id="allTasksList"></div></div>
    </section>
 
-   <!-- SUBJECTS PAGE -->
-   <section id="subjects" class="page">
+   <!-- LIBRARY & PDF PAGE (NEW) -->
+   <section id="library" class="page">
     <div class="hero-row">
-     <div><div class="eyebrow">CURRICULUM</div><h1>Subjects</h1></div>
-     <button class="btn primary" onclick="openSubjectModal()">+ Add Subject</button>
+     <div><div class="eyebrow">STUDY MATERIAL</div><h1>Library & PDFs</h1></div>
+     <div style="display:flex; gap:8px;">
+       <button class="btn" onclick="openSubjectModal()">+ Add Subject</button>
+       <button class="btn primary" onclick="openLibraryModal()">+ Add Material</button>
+     </div>
     </div>
+    
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="head"><h2 style="font-size: 16px;">Subjects</h2></div>
+      <div class="task-list" id="subjectList"></div>
+    </div>
+    
     <div class="card">
-     <div class="task-list" id="subjectList"></div>
+     <div class="head"><h2 style="font-size: 16px;">Saved PDFs & Links</h2></div>
+     <p class="muted" style="font-size: 12px; margin-bottom: 15px;">Add links to your online PDFs, Drive files, or study resources here for quick access.</p>
+     <div class="task-list" id="libraryList"></div>
     </div>
    </section>
 
-   <!-- CLASSES PAGE -->
-   <!-- CLASSES PAGE -->
+   <!-- CLASSES PAGE (PW MASTER ADDED) -->
    <section id="classes" class="page">
     <div class="hero-row">
      <div><div class="eyebrow">SCHEDULE</div><h1>Timetable</h1></div>
      <button class="btn primary" onclick="openClassModal()">+ Add Class</button>
     </div>
-
-    <!-- NEW: TIMETABLE UPLOAD -->
+    
+    <!-- PW MASTER TIMETABLE UPLOAD -->
     <div class="card" style="margin-bottom: 20px; border-left: 4px solid var(--blue);">
      <div class="head" style="margin-bottom: 10px;">
-      <h2 style="font-size: 16px;"> Timetable</h2>
+      <h2 style="font-size: 16px;">📸 PW Master Timetable</h2>
       <div style="display:flex; gap:8px;">
-       <button class="btn" onclick="document.getElementById('TimetableUpload').click()">Upload pdf/photo</button>
-       <button class="btn red" onclick="deleteTimetable()">Remove</button>
+       <button class="btn" onclick="document.getElementById('pwTimetableUpload').click()">Upload Photo</button>
+       <button class="btn red" onclick="deletePWTimetable()">Remove</button>
       </div>
-      <input type="file" id="TimetableUpload" class="hidden" accept="image/*" onchange="saveTimetable(event)">
+      <input type="file" id="pwTimetableUpload" class="hidden" accept="image/*" onchange="savePWTimetable(event)">
      </div>
      
-     <div id="TimetableDisplay" style="width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 1px solid var(--line); margin-top:10px;">
-      <img id="TimetableImg" src="" style="width: 100%; height: auto; display: block; object-fit: contain;">
+     <div id="pwTimetableDisplay" style="width: 100%; border-radius: 12px; overflow: hidden; display: none; border: 1px solid var(--line); margin-top:10px;">
+      <img id="pwTimetableImg" src="" style="width: 100%; height: auto; display: block; object-fit: contain;">
      </div>
      <p class="muted" id="pwNoImageText" style="font-size: 12px; margin-top: 5px;">Upload your Physics Wallah schedule screenshot here.</p>
     </div>
@@ -467,6 +477,20 @@ h2{font-size:18px; font-weight:700}
  </div>
 </div>
 
+<!-- Library Modal (NEW) -->
+<div class="modal" id="libraryModal">
+ <div class="modalbox">
+  <div class="head"><h2>Add Study Material</h2><button class="btn iconbtn" onclick="closeModal('libraryModal')">×</button></div>
+  <div class="field"><label>MATERIAL TITLE</label><input class="input" id="libTitle" placeholder="E.g., Math Formulas PDF"></div>
+  <div class="field"><label>LINK (URL)</label><input class="input" id="libLink" placeholder="E.g., https://drive.google.com/..."></div>
+  <div class="field">
+    <label>SUBJECT</label>
+    <select class="input" id="libSubjSelect"></select>
+  </div>
+  <button class="btn primary" style="width:100%" onclick="saveLibraryItem()">Save Material</button>
+ </div>
+</div>
+
 <!-- Subject Modal -->
 <div class="modal" id="subjectModal">
  <div class="modalbox">
@@ -542,17 +566,18 @@ const defaultSubjects = [
 ];
 
 let data = { 
-  tasks: [], classes: [], exams: [], notices: [], 
+  tasks: [], classes: [], exams: [], notices: [], library: [], 
   subjects: JSON.parse(JSON.stringify(defaultSubjects)),
   profile: { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" },
-  theme: "dark", seenSplash: false 
+  theme: "dark", seenSplash: false, pwTimetable: null 
 };
 let currentCalDate = new Date(); 
 
 // Premium SVG Icons
 const icons = {
   edit: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`,
-  delete: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`
+  delete: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
+  link: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`
 };
 
 if(window.innerWidth <= 850) document.getElementById('menuBtn').style.display = 'block';
@@ -591,6 +616,7 @@ async function loadData() {
     data = { ...data, ...loaded }; 
     if(!data.profile || !data.profile.className) data.profile = { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" };
     if(!data.subjects || data.subjects.length === 0) data.subjects = JSON.parse(JSON.stringify(defaultSubjects));
+    if(!data.library) data.library = [];
   }
 }
 async function saveAll() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); await idbSave(); renderUI(); }
@@ -694,6 +720,11 @@ function openClassModal() { document.getElementById('classDay').value = currentD
 function openExamModal() { document.getElementById('examDate').value = todayStr(); document.getElementById('examModal').classList.add('show'); }
 function openNoticeModal() { document.getElementById('noticeModal').classList.add('show'); }
 function openSubjectModal() { document.getElementById('subjectModal').classList.add('show'); }
+function openLibraryModal() { 
+  const select = document.getElementById('libSubjSelect');
+  select.innerHTML = data.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+  document.getElementById('libraryModal').classList.add('show'); 
+}
 function openProfileModal() {
   document.getElementById('profileName').value = data.profile.name || '';
   document.getElementById('profileClass').value = data.profile.className || '';
@@ -720,7 +751,7 @@ function saveTask() {
 
  if(editingTaskId) {
    const idx = data.tasks.findIndex(x => x.id === editingTaskId);
-   newTaskObj.done = data.tasks[idx].done; // Keep done status
+   newTaskObj.done = data.tasks[idx].done; 
    data.tasks[idx] = newTaskObj;
  } else {
    data.tasks.push(newTaskObj);
@@ -735,6 +766,16 @@ function saveSubject() {
   data.subjects.push({ id: getId(), name, color: document.getElementById('subjectColor').value });
   document.getElementById('subjectName').value = "";
   closeModal('subjectModal'); saveAll();
+}
+
+function saveLibraryItem() {
+  const title = document.getElementById('libTitle').value.trim();
+  const link = document.getElementById('libLink').value.trim();
+  if(!title || !link) return alert("Please enter both Title and Link!");
+  data.library.push({ id: getId(), title, link, subjId: document.getElementById('libSubjSelect').value });
+  document.getElementById('libTitle').value = "";
+  document.getElementById('libLink').value = "";
+  closeModal('libraryModal'); saveAll();
 }
 
 function saveClass() {
@@ -770,6 +811,27 @@ function saveProfile() {
   closeModal('profileModal'); saveAll();
 }
 
+// PW Timetable Handling
+function savePWTimetable(event) {
+  const file = event.target.files[0];
+  if(!file) return;
+  if(file.size > 5 * 1024 * 1024) return alert("Image is too large! Please upload under 5MB.");
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    data.pwTimetable = e.target.result;
+    saveAll(); 
+  };
+  reader.readAsDataURL(file);
+}
+
+function deletePWTimetable() {
+  if(!data.pwTimetable) return;
+  if(!confirm("Remove the timetable image?")) return;
+  data.pwTimetable = null;
+  document.getElementById('pwTimetableUpload').value = ""; 
+  saveAll();
+}
+
 // Backup & Restore
 function backupData() {
   const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
@@ -797,9 +859,9 @@ async function restoreData(e) {
 function resetData() {
   if(!confirm("Are you sure you want to permanently delete ALL data?")) return;
   data = { 
-    tasks: [], classes: [], exams: [], notices: [], 
+    tasks: [], classes: [], exams: [], notices: [], library: [],
     subjects: JSON.parse(JSON.stringify(defaultSubjects)), 
-    profile: { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" }, theme: "dark", seenSplash: true 
+    profile: { name: "Class 10 Student", className: "Class 10", goal: "Score 95% in Boards" }, theme: "dark", seenSplash: true, pwTimetable: null 
   };
   saveAll();
 }
@@ -975,6 +1037,24 @@ function renderUI() {
    <button class="action-btn delete" onclick="deleteItem('subjects', '${s.id}')" title="Delete Subject">${icons.delete}</button>
   </div>`;
 
+ const renderLibHTML = (l) => {
+  const subj = getSubject(l.subjId);
+  return `
+  <div class="task">
+   <div style="width:12px; height:12px; border-radius:50%; background:${subj.color}"></div>
+   <div>
+    <div class="task-title">${l.title}</div>
+    <div class="task-meta">
+      <span class="pill"><span class="dot" style="background:${subj.color}"></span>${subj.name}</span>
+    </div>
+   </div>
+   <div style="display:flex; gap:6px;">
+     <button class="action-btn" onclick="window.open('${l.link}', '_blank')" title="Open Material">${icons.link}</button>
+     <button class="action-btn delete" onclick="deleteItem('library', '${l.id}')" title="Delete Material">${icons.delete}</button>
+   </div>
+  </div>`;
+ };
+
  const renderClassHTML = (c) => `
   <div class="task">
    <div style="width:12px; height:12px; border-radius:50%; background:var(--blue)"></div>
@@ -1008,6 +1088,7 @@ function renderUI() {
  document.getElementById('todayTasksList').innerHTML = todayTasks.length ? todayTasks.map(renderTaskHTML).join('') : '<p class="muted">No tasks today.</p>';
  document.getElementById('allTasksList').innerHTML = data.tasks.length ? data.tasks.map(renderTaskHTML).sort((a,b)=>(a.date||'').localeCompare(b.date||'')).join('') : '<p class="muted">No tasks added yet.</p>';
  document.getElementById('subjectList').innerHTML = data.subjects.length ? data.subjects.map(renderSubjHTML).join('') : '<p class="muted">No subjects added.</p>';
+ document.getElementById('libraryList').innerHTML = data.library.length ? data.library.map(renderLibHTML).join('') : '<p class="muted">No study materials added yet.</p>';
  
  const todayClasses = data.classes.filter(c => c.day === dayName);
  document.getElementById('todayClassesList').innerHTML = todayClasses.length ? todayClasses.map(renderClassHTML).join('') : '<p class="muted">No classes today!</p>';
@@ -1020,6 +1101,20 @@ function renderUI() {
   <div class="field"><label>GRADE / CLASS</label><div style="font-size:18px; font-weight:700">${data.profile.className}</div></div>
   <div class="field full"><label>PRIMARY TARGET</label><div style="font-size:18px; font-weight:700; color:var(--purple)">${data.profile.goal}</div></div>
  `;
+
+ // PW Master Timetable Render
+ const pwDisplay = document.getElementById('pwTimetableDisplay');
+ const pwImg = document.getElementById('pwTimetableImg');
+ const pwNoText = document.getElementById('pwNoImageText');
+ 
+ if(data.pwTimetable) {
+   pwImg.src = data.pwTimetable;
+   pwDisplay.style.display = 'block';
+   pwNoText.style.display = 'none';
+ } else {
+   pwDisplay.style.display = 'none';
+   pwNoText.style.display = 'block';
+ }
 
  renderCalendar();
  renderLive();
